@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    android:background="@color/aliwx_white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/create_tribe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/aliwx_column_up_unit_margin"
+        android:gravity="center"
+        android:textColor="@color/aliwx_common_text_color"
+        android:text="群组"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/more_line_color" />
+
+    <TextView
+        android:id="@+id/create_room"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/aliwx_column_up_unit_margin"
+        android:gravity="center"
+        android:textColor="@color/aliwx_common_text_color"
+        android:text="讨论组"/>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/more_line_color" />
+
+    <TextView
+        android:id="@+id/cancel_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/aliwx_column_up_unit_margin"
+        android:gravity="center"
+        android:textColor="@color/aliwx_common_text_color"
+        android:text="取消"/>
+
+</LinearLayout>

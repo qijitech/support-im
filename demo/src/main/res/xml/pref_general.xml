@@ -1,0 +1,50 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="config_sync"
+        android:summary="是否漫游最近联系人及最新消息"
+        android:title="漫游" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="config_hotpatch"
+        android:summary="是否启用HotPatch功能"
+        android:title="HotPatch" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="config_profile"
+        android:summary="获取Profile"
+        android:title="Profile" />
+
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue=""
+        android:inputType="textCapWords"
+        android:key="push_ip_list_openim_online_key"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="OnlineEnv Lastip" />
+
+    <EditTextPreference
+        android:capitalize="words"
+        android:defaultValue=""
+        android:inputType="textCapWords"
+        android:key="push_ip_list_dev_key"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="DevEnv Lastip" />
+
+    <ListPreference
+        android:defaultValue="1"
+        android:entries="@array/pref_config_tcms_storage_titles"
+        android:entryValues="@array/pref_config_tcms_storage_values"
+        android:key="config_tcms_storage"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="Tcms存储" />
+
+</PreferenceScreen>

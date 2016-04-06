@@ -1,0 +1,40 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.taobao.openimui.demo.TribeFragment">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/aliwx_common_bg_color">
+
+        <include
+            android:id="@+id/title_self_state"
+            layout="@layout/aliwx_title_self_state" />
+
+        <com.alibaba.mobileim.fundamental.widget.refreshlist.YWPullToRefreshListView
+            android:id="@+id/message_list"
+            style="@style/aliwx_dividedListStyle"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/title_self_state"
+            android:cacheColorHint="#00000000"
+            android:fadingEdge="none"
+            android:fastScrollEnabled="true"
+            android:listSelector="#00000000" />
+
+        <include layout="@layout/aliwx_title_bar_shadow" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="20dip"
+            android:layout_height="20dip"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/aliwx_my_progress"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</FrameLayout>

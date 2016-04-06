@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/aliwx_common_bg_color">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/aliwx_common_bg_color">
+
+        <TextView
+            android:id="@+id/get_all_settings"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:text="获取所有设置"
+            style="@style/more_item_style"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/more_line_color" />
+
+        <TextView
+            android:id="@+id/get_common_settings"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:text="获取普通设置"
+            style="@style/more_item_style"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/more_line_color" />
+
+        <TextView
+            android:id="@+id/get_tribe_settings"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:text="获取群设置"
+            style="@style/more_item_style"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/more_line_color" />
+
+        <TextView
+            android:id="@+id/get_peer_settings"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:text="获取个人设置"
+            style="@style/more_item_style"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/more_line_color" />
+
+        <TextView
+            android:id="@+id/get_custom_settings"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:text="获取自定义设置"
+            style="@style/more_item_style"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/more_line_color" />
+
+        <TextView
+            android:id="@+id/set_tribe"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:text="设置群"
+            style="@style/more_item_style"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/more_line_color" />
+        <TextView
+            android:id="@+id/set_peer"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:text="设置个人"
+            style="@style/more_item_style"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/more_line_color" />
+
+        <TextView
+            android:id="@+id/set_receiveWwPcOL"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:text="设置receiveWwPcOL"
+            style="@style/more_item_style"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/more_line_color" />
+
+        <TextView
+            android:id="@+id/set_keepOnline"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:text="设置keepOnline"
+            style="@style/more_item_style"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/more_line_color" />
+
+        <TextView
+            android:id="@+id/set_pushWwPcOL"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:text="设置pushWwPcOL"
+            style="@style/more_item_style"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/more_line_color" />
+
+        <TextView
+            android:id="@+id/set_nonPushAtNight"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:text="设置nonPushAtNight"
+            style="@style/more_item_style"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/more_line_color" />
+
+        <TextView
+            android:id="@+id/set_msgRemindNoDisturb"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:text="设置msgRemindNoDisturb"
+            style="@style/more_item_style"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/more_line_color" />
+
+        <TextView
+            android:id="@+id/setCustomSettings"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/more_item_height"
+            android:text="设置自定义配置"
+            style="@style/more_item_style"/>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="@color/more_line_color" />
+
+    </LinearLayout>
+</ScrollView>

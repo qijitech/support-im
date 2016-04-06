@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/aliwx_common_bg_color" >
+    <include
+        android:id="@+id/title_self_state"
+        layout="@layout/aliwx_title_self_state" />
+
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/title_self_state" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:id="@+id/aliwx_search"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:background="@color/aliwx_white">
+                <ImageView
+                    android:id="@+id/aliwx_search_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:src="@drawable/aliwx_search_icon" />
+                <view
+                    android:id="@+id/aliwx_search_keyword"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    class="com.alibaba.mobileim.fundamental.widget.WxEditText"
+                    android:drawablePadding="@dimen/aliwx_common_unit_margin"
+                    android:drawableRight="@drawable/aliwx_search_icon_delete_bg"
+                    android:ellipsize="end"
+                    android:freezesText="true"
+                    android:paddingLeft="20dp"
+                    android:singleLine="true"
+                    android:background="@null"
+                    android:hint="@string/aliwx_search_friend_hint"
+                    android:textSize="@dimen/aliwx_second_text_size"
+                    android:imeOptions="flagNoExtractUi"
+                    android:inputType="textNoSuggestions"
+                    android:maxLength="25"
+                    android:paddingRight="20dp"
+                    android:textColor="@color/aliwx_black"
+                    android:textColorHint="#999999"
+                    />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

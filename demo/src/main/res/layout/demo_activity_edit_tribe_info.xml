@@ -1,0 +1,102 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/aliwx_common_bg_white_color"
+    android:fitsSystemWindows="true"
+    tools:context="com.taobao.openimui.tribe.EditTribeInfoActivity">
+
+    <include
+        android:id="@+id/title_self_state"
+        layout="@layout/aliwx_title_self_state" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_self_state">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/head_layout"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@drawable/demo_tribe_header"
+                android:gravity="center">
+
+                <com.alibaba.mobileim.fundamental.widget.WXNetworkImageView
+                    android:id="@+id/head"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/aliwx_common_head_size"
+                    android:src="@drawable/aliwx_tribe_head_default" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tribe_name_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/head_layout"
+                android:background="@color/aliwx_white"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/more_item_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="群名称：" />
+
+                <EditText
+                    android:id="@+id/tribe_name"
+                    style="@style/more_item_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:hint="群名称"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:textSize="@dimen/aliwx_font_second_grade" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tribe_description_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tribe_name_layout"
+                android:layout_marginTop="@dimen/aliwx_column_up_unit_margin"
+                android:background="@color/aliwx_white"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/more_item_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="群公告：" />
+
+                <EditText
+                    android:id="@+id/tribe_description"
+                    style="@style/more_item_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:hint="群公告"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:textSize="@dimen/aliwx_font_second_grade" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <include layout="@layout/aliwx_title_bar_shadow" />
+
+</RelativeLayout>

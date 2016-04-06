@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="104dp"
+    android:padding="20dp"
+    android:background="@color/aliwx_common_bg_color">
+
+    <ImageView
+        android:id="@+id/head"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:background="@drawable/aliwx_head_default" />
+
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/head"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/aliwx_column_top_margin"
+        android:text="小猫"
+        android:textSize="@dimen/aliwx_font_first_grade"
+        android:textColor="@color/aliwx_black"/>
+
+</RelativeLayout>

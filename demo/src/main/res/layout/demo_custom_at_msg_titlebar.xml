@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/custom_title_bar"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/aliwx_title_backgroud"
+    android:gravity="center_vertical" >
+
+    <TextView
+        android:id="@+id/left_button"
+        style="@style/aliwx_common_title_left_btn_shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="?attr/aliwx_title_leftbutton_visible" />
+
+    <TextView
+        android:id="@+id/title_txt"
+        style="@style/aliwx_self_title_text_shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:ellipsize="middle"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:paddingLeft="90dp"
+        android:paddingRight="90dp"
+        android:singleLine="true" />
+
+</RelativeLayout>

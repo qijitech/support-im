@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/aliwx_common_bg_white_color"
+    >
+
+    <include
+        android:id="@+id/title_self_state"
+        layout="@layout/aliwx_title_self_state" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_self_state"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:text="你需要发送验证申请，等对方通过"
+            />
+        <view
+            android:id="@+id/aliwx_add_friend_message"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            class="com.alibaba.mobileim.fundamental.widget.WxEditText"
+            android:drawablePadding="@dimen/aliwx_common_unit_margin"
+            android:drawableRight="@drawable/aliwx_search_icon_delete_bg"
+            android:ellipsize="end"
+            android:imeOptions="flagNoExtractUi"
+            android:inputType="textNoSuggestions"
+            android:maxLength="25"
+            android:freezesText="true"
+            android:paddingLeft="20dp"
+            android:paddingRight="10dp"
+            android:singleLine="true"
+            android:background="@color/aliwx_white"
+            android:textColor="@color/aliwx_black"
+            android:textColorHint="#999999"
+            android:textSize="@dimen/aliwx_second_text_size"
+            android:hint=""/>
+
+    </LinearLayout>
+
+    <include layout="@layout/aliwx_title_bar_shadow" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="20dip"
+        android:layout_height="20dip"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/aliwx_my_progress"
+        android:visibility="gone" />
+
+</RelativeLayout>

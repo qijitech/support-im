@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dip"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:background="@drawable/demo_tab_bg">
+
+    <TextView
+        android:id="@+id/tab_text"
+        style="@style/tab_text_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:paddingTop="3dp"
+        android:textColor="#bcbfc1" />
+
+    <TextView
+        android:id="@+id/unread"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/aliwx_unread_hint"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/aliwx_unread_text_size"
+        android:visibility="invisible" />
+
+</RelativeLayout>

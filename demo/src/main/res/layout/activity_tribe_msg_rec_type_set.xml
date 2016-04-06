@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_bg_color"
+    tools:context="com.taobao.openimui.sample.TribeMsgRecTypeSetActivity">
+    <include 
+        android:id="@+id/title_self_state"
+        layout="@layout/aliwx_title_self_state"/>
+    <View
+        android:id="@+id/start_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/title_self_state"
+        android:layout_marginTop="@dimen/common_safe_margin"
+        android:background="@color/common_line_color" />
+
+    <RelativeLayout
+        android:id="@+id/receive_and_remind_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:layout_below="@id/start_line">
+
+        <TextView
+            style="@style/more_item_style"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/common_safe_margin"
+            android:text="接收并提醒" />
+
+        <ImageView
+            android:id="@+id/receive_and_remind"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/common_safe_margin"
+            android:src="@drawable/icon_checkmark"/>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/receive_and_remind_layout_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/receive_and_remind_layout"
+        android:background="@color/common_line_color" />
+
+    <RelativeLayout
+        android:id="@+id/only_receive_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:layout_below="@id/receive_and_remind_layout_divider">
+
+        <TextView
+            style="@style/more_item_style"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/common_safe_margin"
+            android:text="接收不提醒" />
+
+        <ImageView
+            android:id="@+id/only_receive"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/common_safe_margin"
+            android:src="@drawable/icon_checkmark"/>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/only_receive_layout_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/only_receive_layout"
+        android:background="@color/common_line_color" />
+
+    <RelativeLayout
+        android:id="@+id/not_receive_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_item_height"
+        android:layout_below="@id/only_receive_layout_divider">
+
+        <TextView
+            style="@style/more_item_style"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/common_safe_margin"
+            android:text="不接收" />
+
+        <ImageView
+            android:id="@+id/not_receive"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/common_safe_margin"
+            android:src="@drawable/icon_checkmark"/>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/end_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/not_receive_layout"
+        android:background="@color/common_line_color" />
+</RelativeLayout>

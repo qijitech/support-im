@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/aliwx_common_bg_color">
+
+    <include
+        android:id="@+id/title_self_state"
+        layout="@layout/aliwx_title_self_state" />
+
+    <com.alibaba.mobileim.fundamental.widget.WxEditText
+        android:id="@+id/my_profile_input"
+        style="@style/more_item_style"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/more_item_height"
+        android:drawableRight="@drawable/search_icon_delete_bg"
+        android:inputType="textNoSuggestions"
+        android:layout_marginTop="15dp"
+        android:paddingLeft="10dip"
+        android:paddingRight="10dip"
+        android:singleLine="true"
+        android:textColor="@color/aliwx_black"
+        android:textSize="@dimen/aliwx_font_second_grade" />
+</LinearLayout>

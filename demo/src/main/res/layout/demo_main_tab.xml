@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/tabhost"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <RelativeLayout
+        android:id="@+id/parent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TabWidget
+            android:id="@android:id/tabs"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/tabbottom"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/demo_tab_bg"
+            android:baselineAligned="false"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tab_message_text"
+                    style="@style/tab_text_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableTop="@drawable/demo_tab_icon_message_normal"
+                    android:gravity="center"
+                    android:paddingTop="3dp"
+                    android:text="消息"
+                    android:textColor="#bcbfc1" />
+
+                <TextView
+                    android:id="@+id/unread"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/aliwx_unread_hint"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/aliwx_unread_text_size"
+                    android:visibility="invisible" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tab_contact_text"
+                    style="@style/tab_text_style"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:drawableTop="@drawable/demo_tab_icon_contact_normal"
+                    android:gravity="center"
+                    android:paddingTop="3dp"
+                    android:text="联系人"
+                    android:textColor="#bcbfc1" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tab_tribe_text"
+                    style="@style/tab_text_style"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:drawableTop="@drawable/demo_tab_icon_tribe_normal"
+                    android:gravity="center"
+                    android:paddingTop="3dp"
+                    android:text="群组"
+                    android:textColor="#bcbfc1" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/tab_more_text"
+                    style="@style/tab_text_style"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:drawableTop="@drawable/demo_tab_icon_setting_normal"
+                    android:gravity="center"
+                    android:paddingTop="3dp"
+                    android:text="更多"
+                    android:textColor="#bcbfc1" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@android:id/tabcontent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/tabbottom"
+            android:layout_alignParentTop="true" />
+    </RelativeLayout>
+
+</TabHost>

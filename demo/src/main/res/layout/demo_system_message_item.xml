@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/aliwx_column_up_unit_margin"
+    android:background="@color/aliwx_common_bg_white_color">
+
+    <RelativeLayout
+        android:id="@+id/message_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/aliwx_common_safe_margin">
+
+        <com.alibaba.mobileim.fundamental.widget.WXNetworkImageView
+            android:id="@+id/head"
+            android:layout_width="@dimen/aliwx_common_head_size"
+            android:layout_height="@dimen/aliwx_common_head_size"
+            android:src="@drawable/aliwx_tribe_head_default"
+            android:layout_gravity="center_vertical" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/head"
+            android:layout_marginLeft="@dimen/aliwx_column_up_unit_margin">
+
+            <TextView
+                android:id="@+id/tribe_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/aliwx_black"
+                android:textSize="@dimen/aliwx_font_second_grade"
+                android:text="群名称" />
+
+            <TextView
+                android:id="@+id/invite_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/aliwx_black"
+                android:textSize="@dimen/aliwx_font_third_grade"
+                android:layout_below="@+id/tribe_name"
+                android:layout_marginTop="5dp"
+                android:text="邀请信息" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/line1"
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/message_content"
+        android:background="@color/more_line_color" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/line1"
+        android:layout_margin="@dimen/aliwx_column_up_unit_margin"
+        android:paddingBottom="@dimen/aliwx_column_up_unit_margin">
+
+        <TextView
+            android:id="@+id/agree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/aliwx_common_blue_btn_bg"
+            android:layout_toLeftOf="@+id/ignore"
+            android:layout_marginRight="@dimen/aliwx_column_up_unit_margin"
+            android:textColor="@color/aliwx_white"
+            android:textSize="@dimen/aliwx_font_second_grade"
+            android:text="同意加入该群" />
+
+        <TextView
+            android:id="@+id/ignore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/aliwx_common_grey_btn_bg"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/aliwx_white"
+            android:textSize="@dimen/aliwx_font_second_grade"
+            android:text="忽略" />
+
+        <TextView
+            android:id="@+id/result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="已忽略"/>
+    </RelativeLayout>
+    
+
+</RelativeLayout>

@@ -1,0 +1,25 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/aliwx_white"
+    tools:context="com.taobao.openimui.tribe.TribeSystemMessageActivity">
+
+    <include
+        android:id="@+id/title_self_state"
+        layout="@layout/aliwx_title_self_state" />
+
+    <ListView
+        android:id="@+id/message_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_margin="@dimen/aliwx_column_top_margin"
+        android:divider="@color/aliwx_white"
+        android:dividerHeight="@dimen/aliwx_column_top_margin"
+        android:layout_below="@+id/title_self_state"/>
+
+    <include layout="@layout/aliwx_title_bar_shadow" />
+
+</RelativeLayout>

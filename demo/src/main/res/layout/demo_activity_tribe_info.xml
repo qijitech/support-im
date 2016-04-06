@@ -1,0 +1,351 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/aliwx_common_bg_white_color">
+    <include
+        android:id="@+id/title_self_state"
+        layout="@layout/aliwx_title_self_state" />
+    <include layout="@layout/aliwx_title_bar_shadow" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_self_state">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:context="com.taobao.openimui.tribe.TribeInfoActivity">
+
+            <RelativeLayout
+                android:id="@+id/tribe_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:padding="20dp"
+                android:background="@drawable/demo_tribe_header">
+
+                <com.alibaba.mobileim.fundamental.widget.WXNetworkImageView
+                    android:id="@+id/head"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:src="@drawable/aliwx_tribe_head_default"
+                    android:layout_gravity="center_vertical"
+                    android:layout_centerHorizontal="true"/>
+
+                <TextView
+                    android:id="@+id/tribe_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/head"
+                    android:layout_marginTop="20dp"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="@dimen/aliwx_font_first_grade"
+                    android:textColor="@color/aliwx_white"
+                    android:text="测试"/>
+
+                <TextView
+                    android:id="@+id/tribe_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tribe_name"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/aliwx_white"
+                    android:text="群号"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/tribe_description_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/aliwx_white"
+                android:layout_below="@+id/tribe_info"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/more_item_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="群公告："/>
+
+                <TextView
+                    android:id="@+id/tribe_description"
+                    style="@style/more_item_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:textSize="@dimen/aliwx_font_second_grade"
+                    android:text="群公告" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:layout_below="@+id/tribe_description_layout"
+                android:background="@color/more_line_color" />
+
+            <RelativeLayout
+                android:id="@+id/my_tribe_profile_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp">
+
+                <View
+                    android:id="@+id/line1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/more_line_color" />
+
+                <TextView
+                    android:id="@+id/my_tribe_profile"
+                    style="@style/more_item_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/more_item_height"
+                    android:layout_below="@+id/line1"
+                    android:text="我的群名片" />
+
+                <TextView
+                    android:id="@+id/my_tribe_nick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/more_item_height"
+                    style="@style/more_item_style"
+                    android:layout_below="@+id/line1"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:maxEms="15"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:drawablePadding="@dimen/aliwx_common_unit_margin"
+                    android:drawableRight="@drawable/aliwx_arrow"/>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px"
+                    android:layout_below="@+id/my_tribe_profile"
+                    android:background="@color/more_line_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/manage_tribe_members_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/manage_tribe_members"
+                    style="@style/more_item_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/more_item_height"
+                    android:text="管理群成员" />
+
+                <TextView
+                    android:id="@+id/member_count"
+                    style="@style/more_item_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/more_item_height"
+                    android:gravity="center"
+                    android:layout_alignParentRight="true"
+                    android:drawableRight="@drawable/aliwx_arrow"
+                    android:drawablePadding="@dimen/aliwx_common_unit_margin"
+                    android:text="1人"/>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px"
+                    android:layout_below="@+id/manage_tribe_members"
+                    android:background="@color/more_line_color" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/edit_tribe_info_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/edit_tribe_info"
+                    style="@style/more_item_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/more_item_height"
+                    android:drawableRight="@drawable/aliwx_arrow"
+                    android:text="编辑群信息" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px"
+                    android:layout_below="@+id/edit_tribe_info"
+                    android:background="@color/more_line_color" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="@color/more_line_color" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="@dimen/common_safe_margin"
+                android:background="@color/more_line_color" />
+
+            <RelativeLayout
+                android:id="@+id/personal_tribe_setting_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/personal_tribe_setting"
+                    style="@style/more_item_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/more_item_height"
+                    android:drawableRight="@drawable/aliwx_arrow"
+                    android:visibility="visible"
+                    android:text="个人设置" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px"
+                    android:layout_below="@+id/personal_tribe_setting"
+                    android:background="@color/more_line_color" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="@color/more_line_color" />
+
+            <RelativeLayout
+                android:id="@+id/tribe_msg_rec_type_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/setting_item_height"
+                android:background="@color/white">
+
+                <TextView
+                    style="@style/more_item_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/setting_item_height"
+                    android:drawableRight="@drawable/demo_edit_more"
+                    android:text="群消息状态"/>
+
+                <TextView
+                    android:id="@+id/tribe_msg_rec_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/common_two_safe_margin"
+                    android:gravity="center_vertical"/>
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px"
+                    android:layout_below="@id/tribe_msg_rec_type"
+                    android:background="@color/more_line_color" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="@color/more_line_color" />
+
+            <RelativeLayout
+                android:id="@+id/receive_tribe_at_msg_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/setting_item_height"
+                android:layout_below="@id/tribe_msg_rec_type_layout"
+                android:background="@color/white">
+
+                <TextView
+                    style="@style/more_item_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/setting_item_height"
+                    android:text="接收群@消息"/>
+
+                <ImageView
+                    android:id="@+id/receive_tribe_at_msg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/common_safe_margin"
+                    android:src="@drawable/on_switch"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="@color/more_line_color" />
+
+            <RelativeLayout
+                android:id="@+id/config_at_all_for_normal_members_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/setting_item_height"
+                android:layout_below="@id/tribe_msg_rec_type_layout"
+                android:layout_marginTop="@dimen/common_safe_margin"
+                android:background="@color/white"
+                android:visibility="gone">
+                <View
+                    android:id="@+id/divider_line"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px"
+                    android:background="@color/more_line_color" />
+
+                <TextView
+                    style="@style/more_item_style"
+                    android:layout_below="@id/divider_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/setting_item_height"
+                    android:text="开放@all权限"/>
+
+                <ImageView
+                    android:id="@+id/config_at_all_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/common_safe_margin"
+                    android:src="@drawable/on_switch"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="@color/more_line_color" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="@dimen/common_safe_margin"
+                android:background="@color/more_line_color" />
+
+            <TextView
+                android:id="@+id/clear_tribe_msg"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/setting_item_height"
+                style="@style/more_item_style"
+                android:text="清空群聊天记录"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1px"
+                android:background="@color/more_line_color" />
+
+            <TextView
+                android:id="@+id/quite_tribe"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/more_item_height"
+                android:layout_marginBottom="@dimen/aliwx_common_safe_margin"
+                android:layout_marginLeft="@dimen/aliwx_column_up_unit_margin"
+                android:layout_marginRight="@dimen/aliwx_column_up_unit_margin"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/demo_common_red_btn_bg"
+                android:gravity="center"
+                android:text="退出群"
+                android:textColor="@color/aliwx_setting_bg_nor"
+                android:textSize="@dimen/aliwx_common_text_size" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

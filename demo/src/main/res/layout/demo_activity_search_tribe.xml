@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ls_main_item_divider"
+    tools:context="com.taobao.openimui.tribe.SearchTribeActivity">
+
+    <include
+        android:id="@+id/title_self_state"
+        layout="@layout/aliwx_title_self_state" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/title_self_state"
+
+
+        android:background="@color/aliwx_white"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/input_tribe_id"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:paddingLeft="20dp"
+            android:singleLine="true"
+            android:background="@null"
+            android:textSize="@dimen/aliwx_second_text_size"
+            android:hint="搜索群id"/>
+
+        <ImageView
+            android:id="@+id/search_tribe"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:src="@drawable/aliwx_search_icon" />
+    </LinearLayout>
+
+    <include layout="@layout/aliwx_title_bar_shadow" />
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="20dip"
+        android:layout_height="20dip"
+        android:layout_centerInParent="true"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/aliwx_my_progress"
+        android:visibility="gone" />
+
+</RelativeLayout>

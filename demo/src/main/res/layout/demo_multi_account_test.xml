@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/aliwx_common_bg_white_color"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/add_new_account"
+        style="@style/more_item_style"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/more_item_height"
+        android:layout_marginTop="20dp"
+        android:drawableRight="@drawable/aliwx_arrow"
+        android:text="添加新账号"/>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/more_line_color"/>
+
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="切换账号"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/logout"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/more_item_height"
+                android:layout_marginBottom="@dimen/aliwx_common_safe_margin"
+                android:layout_marginLeft="@dimen/aliwx_column_up_unit_margin"
+                android:layout_marginRight="@dimen/aliwx_column_up_unit_margin"
+                android:layout_marginTop="@dimen/aliwx_column_up_unit_margin"
+                android:background="@drawable/demo_common_red_btn_bg"
+                android:gravity="center"
+                android:text="退出登录"
+                android:textColor="@color/aliwx_setting_bg_nor"
+                android:textSize="@dimen/aliwx_common_text_size"/>
+
+            <TextView
+                android:id="@+id/open_chatting_activity"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/more_item_height"
+                android:layout_marginBottom="@dimen/aliwx_common_safe_margin"
+                android:layout_marginLeft="@dimen/aliwx_column_up_unit_margin"
+                android:layout_marginRight="@dimen/aliwx_column_up_unit_margin"
+                android:layout_marginTop="@dimen/aliwx_column_up_unit_margin"
+                android:background="@drawable/demo_common_red_btn_bg"
+                android:gravity="center"
+                android:text="测试商品焦点"
+                android:textColor="@color/aliwx_setting_bg_nor"
+                android:textSize="@dimen/aliwx_common_text_size"/>
+
+            <TextView
+                android:id="@+id/init_track"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/more_item_height"
+                android:layout_marginBottom="@dimen/aliwx_common_safe_margin"
+                android:layout_marginLeft="@dimen/aliwx_column_up_unit_margin"
+                android:layout_marginRight="@dimen/aliwx_column_up_unit_margin"
+                android:layout_marginTop="@dimen/aliwx_column_up_unit_margin"
+                android:background="@drawable/demo_common_red_btn_bg"
+                android:gravity="center"
+                android:text="初始化足迹"
+                android:textColor="@color/aliwx_setting_bg_nor"
+                android:textSize="@dimen/aliwx_common_text_size"/>
+
+            <TextView
+                android:id="@+id/update_track_info"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/more_item_height"
+                android:layout_marginBottom="@dimen/aliwx_common_safe_margin"
+                android:layout_marginLeft="@dimen/aliwx_column_up_unit_margin"
+                android:layout_marginRight="@dimen/aliwx_column_up_unit_margin"
+                android:layout_marginTop="@dimen/aliwx_column_up_unit_margin"
+                android:background="@drawable/demo_common_red_btn_bg"
+                android:gravity="center"
+                android:text="更新足迹信息"
+                android:textColor="@color/aliwx_setting_bg_nor"
+                android:textSize="@dimen/aliwx_common_text_size"/>
+
+            <TextView
+                android:id="@+id/open_test_activity1"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/more_item_height"
+                android:layout_marginBottom="@dimen/aliwx_common_safe_margin"
+                android:layout_marginLeft="@dimen/aliwx_column_up_unit_margin"
+                android:layout_marginRight="@dimen/aliwx_column_up_unit_margin"
+                android:layout_marginTop="@dimen/aliwx_column_up_unit_margin"
+                android:background="@drawable/demo_common_red_btn_bg"
+                android:gravity="center"
+                android:text="足迹测试页面1"
+                android:textColor="@color/aliwx_setting_bg_nor"
+                android:textSize="@dimen/aliwx_common_text_size"/>
+
+            <TextView
+                android:id="@+id/open_test_activity2"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/more_item_height"
+                android:layout_marginBottom="@dimen/aliwx_common_safe_margin"
+                android:layout_marginLeft="@dimen/aliwx_column_up_unit_margin"
+                android:layout_marginRight="@dimen/aliwx_column_up_unit_margin"
+                android:layout_marginTop="@dimen/aliwx_column_up_unit_margin"
+                android:background="@drawable/demo_common_red_btn_bg"
+                android:gravity="center"
+                android:text="足迹测试页面2"
+                android:textColor="@color/aliwx_setting_bg_nor"
+                android:textSize="@dimen/aliwx_common_text_size"/>
+
+            <TextView
+                android:id="@+id/open_conversation_activity"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/more_item_height"
+                android:layout_marginBottom="@dimen/aliwx_common_safe_margin"
+                android:layout_marginLeft="@dimen/aliwx_column_up_unit_margin"
+                android:layout_marginRight="@dimen/aliwx_column_up_unit_margin"
+                android:layout_marginTop="@dimen/aliwx_column_up_unit_margin"
+                android:background="@drawable/demo_common_red_btn_bg"
+                android:gravity="center"
+                android:text="打开会话列表"
+                android:textColor="@color/aliwx_setting_bg_nor"
+                android:textSize="@dimen/aliwx_common_text_size"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

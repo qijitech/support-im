@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/aliwx_friend_item_bg">
+
+
+    <com.alibaba.mobileim.fundamental.widget.WXNetworkImageView
+        android:id="@+id/head"
+        android:layout_width="@dimen/aliwx_common_head_size"
+        android:layout_height="@dimen/aliwx_common_head_size"
+        android:layout_margin="@dimen/aliwx_column_up_unit_margin"
+        android:src="@drawable/ic_launcher"
+        android:layout_centerVertical="true" />
+
+    <TextView
+        android:id="@+id/nick"
+        style="@style/aliwx_column_msg_title_style"
+        android:textSize="@dimen/aliwx_font_first_grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/head"
+        android:layout_marginLeft="@dimen/aliwx_column_up_unit_margin"
+        android:layout_marginRight="@dimen/aliwx_column_up_unit_margin"
+        android:text="nick" />
+
+    <TextView
+        android:id="@+id/role"
+        style="@style/aliwx_column_third_grade_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/nick"
+        android:gravity="center"
+        android:minEms="3"
+        android:layout_marginRight="@dimen/aliwx_column_up_unit_margin"
+        android:padding="5dp"
+        android:textColor="@color/aliwx_common_text_color" />
+
+</RelativeLayout>
