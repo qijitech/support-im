@@ -4,4 +4,6 @@
   <color name="colorPrimaryDark">#B34343</color>
   <color name="colorAccent">#FE9826</color>
   <color name="windowBackground">#FFFFFF</color>
+
+  <color name="greenWechat">#04c778</color>
 </resources>

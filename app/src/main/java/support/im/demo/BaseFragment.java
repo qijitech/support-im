@@ -1,4 +1,4 @@
-package support.im;
+package support.im.demo;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,11 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 
-/**
- * Created by YuGang Yang on 04 01, 2016.
- * Copyright 20015-2016 honc.tech. All rights reserved.
- */
-public abstract class SupportImFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
 
   FragmentNavigation mFragmentNavigation;
 
