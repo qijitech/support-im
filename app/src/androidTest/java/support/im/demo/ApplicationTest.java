@@ -1,4 +1,4 @@
-package support.im;
+package support.im.demo;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

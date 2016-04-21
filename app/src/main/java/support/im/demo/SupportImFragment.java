@@ -1,4 +1,4 @@
-package support.im;
+package support.im.demo;
 
 import android.content.Context;
 import android.os.Bundle;

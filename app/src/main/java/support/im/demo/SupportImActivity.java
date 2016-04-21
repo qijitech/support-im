@@ -1,4 +1,4 @@
-package support.im;
+package support.im.demo;
 
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
