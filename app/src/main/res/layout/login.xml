@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/huge_padding"
+        android:drawablePadding="@dimen/default_padding"
+        android:drawableTop="@drawable/ic_login_logo"
+        android:gravity="center"
+        android:text="@string/login_app_name"
+        android:textColor="#686767"
+        />
+
+    <support.ui.components.SupportButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/large_huge_padding"
+        android:text="@string/login_wechat"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
+        android:textSize="@dimen/text_size_button"
+        app:supportButtonCornerRadius="@dimen/login_corner_radius"
+        app:supportButtonNormalColor="@color/greenWechat"
+        />
+
+    <support.ui.components.SupportButton
+        android:id="@+id/btn_login_mobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/login_mobile"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
+        android:textSize="@dimen/text_size_button"
+        app:supportButtonCornerRadius="@dimen/login_corner_radius"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/xlarge_padding"
+        android:orientation="horizontal"
+        >
+      <android.support.v7.widget.AppCompatCheckBox
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/login_read_agree"
+          android:textColor="#8f8f8f"
+          />
+      <android.support.v7.widget.AppCompatButton
+          android:id="@+id/btn_login_agreement"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/login_agreement"
+          android:textColor="#8f8f8f"
+          style="@style/Base.Widget.AppCompat.Button.Borderless"
+          />
+    </LinearLayout>
+  </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

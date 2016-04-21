@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="@dimen/xlarge_padding"
+      android:text="@string/login_enter_mobile"
+      android:textSize="@dimen/text_size_medium"
+      />
+
+  <FrameLayout
+      android:id="@+id/container_login_mobile_code"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="@dimen/activity_horizontal_margin"
+      android:layout_marginRight="@dimen/activity_horizontal_margin"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:foreground="?attr/selectableItemBackground"
+      >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:drawableEnd="@drawable/support_im_arrow_right"
+        android:drawableRight="@drawable/support_im_arrow_right"
+        android:text="中国(+86)"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/text_size_medium"
+        />
+  </FrameLayout>
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:layout_marginBottom="@dimen/inline_padding"
+      android:layout_marginLeft="@dimen/activity_horizontal_margin"
+      android:layout_marginRight="@dimen/activity_horizontal_margin"
+      android:layout_marginTop="@dimen/inline_padding"
+      android:background="#EFEFEF"
+      />
+  <android.support.v7.widget.AppCompatEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="@dimen/activity_horizontal_margin"
+      android:layout_marginRight="@dimen/activity_horizontal_margin"
+      android:hint="@string/login_mobile_enter_mobile"
+      android:maxLength="12"
+      android:inputType="phone"
+      android:paddingLeft="@dimen/activity_horizontal_margin"
+      android:paddingRight="@dimen/activity_horizontal_margin"
+      />
+
+  <support.ui.components.SupportButton
+      android:id="@+id/btn_login_mobile_next"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="@dimen/activity_horizontal_margin"
+      android:layout_marginRight="@dimen/activity_horizontal_margin"
+      android:layout_marginTop="@dimen/activity_vertical_margin"
+      android:text="@string/login_mobile_next"
+      android:textColor="@android:color/white"
+      android:textSize="@dimen/text_size_button"
+      app:supportButtonCornerRadius="@dimen/login_corner_radius"
+      android:enabled="false"
+      />
+
+</LinearLayout>
