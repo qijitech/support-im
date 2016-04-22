@@ -3,34 +3,33 @@ package support.im.demo.features.main;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
-import com.ncapdevi.fragnav.FragNavController;
+import com.aspsine.fragmentnavigator.FragmentNavigator;
+import com.aspsine.fragmentnavigator.FragmentNavigatorAdapter;
+import com.google.common.collect.Lists;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.BottomBarBadge;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import java.util.ArrayList;
-import java.util.List;
 import support.im.contacts.ContactsFragment;
 import support.im.conversations.ConversationsFragment;
 import support.im.demo.AccountsFragment;
-import support.im.demo.R;
 import support.im.demo.BaseActivity;
-import support.im.demo.BaseFragment;
+import support.im.demo.R;
 
-public class MainActivity extends BaseActivity
-    implements BaseFragment.FragmentNavigation {
+public class MainActivity extends BaseActivity {
 
   //Better convention to properly name the indices what they are in your app
-  private final int INDEX_CONVERSIONS = FragNavController.TAB1;
-  private final int INDEX_CONTACTS = FragNavController.TAB2;
-  private final int INDEX_ACCOUNTS = FragNavController.TAB3;
-
+  private static final int INDEX_CONVERSIONS = 0;
+  private static final int INDEX_CONTACTS = 1;
+  private static final int INDEX_ACCOUNTS = 2;
+  private static final int DEFAULT_POSITION = INDEX_CONVERSIONS;
   private BottomBar mBottomBar;
-  private FragNavController mNavController;
+  private FragmentNavigator mNavigator;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    setupFragNav();
+    setupFragmentNavigator();
     setupBottomBar(savedInstanceState);
   }
 
@@ -40,14 +39,13 @@ public class MainActivity extends BaseActivity
     // Necessary to restore the BottomBar's state, otherwise we would
     // lose the current tab on orientation change.
     mBottomBar.onSaveInstanceState(outState);
+    mNavigator.onSaveInstanceState(outState);
   }
 
-  private void setupFragNav() {
-    List<Fragment> fragments = new ArrayList<>(5);
-    fragments.add(ConversationsFragment.create());
-    fragments.add(ContactsFragment.create());
-    fragments.add(AccountsFragment.newInstance());
-    mNavController = new FragNavController(getSupportFragmentManager(), R.id.container, fragments);
+  private void setupFragmentNavigator() {
+    mNavigator = new FragmentNavigator(getSupportFragmentManager(), new FragmentAdapter(), R.id.container);
+    // set default tab position
+    mNavigator.setDefaultPosition(DEFAULT_POSITION);
   }
 
   private void setupBottomBar(Bundle savedInstanceState) {
@@ -56,19 +54,22 @@ public class MainActivity extends BaseActivity
       @Override public void onMenuTabSelected(@IdRes int menuItemId) {
         switch (menuItemId) {
           case R.id.menu_conversation:
-            mNavController.switchTab(INDEX_CONVERSIONS);
+            mNavigator.showFragment(INDEX_CONVERSIONS);
+            mBottomBar.selectTabAtPosition(INDEX_CONVERSIONS, true);
             break;
           case R.id.menu_contact:
-            mNavController.switchTab(INDEX_CONTACTS);
+            mNavigator.showFragment(INDEX_CONTACTS);
+            mBottomBar.selectTabAtPosition(INDEX_CONTACTS, true);
             break;
           case R.id.menu_accounts:
-            mNavController.switchTab(INDEX_ACCOUNTS);
+            mNavigator.showFragment(INDEX_ACCOUNTS);
+            mBottomBar.selectTabAtPosition(INDEX_ACCOUNTS, true);
             break;
         }
       }
 
       @Override public void onMenuTabReSelected(@IdRes int menuItemId) {
-        mNavController.clearStack();
+        mNavigator.removeAllFragment(true);
       }
     });
 
@@ -80,15 +81,26 @@ public class MainActivity extends BaseActivity
     //mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
   }
 
-  @Override public void onBackPressed() {
-    if (mNavController.getCurrentStack().size() > 1) {
-      mNavController.pop();
-    } else {
-      super.onBackPressed();
-    }
-  }
+  private static class FragmentAdapter implements FragmentNavigatorAdapter {
+    private ArrayList<Fragment> mFragments = Lists.newArrayList();
 
-  @Override public void pushFragment(Fragment fragment) {
-    mNavController.push(fragment);
+    FragmentAdapter() {
+      mFragments.clear();
+      mFragments.add(ConversationsFragment.create());
+      mFragments.add(ContactsFragment.create());
+      mFragments.add(AccountsFragment.newInstance());
+    }
+
+    @Override public Fragment onCreateFragment(int position) {
+      return mFragments.get(position);
+    }
+
+    @Override public String getTag(int position) {
+      return mFragments.get(position).getClass().getSimpleName();
+    }
+
+    @Override public int getCount() {
+      return mFragments.size();
+    }
   }
 }
