@@ -68,7 +68,6 @@
       android:textColor="@android:color/white"
       android:textSize="@dimen/text_size_button"
       app:supportButtonCornerRadius="@dimen/login_corner_radius"
-      android:enabled="false"
       />
 
 </LinearLayout>

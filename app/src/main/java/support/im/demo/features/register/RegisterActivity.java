@@ -1,5 +1,6 @@
 package support.im.demo.features.register;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import support.im.demo.R;
+import support.im.demo.features.main.MainActivity;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -22,10 +24,11 @@ public class RegisterActivity extends AppCompatActivity {
   }
 
   @OnClick({
-      R.id.container_login_mobile_code
+      R.id.btn_login_mobile_next
   }) public void onClick(View view) {
     switch (view.getId()) {
-      case R.id.container_login_mobile_code:
+      case R.id.btn_login_mobile_next:
+        startActivity(new Intent(this, MainActivity.class));
         break;
     }
   }

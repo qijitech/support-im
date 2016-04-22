@@ -28,6 +28,11 @@
           android:name="android.support.PARENT_ACTIVITY"
           android:value=".features.register.RegisterActivity"/>
     </activity>
+
+    <activity
+        android:name=".features.main.MainActivity"
+        android:launchMode="singleTask">
+    </activity>
   </application>
 
 </manifest>
