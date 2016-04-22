@@ -21,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.login);
     ButterKnife.bind(this);
+    setTitle(R.string.label_login);
     mAgreementBtn.setPaintFlags(mAgreementBtn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
   }
 

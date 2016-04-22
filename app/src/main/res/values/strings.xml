@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">聊天</string>
+  <string name="app_name">航城聊天</string>
 
   <string name="label_login">登录</string>
   <string name="label_login_mobile">手机号登录</string>
