@@ -27,6 +27,7 @@ dependencies {
   compile 'com.ncapdevi:frag-nav:1.0.3'
   compile 'com.jakewharton:butterknife:7.0.1'
   compile 'com.smartydroid:support-ui:0.1.4'
+  compile 'com.google.guava:guava:18.0'
 
   compile project (':library')
 }
