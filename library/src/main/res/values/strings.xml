@@ -1,3 +1,7 @@
 <resources>
-  <string name="app_name">library</string>
+  <string name="menu_title_contacts_search">搜索联系人</string>
+  <string name="menu_title_contacts_add">添加联系人</string>
+  <string name="support_im_conversations_title">消息</string>
+  <string name="support_im_contacts_title">航城科技</string>
+  <string name="support_im_add_contact">添加好友</string>
 </resources>

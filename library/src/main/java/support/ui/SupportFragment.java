@@ -1,4 +1,4 @@
-package support.im.demo;
+package support.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

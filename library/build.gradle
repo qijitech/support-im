@@ -34,4 +34,6 @@ dependencies {
 
   //avoscloud-feedback 为 LeanCloud 用户反馈包
   compile ('cn.leancloud.android:avoscloud-feedback:v3.+@aar')
+
+  compile 'com.smartydroid:support-ui:0.1.4'
 }

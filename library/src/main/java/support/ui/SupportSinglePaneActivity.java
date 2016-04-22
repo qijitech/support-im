@@ -1,18 +1,19 @@
-package support.im.demo;
+package support.ui;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import support.im.R;
 
 /**
  * A {@link AppCompatActivity} that simply contains a single fragment. The intent used to invoke
  * this
  * activity is forwarded to the fragment as arguments during fragment instantiation. Derived
- * activities should only need to implement {@link SimpleSinglePaneActivity#onCreatePane()}.
+ * activities should only need to implement {@link SupportSinglePaneActivity#onCreatePane()}.
  */
-public abstract class SimpleSinglePaneActivity extends BaseActivity {
+public abstract class SupportSinglePaneActivity extends SupportActivity {
   private Fragment mFragment;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,7 @@ public abstract class SimpleSinglePaneActivity extends BaseActivity {
   }
 
   protected int getContentViewResId() {
-    return R.layout.activity_singlepane_empty;
+    return R.layout.support_ui_singlepane_empty;
   }
 
   /**
@@ -52,7 +53,7 @@ public abstract class SimpleSinglePaneActivity extends BaseActivity {
   }
 
   /**
-   * Converts an intent into a {@link android.os.Bundle} suitable for use as fragment arguments.
+   * Converts an intent into a {@link Bundle} suitable for use as fragment arguments.
    */
   public static Bundle intentToFragmentArguments(Intent intent) {
     Bundle arguments = new Bundle();

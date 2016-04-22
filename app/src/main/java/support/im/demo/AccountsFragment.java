@@ -14,6 +14,7 @@ public class AccountsFragment extends SupportCellsFragment {
 
   @Override public void onResume() {
     super.onResume();
+    getActivity().setTitle(R.string.label_account);
     clearAll();
     addAll(buildAccountData());
   }

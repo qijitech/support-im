@@ -9,8 +9,8 @@ import android.view.View;
 import butterknife.Bind;
 import butterknife.OnClick;
 import support.im.demo.R;
-import support.im.demo.SupportFragment;
 import support.im.demo.features.register.RegisterActivity;
+import support.ui.SupportFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

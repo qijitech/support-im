@@ -1,22 +1,20 @@
 package support.im.conversations;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import support.im.R;
+import support.ui.SupportFragment;
 
-public class ConversationsFragment extends Fragment {
+public class ConversationsFragment extends SupportFragment {
 
   public static ConversationsFragment create() {
     return new ConversationsFragment();
   }
 
-  @Nullable @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.conversations, container, false);
+  @Override protected int getFragmentLayout() {
+    return R.layout.conversations;
+  }
+
+  @Override public void onResume() {
+    super.onResume();
+    getActivity().setTitle(R.string.support_im_conversations_title);
   }
 }
