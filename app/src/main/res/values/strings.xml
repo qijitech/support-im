@@ -8,6 +8,8 @@
   <string name="bottom_bar_contacts">通讯录</string>
   <string name="bottom_bar_accounts">我的</string>
 
+  <string name="account_feedback">意见反馈</string>
+
   <string name="login_app_name">航城聊天</string>
   <string name="login_wechat">微信登录</string>
   <string name="login_mobile">手机号登录</string>
