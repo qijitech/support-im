@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 
 public class AccountsFragment extends SupportFragment {
 
-  public static Fragment newInstance() {
+  public static Fragment create() {
     return new AccountsFragment();
   }
 

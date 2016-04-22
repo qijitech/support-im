@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity {
       mFragments.clear();
       mFragments.add(ConversationsFragment.create());
       mFragments.add(ContactsFragment.create());
-      mFragments.add(AccountsFragment.newInstance());
+      mFragments.add(AccountsFragment.create());
     }
 
     @Override public Fragment onCreateFragment(int position) {

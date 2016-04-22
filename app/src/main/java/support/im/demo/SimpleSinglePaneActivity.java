@@ -12,7 +12,7 @@ import android.support.v7.app.AppCompatActivity;
  * activity is forwarded to the fragment as arguments during fragment instantiation. Derived
  * activities should only need to implement {@link SimpleSinglePaneActivity#onCreatePane()}.
  */
-public abstract class SimpleSinglePaneActivity extends AppCompatActivity {
+public abstract class SimpleSinglePaneActivity extends BaseActivity {
   private Fragment mFragment;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
