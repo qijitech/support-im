@@ -36,4 +36,5 @@ dependencies {
   compile ('cn.leancloud.android:avoscloud-feedback:v3.+@aar')
 
   compile 'com.smartydroid:support-ui:0.1.4'
+  compile 'com.google.guava:guava:18.0'
 }

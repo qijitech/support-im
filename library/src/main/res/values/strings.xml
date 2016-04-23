@@ -4,4 +4,6 @@
   <string name="support_im_conversations_title">消息</string>
   <string name="support_im_contacts_title">航城科技</string>
   <string name="support_im_add_contact">添加好友</string>
+  <string name="support_im_mobile_contact">手机联系人</string>
+  <string name="no_mobile_contacts">没有手机联系人</string>
 </resources>

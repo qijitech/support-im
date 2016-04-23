@@ -54,6 +54,14 @@
           android:name="android.support.PARENT_ACTIVITY"
           android:value=".features.main.MainActivity"/>
     </activity>
+    <activity
+        android:name="support.im.mobilecontact.MobileContactsActivity"
+        android:launchMode="singleTask"
+        android:label="@string/support_im_mobile_contact">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value="support.im.addcontact.AddContactActivity"/>
+    </activity>
     <!-- Support im END -->
 
     <!-- 实时通信模块、推送（若使用该功能，需添加以下声明）START -->
