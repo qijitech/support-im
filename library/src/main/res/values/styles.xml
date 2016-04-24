@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+  <!-- Avatar -->
+  <style name="SupportImAvatar">
+    <item name="android:layout_width">45dp</item>
+    <item name="android:layout_height">45dp</item>
+    <item name="android:scaleType">centerCrop</item>
+    <item name="android:src">@drawable/support_im_placeholder_avatar</item>
+  </style>
+
+  <style name="SupportImAvatar.Large">
+    <item name="android:layout_width">50dp</item>
+    <item name="android:layout_height">50dp</item>
+  </style>
+
 </resources>

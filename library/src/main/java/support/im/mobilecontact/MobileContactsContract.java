@@ -9,7 +9,7 @@ public interface MobileContactsContract {
 
   interface View extends BaseView<Presenter> {
     void setLoadingIndicator(boolean active);
-    void showMobileContacts(List<MobileContact> tasks);
+    void showMobileContacts(List<MobileContact> mobileContacts);
     void showNoMobileContacts();
     boolean isActive();
   }

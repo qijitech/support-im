@@ -16,7 +16,7 @@ public class MobileContactsViewHolder extends EasyViewHolder<MobileContact> {
   TextView mPhoneTextView;
 
   public MobileContactsViewHolder(Context context, ViewGroup parent) {
-    super(context, parent, R.layout.mobile_contact_item);
+    super(context, parent, R.layout.mobile_contacts_item);
     mDisplayNameTextView = ButterKnife.findById(itemView, R.id.text_mobile_contact_display_name);
     mPhoneTextView = ButterKnife.findById(itemView, R.id.text_mobile_contact_phone);
   }
