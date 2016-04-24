@@ -44,7 +44,7 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
   }
 
   @Override public boolean isActive() {
-    return false;
+    return isAdded();
   }
 
   @Override public void setPresenter(ConversationsContract.Presenter presenter) {
