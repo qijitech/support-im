@@ -4,6 +4,7 @@ import android.os.Build;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
+import support.ui.utilities.BuildCompat;
 
 public final class MobileContactsContract {
 
@@ -12,13 +13,17 @@ public final class MobileContactsContract {
   public static final int DISPLAY_NAME_INDEX = 2;
   public static final int HAS_PHONE_NUMBER_INDEX = 3;
 
+  public static final String SORT_ORDER =
+      (BuildCompat.hasHoneycomb() ? Contacts.SORT_KEY_PRIMARY : Contacts. SORT_KEY_ALTERNATIVE) + " ASC";
+
   public static final String[] PROJECTION = {
       Contacts._ID,
       Contacts.LOOKUP_KEY,
-      Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ?
-          Contacts.DISPLAY_NAME_PRIMARY : Contacts.DISPLAY_NAME,
+      BuildCompat.hasHoneycomb() ? Contacts.DISPLAY_NAME_PRIMARY : Contacts.DISPLAY_NAME,
       Contacts.HAS_PHONE_NUMBER,
   };
+
+
 
   public static class PhoneNumberContract {
     public static final int PHONE_NUMBER_INDEX = 0;

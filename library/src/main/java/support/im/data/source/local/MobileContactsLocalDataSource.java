@@ -38,8 +38,14 @@ public class MobileContactsLocalDataSource implements MobileContactsDataSource {
   @Override public void getMobileContacts(@NonNull final LoadMobileContactsCallback callback) {
     AsyncTaskCompat.executeParallel(new AsyncTask<Void, Void, List<MobileContact>>() {
       @Override protected List<MobileContact> doInBackground(Void... params) {
-        List<MobileContact> mobileContacts = loadMobileContacts();
-        return mobileContacts;
+        List<MobileContact> mobileContacts = loadMobileContacts(false);
+        List<MobileContact> mobileContactToShow = Lists.newArrayList();
+        for (MobileContact mobileContact : mobileContacts) {
+          if (mobileContact.hasPhoneNumber()) {
+            mobileContactToShow.add(mobileContact);
+          }
+        }
+        return mobileContactToShow;
       }
 
       @Override protected void onPostExecute(List<MobileContact> mobileContacts) {
@@ -52,11 +58,11 @@ public class MobileContactsLocalDataSource implements MobileContactsDataSource {
   /**
    *
    */
-  private List<MobileContact> loadMobileContacts() {
+  private List<MobileContact> loadMobileContacts(boolean shouldLoadAllColumns) {
     ContentResolver cr = mContext.getContentResolver();
     Cursor cursor = null;
     try {
-      cursor = cr.query(Contacts.CONTENT_URI, MobileContactsContract.PROJECTION, null, null, null);
+      cursor = cr.query(Contacts.CONTENT_URI, MobileContactsContract.PROJECTION, null, null, MobileContactsContract.SORT_ORDER);
       List<MobileContact> mobileContacts = Lists.newArrayList();
       while (cursor != null && cursor.moveToNext()) {
         MobileContact mobileContact = new MobileContact();
@@ -70,11 +76,13 @@ public class MobileContactsLocalDataSource implements MobileContactsDataSource {
         mobileContact.setHasPhoneNumber(hasPhoneNumber);
         if (hasPhoneNumber) {
           mobileContact.setPhoneNumbers(loadPhoneNumber(cr, id));
-          mobileContact.setEmails(loadMobileEmail(cr, id));
-          mobileContact.setNote(loadMobileNote(cr, id));
-          mobileContact.setAddress(loadPostalAddress(cr, id));
-          mobileContact.setInstantMessengers(loadInstantMessengers(cr, id));
-          mobileContact.setOrganizations(loadOrganizations(cr, id));
+          if (shouldLoadAllColumns) {
+            mobileContact.setEmails(loadMobileEmail(cr, id));
+            mobileContact.setNote(loadMobileNote(cr, id));
+            mobileContact.setAddress(loadPostalAddress(cr, id));
+            mobileContact.setInstantMessengers(loadInstantMessengers(cr, id));
+            mobileContact.setOrganizations(loadOrganizations(cr, id));
+          }
         }
         mobileContacts.add(mobileContact);
       }
@@ -98,7 +106,11 @@ public class MobileContactsLocalDataSource implements MobileContactsDataSource {
       List<MobileContact.PhoneNumber> phoneNumbers = Lists.newArrayList();
       while (cursor != null && cursor.moveToNext()) {
         String phone = cursor.getString(MobileContactsContract.PhoneNumberContract.PHONE_NUMBER_INDEX);
-        phoneNumbers.add(new MobileContact.PhoneNumber(phone));
+        phone = phone.replaceAll("\\s*", "");
+        MobileContact.PhoneNumber phoneNumber = new MobileContact.PhoneNumber(phone);
+        if (!phoneNumbers.contains(phoneNumber)) {
+          phoneNumbers.add(phoneNumber);
+        }
       }
       return phoneNumbers;
     } finally {

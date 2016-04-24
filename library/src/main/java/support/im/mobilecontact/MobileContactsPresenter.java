@@ -1,6 +1,5 @@
 package support.im.mobilecontact;
 
-import java.util.ArrayList;
 import java.util.List;
 import support.im.data.MobileContact;
 import support.im.data.source.MobileContactsDataSource;
@@ -45,9 +44,7 @@ public class MobileContactsPresenter implements MobileContactsContract.Presenter
     }
 
     mMobileContactsRepository.getMobileContacts(new MobileContactsDataSource.LoadMobileContactsCallback() {
-      @Override public void onMobileContactsLoaded(List<MobileContact> tasks) {
-        List<MobileContact> mobileContactToShow = new ArrayList<>();
-        mobileContactToShow.addAll(tasks);
+      @Override public void onMobileContactsLoaded(List<MobileContact> mobileContacts) {
         // The view may not be able to handle UI updates anymore
         if (!mMobileContactsView.isActive()) {
           return;
@@ -55,7 +52,7 @@ public class MobileContactsPresenter implements MobileContactsContract.Presenter
         if (showLoadingUI) {
           mMobileContactsView.setLoadingIndicator(false);
         }
-        processMobileContacts(mobileContactToShow);
+        processMobileContacts(mobileContacts);
       }
     });
   }

@@ -104,6 +104,19 @@ public class MobileContact {
     public String getNumber() {
       return mNumber;
     }
+
+    @Override public boolean equals(Object o) {
+      if (this == o) return true;
+      if (o == null || getClass() != o.getClass()) return false;
+
+      PhoneNumber that = (PhoneNumber) o;
+
+      return mNumber.equals(that.mNumber);
+    }
+
+    @Override public int hashCode() {
+      return mNumber.hashCode();
+    }
   }
 
   public static class Email {
