@@ -58,6 +58,7 @@ public class MobileContactsRepository implements MobileContactsDataSource {
     // Query the local storage if available. If not, query the network.
     mMobileContactsLocalDataSource.getMobileContacts(new LoadMobileContactsCallback() {
       @Override public void onMobileContactsLoaded(List<MobileContact> tasks) {
+        System.out.println(tasks);
         refreshCache(tasks);
         callback.onMobileContactsLoaded(tasks);
       }

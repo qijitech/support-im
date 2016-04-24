@@ -1,16 +1,22 @@
 package support.im.mobilecontact;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import java.util.List;
+import pl.tajchert.nammu.Nammu;
+import pl.tajchert.nammu.PermissionCallback;
 import support.im.data.MobileContact;
 import support.ui.SupportRecyclerViewFragment;
 import support.ui.adapters.EasyRecyclerAdapter;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class MobileContactsFragment extends SupportRecyclerViewFragment implements MobileContactsContract.View {
+public class MobileContactsFragment extends SupportRecyclerViewFragment
+    implements MobileContactsContract.View {
+
+  private static final int RC_CONTACTS_PERM = 1000;
 
   private MobileContactsContract.Presenter mPresenter;
 
@@ -33,7 +39,7 @@ public class MobileContactsFragment extends SupportRecyclerViewFragment implemen
 
   @Override public void onResume() {
     super.onResume();
-    mPresenter.start();
+    loadContacts();
   }
 
   @Override public void setPresenter(MobileContactsContract.Presenter presenter) {
@@ -54,5 +60,26 @@ public class MobileContactsFragment extends SupportRecyclerViewFragment implemen
 
   @Override public boolean isActive() {
     return isAdded();
+  }
+
+  public void loadContacts() {
+    if (Nammu.checkPermission(Manifest.permission.READ_CONTACTS)) {
+      mPresenter.start();
+    } else {
+      Nammu.askForPermission(getActivity(), Manifest.permission.READ_CONTACTS, new PermissionCallback() {
+        @Override public void permissionGranted() {
+          mPresenter.start();
+        }
+
+        @Override public void permissionRefused() {
+          getActivity().finish();
+        }
+      });
+    }
+  }
+
+  @Override public void onRequestPermissionsResult(int requestCode, String[] permissions,
+      int[] grantResults) {
+    Nammu.onRequestPermissionsResult(requestCode, permissions, grantResults);
   }
 }

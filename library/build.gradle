@@ -11,6 +11,10 @@ android {
     versionName "1.0"
   }
   buildTypes {
+    debug {
+      minifyEnabled false
+      debuggable true
+    }
     release {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -37,4 +41,5 @@ dependencies {
 
   compile 'com.smartydroid:support-ui:0.1.4'
   compile 'com.google.guava:guava:18.0'
+  compile 'com.github.tajchert:nammu:1.1.1'
 }
