@@ -3,24 +3,18 @@ package support.im.mobilecontact;
 import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 import java.util.List;
 import pl.tajchert.nammu.Nammu;
 import pl.tajchert.nammu.PermissionCallback;
 import support.im.data.MobileContact;
 import support.ui.SupportRecyclerViewFragment;
-import support.ui.adapters.EasyRecyclerAdapter;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class MobileContactsFragment extends SupportRecyclerViewFragment
     implements MobileContactsContract.View {
 
-  private static final int RC_CONTACTS_PERM = 1000;
-
   private MobileContactsContract.Presenter mPresenter;
-
-  private EasyRecyclerAdapter mAdapter;
 
   public static MobileContactsFragment create() {
     return new MobileContactsFragment();
@@ -28,13 +22,7 @@ public class MobileContactsFragment extends SupportRecyclerViewFragment
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mAdapter = new EasyRecyclerAdapter(getContext());
     mAdapter.bind(MobileContact.class, MobileContactsViewHolder.class);
-  }
-
-  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-    mRecyclerView.setAdapter(mAdapter);
   }
 
   @Override public void onResume() {
@@ -47,15 +35,25 @@ public class MobileContactsFragment extends SupportRecyclerViewFragment
   }
 
   @Override public void setLoadingIndicator(boolean active) {
-
+    if (getView() == null) {
+      return;
+    }
+    contentPresenter.displayLoadView();
   }
 
-  @Override public void showMobileContacts(List<MobileContact> tasks) {
-
+  @Override public void showMobileContacts(List<MobileContact> mobileContacts) {
+    if (getView() == null) {
+      return;
+    }
+    mAdapter.addAll(mobileContacts);
+    contentPresenter.displayContentView();
   }
 
   @Override public void showNoMobileContacts() {
-
+    if (getView() == null) {
+      return;
+    }
+    contentPresenter.displayEmptyView();
   }
 
   @Override public boolean isActive() {
