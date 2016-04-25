@@ -3,9 +3,9 @@ package support.im.demo.features.login;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import support.im.demo.BaseSinglePaneActivity;
 import support.im.demo.Injection;
 import support.im.demo.R;
-import support.im.demo.BaseSinglePaneActivity;
 
 public class LoginActivity extends BaseSinglePaneActivity {
 

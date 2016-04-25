@@ -6,9 +6,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.avos.avoscloud.im.v2.AVIMClient;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import support.im.demo.BaseActivity;
 import support.im.demo.R;
 import support.im.demo.features.main.MainActivity;
+import support.im.leanclound.ChatManager;
 
 public class RegisterActivity extends BaseActivity {
 
@@ -16,6 +20,12 @@ public class RegisterActivity extends BaseActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.login_mobile);
     ButterKnife.bind(this);
+
+    ChatManager.getInstance().openClient(this, "Tom", new AVIMClientCallback() {
+      @Override
+      public void done(AVIMClient avimClient, AVIMException e) {
+      }
+    });
   }
 
   @Override protected void onDestroy() {

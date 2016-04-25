@@ -1,8 +1,10 @@
 package support.im.data;
 
 import android.database.Cursor;
+import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import support.im.data.source.local.ConversationsPersistenceContract;
+import support.im.utilities.AVIMConversationCacheUtils;
 
 public class Conversation {
 
@@ -16,17 +18,17 @@ public class Conversation {
       return mLastMessage.getTimestamp();
     }
 
-    //AVIMConversation conversation = getConversation();
-    //if (null != conversation && null != conversation.getUpdatedAt()) {
-    //  return conversation.getUpdatedAt().getTime();
-    //}
+    AVIMConversation conversation = getConversation();
+    if (null != conversation && null != conversation.getUpdatedAt()) {
+      return conversation.getUpdatedAt().getTime();
+    }
 
     return 0;
   }
 
-  //public AVIMConversation getConversation() {
-    //return AVIMConversationCacheUtils.getCacheConversation(mId);
-  //}
+  public AVIMConversation getConversation() {
+    return AVIMConversationCacheUtils.getCacheConversation(mId);
+  }
 
 
   public static Conversation createConversationFromCursor(Cursor cursor) {

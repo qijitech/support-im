@@ -1,4 +1,4 @@
-package support.im.utilities;
+package support.im.leanclound;
 
 import android.content.Context;
 import com.avos.avoscloud.im.v2.AVIMClient;
@@ -12,6 +12,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import support.im.data.Conversation;
+import support.im.data.ConversationType;
+import support.im.data.source.local.ConversationsDatabase;
+import support.im.utilities.SupportLog;
 
 public class ChatManager {
 
@@ -20,7 +24,7 @@ public class ChatManager {
   private volatile AVIMClient imClient;
   private volatile String selfId;
 
-  private RoomsTable roomsTable;
+  private ConversationsDatabase mConversationsDatabase;
 
   private ChatManager() {}
 
@@ -38,7 +42,7 @@ public class ChatManager {
    * @param debugEnabled
    */
   public static void setDebugEnabled(boolean debugEnabled) {
-    LogUtils.debugEnabled = debugEnabled;
+    SupportLog.debugEnabled = debugEnabled;
   }
 
   /**
@@ -47,12 +51,11 @@ public class ChatManager {
    * @param context
    */
   public void init(Context context) {
-
     // 消息处理 handler
-    AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new MessageHandler(context));
+    AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new SupportMessageHandler(context));
 
     // 与网络相关的 handler
-    AVIMClient.setClientEventHandler(LeanchatClientEventHandler.getInstance());
+    AVIMClient.setClientEventHandler(SupportClientEventHandler.getInstance());
 
     // 和 Conversation 相关的事件的 handler
     AVIMMessageManager.setConversationEventHandler(ConversationEventHandler.getInstance());
@@ -65,8 +68,8 @@ public class ChatManager {
     return selfId;
   }
 
-  public RoomsTable getRoomsTable() {
-    return roomsTable;
+  public ConversationsDatabase getConversationsDatabase() {
+    return mConversationsDatabase;
   }
 
   public boolean isLogin() {
@@ -80,16 +83,16 @@ public class ChatManager {
    */
   public void openClient(Context context, String userId, final AVIMClientCallback callback) {
     this.selfId = userId;
-    roomsTable = RoomsTable.getInstanceByUserId(context, userId);
+    mConversationsDatabase = ConversationsDatabase.databaseWithUserId(context, userId);
 
     imClient = AVIMClient.getInstance(this.selfId);
     imClient.open(new AVIMClientCallback() {
       @Override
       public void done(AVIMClient avimClient, AVIMException e) {
         if (e != null) {
-          LeanchatClientEventHandler.getInstance().setConnectAndNotify(false);
+          SupportClientEventHandler.getInstance().setConnectAndNotify(false);
         } else {
-          LeanchatClientEventHandler.getInstance().setConnectAndNotify(true);
+          SupportClientEventHandler.getInstance().setConnectAndNotify(true);
         }
         if (callback != null) {
           callback.done(avimClient, e);
@@ -109,7 +112,7 @@ public class ChatManager {
       @Override
       public void done(AVIMClient avimClient, AVIMException e) {
         if (e != null) {
-          LogUtils.logException(e);
+          SupportLog.logException(e);
         }
         if (callback != null) {
           callback.done(avimClient, e);
@@ -143,8 +146,8 @@ public class ChatManager {
   }
 
   //ChatUser
-  public List<Room> findRecentRooms() {
-    return ChatManager.getInstance().getRoomsTable().selectRooms();
+  public List<Conversation> findRecentConversations() {
+    return ChatManager.getInstance().getConversationsDatabase().loadConversations();
   }
 
   private String getConversationName(List<String> userIds) {

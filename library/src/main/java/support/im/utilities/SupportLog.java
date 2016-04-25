@@ -2,7 +2,7 @@ package support.im.utilities;
 
 import support.ui.utilities.FileLog;
 
-public final class Log {
+public final class SupportLog {
 
   public static final String LOGTAG = "Support-Im";
   public static boolean debugEnabled;

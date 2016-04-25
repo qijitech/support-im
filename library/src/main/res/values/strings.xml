@@ -6,4 +6,5 @@
   <string name="support_im_add_contact">添加好友</string>
   <string name="support_im_mobile_contact">手机联系人</string>
   <string name="no_mobile_contacts">没有手机联系人</string>
+  <string name="support_im_un_support_message_type">暂不支持此消息类型</string>
 </resources>
