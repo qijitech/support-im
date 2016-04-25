@@ -1,9 +1,12 @@
 package support.im.mobilecontact;
 
+import java.util.Collections;
 import java.util.List;
 import support.im.data.MobileContact;
 import support.im.data.source.MobileContactsDataSource;
 import support.im.data.source.MobileContactsRepository;
+import support.im.mobilecontact.pinyin.CharacterParser;
+import support.im.mobilecontact.pinyin.PinyinComparator;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -12,12 +15,19 @@ public class MobileContactsPresenter implements MobileContactsContract.Presenter
   private final MobileContactsRepository mMobileContactsRepository;
   private final MobileContactsContract.View mMobileContactsView;
 
+  private CharacterParser characterParser;
+  private PinyinComparator pinyinComparator;
+
   private boolean mFirstLoad = true;
 
   public MobileContactsPresenter(MobileContactsRepository mobileContactsRepository,
       MobileContactsContract.View mobileContactsView) {
     mMobileContactsRepository = checkNotNull(mobileContactsRepository);
     mMobileContactsView = checkNotNull(mobileContactsView);
+
+    characterParser = CharacterParser.getInstance();
+    pinyinComparator = new PinyinComparator();
+
     mobileContactsView.setPresenter(this);
   }
 
@@ -45,6 +55,17 @@ public class MobileContactsPresenter implements MobileContactsContract.Presenter
 
     mMobileContactsRepository.getMobileContacts(new MobileContactsDataSource.LoadMobileContactsCallback() {
       @Override public void onMobileContactsLoaded(List<MobileContact> mobileContacts) {
+        for (MobileContact mobileContact : mobileContacts) {
+          String pinyin = characterParser.getSelling(mobileContact.getName());
+          String sortString = pinyin.substring(0, 1).toUpperCase();
+          if (sortString.matches("[A-Z]")) {
+            mobileContact.setSortLetters(sortString.toUpperCase());
+          } else {
+            mobileContact.setSortLetters("#");
+          }
+        }
+        Collections.sort(mobileContacts, pinyinComparator);
+
         // The view may not be able to handle UI updates anymore
         if (!mMobileContactsView.isActive()) {
           return;

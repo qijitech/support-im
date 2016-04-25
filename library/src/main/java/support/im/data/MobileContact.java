@@ -6,6 +6,7 @@ public class MobileContact {
 
   private String mId;
   private String mName;
+  private String mSortLetters;
   private String mLookupKey;
   private boolean mHasPhoneNumber;
   private List<PhoneNumber> mPhoneNumbers;
@@ -21,6 +22,10 @@ public class MobileContact {
 
   public void setName(String name) {
     mName = name;
+  }
+
+  public void setSortLetters(String sortLetters) {
+    mSortLetters = sortLetters;
   }
 
   public void setLookupKey(String lookupKey) {
@@ -61,6 +66,10 @@ public class MobileContact {
 
   public String getName() {
     return mName;
+  }
+
+  public String getSortLetters() {
+    return mSortLetters;
   }
 
   public String getLookupKey() {

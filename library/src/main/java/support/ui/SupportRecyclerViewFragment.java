@@ -41,15 +41,27 @@ import support.ui.content.RequiresContent;
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    mRecyclerView = ButterKnife.findById(view, R.id.support_ui_content_view);
+    mRecyclerView = ButterKnife.findById(view, R.id.support_ui_recycler_view);
     mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     mRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).build());
-    mRecyclerView.setAdapter(mAdapter);
-    mContainer = ButterKnife.findById(view, R.id.container);
+    mContainer = ButterKnife.findById(view, R.id.support_ui_content_container);
+    setAdapter();
+  }
+
+  @Override public void onResume() {
+    super.onResume();
     contentPresenter.attachContainer(mContainer);
-    contentPresenter.attachContentView(mRecyclerView);
+    contentPresenter.attachContentView(getAttachContentView());
     contentPresenter.setOnEmptyViewClickListener(this);
     contentPresenter.setOnErrorViewClickListener(this);
+  }
+
+  protected View getAttachContentView() {
+    return mRecyclerView;
+  }
+
+  protected void setAdapter() {
+    mRecyclerView.setAdapter(mAdapter);
   }
 
   @Override public void onDestroy() {
