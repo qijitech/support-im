@@ -1,10 +1,13 @@
 package support.im.data;
 
+import android.database.Cursor;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import support.im.data.source.local.ConversationsPersistenceContract;
 
 public class Conversation {
 
   public String mId;
+  public String mConversationId;
   public AVIMMessage mLastMessage;
   public int mUnreadCount;
 
@@ -24,5 +27,14 @@ public class Conversation {
   //public AVIMConversation getConversation() {
     //return AVIMConversationCacheUtils.getCacheConversation(mId);
   //}
+
+
+  public static Conversation createConversationFromCursor(Cursor cursor) {
+    Conversation conversation = new Conversation();
+    conversation.mId = cursor.getString(cursor.getColumnIndex(ConversationsPersistenceContract.Conversations._ID));
+    conversation.mConversationId = cursor.getString(cursor.getColumnIndex(ConversationsPersistenceContract.Conversations.COLUMN_NAME_CONVERSATION_ID));
+    conversation.mUnreadCount = cursor.getInt(cursor.getColumnIndex(ConversationsPersistenceContract.Conversations.COLUMN_NAME_UNREAD_COUNT));
+    return conversation;
+  }
 
 }
