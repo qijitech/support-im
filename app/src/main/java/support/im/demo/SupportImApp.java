@@ -2,6 +2,7 @@ package support.im.demo;
 
 import com.avos.avoscloud.AVOSCloud;
 import pl.tajchert.nammu.Nammu;
+import support.im.data.SupportUser;
 import support.im.leanclound.ChatManager;
 import support.ui.app.SupportApp;
 
@@ -11,6 +12,11 @@ public class SupportImApp extends SupportApp {
     super.onCreate();
     AVOSCloud.initialize(appContext(), BuildConfig.LeanCloundAppId, BuildConfig.LeanCloundAppKey);
     Nammu.init(appContext());
+
+    SupportUser.alwaysUseSubUserClass(SupportUser.class);
+
+    // 节省流量
+    AVOSCloud.setLastModifyEnabled(true);
 
     ChatManager.getInstance().init(this);
     ChatManager.setDebugEnabled(BuildConfig.DEBUG);

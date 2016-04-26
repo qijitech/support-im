@@ -6,53 +6,42 @@
     android:orientation="vertical"
     >
 
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center_horizontal"
-      android:layout_marginTop="@dimen/xlarge_padding"
-      android:text="@string/login_enter_mobile"
-      android:textSize="@dimen/text_size_medium"
-      />
-
-  <FrameLayout
-      android:id="@+id/container_login_mobile_code"
+  <android.support.v7.widget.AppCompatEditText
+      android:id="@+id/edit_register_username"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginLeft="@dimen/activity_horizontal_margin"
       android:layout_marginRight="@dimen/activity_horizontal_margin"
       android:layout_marginTop="@dimen/activity_vertical_margin"
-      android:foreground="?attr/selectableItemBackground"
-      >
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="left"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:drawableEnd="@drawable/support_im_arrow_right"
-        android:drawableRight="@drawable/support_im_arrow_right"
-        android:text="中国(+86)"
-        android:gravity="center_vertical"
-        android:textSize="@dimen/text_size_medium"
-        />
-  </FrameLayout>
-  <View
-      android:layout_width="match_parent"
-      android:layout_height="1dp"
-      android:layout_marginBottom="@dimen/inline_padding"
-      android:layout_marginLeft="@dimen/activity_horizontal_margin"
-      android:layout_marginRight="@dimen/activity_horizontal_margin"
-      android:layout_marginTop="@dimen/inline_padding"
-      android:background="#EFEFEF"
+      android:hint="@string/register_enter_username"
+      android:inputType="phone"
+      android:maxLength="12"
+      android:paddingLeft="@dimen/activity_horizontal_margin"
+      android:paddingRight="@dimen/activity_horizontal_margin"
       />
+
   <android.support.v7.widget.AppCompatEditText
+      android:id="@+id/edit_register_password"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginLeft="@dimen/activity_horizontal_margin"
       android:layout_marginRight="@dimen/activity_horizontal_margin"
-      android:hint="@string/login_mobile_enter_mobile"
-      android:maxLength="12"
+      android:hint="@string/register_enter_password"
       android:inputType="phone"
+      android:maxLength="12"
+      android:paddingLeft="@dimen/activity_horizontal_margin"
+      android:paddingRight="@dimen/activity_horizontal_margin"
+      />
+
+  <android.support.v7.widget.AppCompatEditText
+      android:id="@+id/edit_register_nickname"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="@dimen/activity_horizontal_margin"
+      android:layout_marginRight="@dimen/activity_horizontal_margin"
+      android:hint="@string/register_enter_nickname"
+      android:inputType="phone"
+      android:maxLength="12"
       android:paddingLeft="@dimen/activity_horizontal_margin"
       android:paddingRight="@dimen/activity_horizontal_margin"
       />

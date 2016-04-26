@@ -17,7 +17,8 @@
   <string name="login_read_agree">已阅读并同意</string>
   <string name="login_agreement">软件许可及服务协议</string>
 
-  <string name="login_enter_mobile">请输入你您的手机号</string>
-  <string name="login_mobile_enter_mobile">请输入手机号</string>
+  <string name="register_enter_username">请输入用户名</string>
+  <string name="register_enter_password">请输入密码</string>
+  <string name="register_enter_nickname">请输入昵称</string>
   <string name="login_mobile_next">下一步</string>
 </resources>

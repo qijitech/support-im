@@ -45,4 +45,6 @@ dependencies {
   compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
   compile 'de.greenrobot:eventbus:2.4.0'
   compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
+  compile 'com.kaopiz:kprogresshud:1.0.5'
+
 }
