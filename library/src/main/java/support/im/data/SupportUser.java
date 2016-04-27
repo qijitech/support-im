@@ -2,9 +2,13 @@ package support.im.data;
 
 import android.annotation.SuppressLint;
 import com.avos.avoscloud.AVFile;
+import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SignUpCallback;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import support.im.utilities.SupportLog;
 
 @SuppressLint("ParcelCreator") public class SupportUser extends AVUser {
 
@@ -43,4 +47,16 @@ import java.util.UUID;
     return getCurrentUser(SupportUser.class);
   }
 
+  public void findFriendsWithCachePolicy(AVQuery.CachePolicy cachePolicy, FindCallback<SupportUser>
+      findCallback) {
+    try {
+      AVQuery<SupportUser> q = followeeQuery(SupportUser.class);
+      q.setCachePolicy(cachePolicy);
+      q.setMaxCacheAge(TimeUnit.MINUTES.toMillis(1));
+      q.findInBackground(findCallback);
+    } catch (Exception e) {
+      SupportLog.logException(e);
+    }
+
+  }
 }
