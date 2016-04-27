@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="?attr/actionBarSize"
+      android:background="?attr/selectableItemBackground"
+      android:clickable="true"
+      android:orientation="vertical"
+      >
+
+    <FrameLayout
+        android:id="@+id/container_add_contacts_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/support_im_huge_padding"
+        android:background="@android:color/white"
+        android:foreground="?attr/selectableItemBackground"
+        >
+
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="48dp"
+          android:layout_marginBottom="@dimen/support_im_default_padding"
+          android:layout_marginLeft="@dimen/support_im_large_padding"
+          android:layout_marginRight="@dimen/support_im_large_padding"
+          android:layout_marginTop="@dimen/support_im_default_padding"
+          >
+        <ImageView
+            android:id="@android:id/icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_search_primary"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/support_im_large_padding"
+            android:layout_marginRight="@dimen/support_im_large_padding"
+            android:layout_toEndOf="@android:id/icon"
+            android:layout_toRightOf="@android:id/icon"
+            android:lines="1"
+            android:text="@string/support_im_add_contacts_search_hint"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="@dimen/support_im_text_size_medium"
+            />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="?attr/colorPrimary"
+            />
+      </RelativeLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/container_add_contacts_mobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/support_im_huge_padding"
+        android:background="@android:color/white"
+        android:foreground="?attr/selectableItemBackground"
+        >
+
+      <RelativeLayout
+          android:layout_width="match_parent"
+          android:layout_height="60dp"
+          android:paddingLeft="@dimen/support_im_large_padding"
+          android:paddingRight="@dimen/support_im_large_padding"
+          >
+        <ImageView
+            android:id="@android:id/icon1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@drawable/support_im_add_contacts"
+            />
+        <TextView
+            android:id="@android:id/text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@android:id/icon1"
+            android:layout_marginLeft="@dimen/support_im_large_padding"
+            android:layout_marginRight="@dimen/support_im_large_padding"
+            android:layout_toEndOf="@android:id/icon1"
+            android:layout_toRightOf="@android:id/icon1"
+            android:text="@string/support_im_add_contacts_mobile_title"
+            android:textColor="@android:color/primary_text_light"
+            android:textSize="@dimen/support_im_text_size_large"
+            />
+        <TextView
+            android:id="@android:id/text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@android:id/icon1"
+            android:layout_alignLeft="@android:id/text1"
+            android:layout_alignStart="@android:id/text1"
+            android:text="@string/support_im_add_contacts_mobile_subtitle"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="@dimen/support_im_text_size_medium"
+            />
+      </RelativeLayout>
+    </FrameLayout>
+  </LinearLayout>
+
+  <android.support.v7.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="?attr/colorPrimary"
+      android:minHeight="?attr/actionBarSize"
+      android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+      app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+      />
+
+  <com.miguelcatalan.materialsearchview.MaterialSearchView
+      android:id="@+id/search_view_contacts"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      />
+
+
+</FrameLayout>

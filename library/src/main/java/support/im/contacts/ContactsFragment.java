@@ -38,12 +38,7 @@ public class ContactsFragment extends SupportFragment {
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     final int itemId = item.getItemId();
-    if (itemId == R.id.menu_contact_add) {
-      startActivity(new Intent(getContext(), MobileContactsActivity.class));
-      //startActivity(new Intent(getContext(), AddContactActivity.class));
-      return true;
-    }
-    if (itemId == R.id.menu_contact_search) {
+    if (itemId == R.id.menu_add_contacts) {
       startActivity(new Intent(getContext(), AddContactActivity.class));
       return true;
     }

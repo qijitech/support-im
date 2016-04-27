@@ -12,14 +12,15 @@ import support.im.utilities.SupportLog;
 
 @SuppressLint("ParcelCreator") public class SupportUser extends AVUser {
 
+  public static final String USERNAME = "username";
   public static final String USER_ID = "user_id";
   public static final String NICKNAME = "nickname";
   public static final String AVATAR = "avatar";
 
-  public static void register(String name, String nickname, String password, SignUpCallback callback) {
+  public static void register(String username, String nickname, String password, SignUpCallback callback) {
     SupportUser user = new SupportUser();
     user.put(USER_ID, UUID.randomUUID());
-    user.setUsername(name);
+    user.setUsername(username);
     user.setNickname(nickname);
     user.setPassword(password);
     user.signUpInBackground(callback);

@@ -5,6 +5,9 @@ public class Constants {
   private static final String CONSTANTS_PREFIX = "support.im_";
 
   public static final String OBJECT_ID = "objectId";
+  public static final int PAGE_SIZE = 10;
+  public static final String CREATED_AT = "createdAt";
+  public static final String UPDATED_AT = "updatedAt";
 
   public static final String MEMBER_ID = getPrefixConstant("member_id");
   public static final String CONVERSATION_ID = getPrefixConstant("conversation_id");

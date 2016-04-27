@@ -49,7 +49,7 @@ public class RegisterActivity extends BaseActivity {
     HudUtils.showHud(this, "正在注册");
     SupportUser.register(username, password, nickname, new SignUpCallback() {
       @Override public void done(AVException e) {
-        if (AVExceptionHandler.handAVException(RegisterActivity.this, e)) {
+        if (AVExceptionHandler.handAVException(e)) {
 
         }
         HudUtils.dismissHud();
