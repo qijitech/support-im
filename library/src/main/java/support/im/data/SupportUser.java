@@ -17,13 +17,13 @@ import support.im.utilities.SupportLog;
   public static final String NICKNAME = "nickname";
   public static final String AVATAR = "avatar";
 
-  public static void register(String username, String nickname, String password, SignUpCallback callback) {
+  public static void register(String username, String password, String nickname, SignUpCallback callback) {
     SupportUser user = new SupportUser();
     user.put(USER_ID, UUID.randomUUID());
     user.put(AVATAR, "http://img1.imgtn.bdimg.com/it/u=1248462995,728310824&fm=21&gp=0.jpg");
     user.setUsername(username);
-    user.setNickname(nickname);
     user.setPassword(password);
+    user.setNickname(nickname);
     user.signUpInBackground(callback);
   }
 
