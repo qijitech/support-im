@@ -14,6 +14,7 @@ import support.im.demo.BaseActivity;
 import support.im.demo.R;
 import support.im.demo.features.main.MainActivity;
 import support.im.leanclound.ChatManager;
+import support.im.utilities.AVExceptionHandler;
 import support.ui.utilities.HudUtils;
 
 public class LoginMobileActivity extends BaseActivity {
@@ -35,11 +36,11 @@ public class LoginMobileActivity extends BaseActivity {
       @Override
       public void done(AVIMClient avimClient, AVIMException e) {
         HudUtils.dismissHud();
-        if (null == e) {
-          finish();
+        if (AVExceptionHandler.handAVException(e)) {
           Intent intent = new Intent(LoginMobileActivity.this, MainActivity.class);
           startActivity(intent);
-        } else {
+          finish();
+          return;
         }
       }
     });

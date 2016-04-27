@@ -20,6 +20,7 @@ import support.im.utilities.SupportLog;
   public static void register(String username, String nickname, String password, SignUpCallback callback) {
     SupportUser user = new SupportUser();
     user.put(USER_ID, UUID.randomUUID());
+    user.put(AVATAR, "http://img1.imgtn.bdimg.com/it/u=1248462995,728310824&fm=21&gp=0.jpg");
     user.setUsername(username);
     user.setNickname(nickname);
     user.setPassword(password);
@@ -37,6 +38,14 @@ import support.im.utilities.SupportLog;
     } else {
       return null;
     }
+  }
+
+  public String getAvatar() {
+    return (String) get(AVATAR);
+  }
+
+  public String getNickname() {
+    return (String) get(NICKNAME);
   }
 
   public static String getCurrentUserId () {
