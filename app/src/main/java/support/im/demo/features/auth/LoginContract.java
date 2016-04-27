@@ -1,4 +1,4 @@
-package support.im.demo.features.login;
+package support.im.demo.features.auth;
 
 import support.im.BasePresenter;
 import support.im.BaseView;
@@ -7,6 +7,7 @@ public interface LoginContract {
 
   interface View extends BaseView<Presenter> {
     void showLoginMobileUi();
+    void showRegisterUi();
   }
 
   interface Presenter extends BasePresenter {
@@ -19,5 +20,7 @@ public interface LoginContract {
      * 手机号登录
      */
     void loginWithMobile();
+
+    void register();
   }
 }

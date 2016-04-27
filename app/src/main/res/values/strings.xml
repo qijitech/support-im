@@ -3,6 +3,7 @@
 
   <string name="label_login">登录</string>
   <string name="label_login_mobile">手机号登录</string>
+  <string name="label_register">注册</string>
   <string name="label_account">我</string>
 
   <string name="bottom_bar_conversations">消息</string>
@@ -14,11 +15,16 @@
   <string name="login_app_name">航城聊天</string>
   <string name="login_wechat">微信登录</string>
   <string name="login_mobile">手机号登录</string>
+  <string name="login_register">手机号注册</string>
   <string name="login_read_agree">已阅读并同意</string>
   <string name="login_agreement">软件许可及服务协议</string>
 
   <string name="register_enter_username">请输入用户名</string>
   <string name="register_enter_password">请输入密码</string>
   <string name="register_enter_nickname">请输入昵称</string>
-  <string name="login_mobile_next">下一步</string>
+  <string name="register_submit">注册</string>
+
+  <string name="login_mobile_enter_username">请输入用户名</string>
+  <string name="login_mobile_enter_password">请输入密码</string>
+  <string name="login_mobile_submit">登录</string>
 </resources>

@@ -1,4 +1,4 @@
-package support.im.demo.features.login;
+package support.im.demo.features.auth;
 
 import android.content.Intent;
 import android.graphics.Paint;
@@ -9,7 +9,6 @@ import android.view.View;
 import butterknife.Bind;
 import butterknife.OnClick;
 import support.im.demo.R;
-import support.im.demo.features.register.RegisterActivity;
 import support.ui.SupportFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -34,11 +33,15 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
   }
 
   @SuppressWarnings("unused") @OnClick({
-      R.id.btn_login_mobile
+      R.id.btn_login_mobile,
+      R.id.btn_login_register,
   }) public void onClick(View view) {
     switch (view.getId()) {
       case R.id.btn_login_mobile:
         mPresenter.loginWithMobile();
+        break;
+      case R.id.btn_login_register:
+        mPresenter.register();
         break;
     }
   }
@@ -48,6 +51,11 @@ public class LoginFragment extends SupportFragment implements LoginContract.View
   }
 
   @Override public void showLoginMobileUi() {
+    Intent intent = new Intent(getContext(), LoginMobileActivity.class);
+    startActivity(intent);
+  }
+
+  @Override public void showRegisterUi() {
     Intent intent = new Intent(getContext(), RegisterActivity.class);
     startActivity(intent);
   }

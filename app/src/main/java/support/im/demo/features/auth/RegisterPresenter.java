@@ -1,4 +1,4 @@
-package support.im.demo.features.register;
+package support.im.demo.features.auth;
 
 public class RegisterPresenter implements RegisterContract.Presenter {
 

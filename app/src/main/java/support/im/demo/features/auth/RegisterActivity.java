@@ -1,4 +1,4 @@
-package support.im.demo.features.register;
+package support.im.demo.features.auth;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,7 +23,7 @@ public class RegisterActivity extends BaseActivity {
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.login_mobile);
+    setContentView(R.layout.register);
     ButterKnife.bind(this);
   }
 

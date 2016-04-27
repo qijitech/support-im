@@ -50,6 +50,19 @@
         app:supportButtonCornerRadius="@dimen/login_corner_radius"
         />
 
+    <support.ui.components.SupportButton
+        android:id="@+id/btn_login_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="@string/login_register"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
+        android:textSize="@dimen/text_size_button"
+        app:supportButtonCornerRadius="@dimen/login_corner_radius"
+        />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

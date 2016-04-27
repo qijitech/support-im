@@ -1,7 +1,7 @@
 package support.im.demo.data.source.local;
 
 import support.im.demo.data.source.AuthDataSource;
-import support.im.demo.features.login.PlatformType;
+import support.im.demo.features.auth.PlatformType;
 
 public class AuthDataSourceImpl implements AuthDataSource {
 

@@ -21,8 +21,9 @@
       android:theme="@style/AppTheme"
       >
 
+    <!--登录选择页面-->
     <activity
-        android:name=".features.login.LoginActivity"
+        android:name=".features.auth.LoginActivity"
         android:launchMode="singleTask">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
@@ -31,13 +32,24 @@
       </intent-filter>
     </activity>
 
+    <!--手机号登录-->
     <activity
-        android:name=".features.register.RegisterActivity"
+        android:name=".features.auth.LoginMobileActivity"
         android:label="@string/label_login_mobile"
         android:launchMode="singleTask">
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
-          android:value=".features.register.RegisterActivity"/>
+          android:value=".features.auth.LoginActivity"/>
+    </activity>
+
+    <!--注册页面-->
+    <activity
+        android:name=".features.auth.RegisterActivity"
+        android:label="@string/label_register"
+        android:launchMode="singleTask">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value=".features.auth.LoginActivity"/>
     </activity>
 
     <activity

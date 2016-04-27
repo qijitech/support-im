@@ -1,7 +1,7 @@
 package support.im.demo.data.source;
 
 import android.support.annotation.NonNull;
-import support.im.demo.features.login.PlatformType;
+import support.im.demo.features.auth.PlatformType;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

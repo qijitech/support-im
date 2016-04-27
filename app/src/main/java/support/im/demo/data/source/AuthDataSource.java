@@ -1,7 +1,7 @@
 package support.im.demo.data.source;
 
 import support.im.demo.data.User;
-import support.im.demo.features.login.PlatformType;
+import support.im.demo.features.auth.PlatformType;
 
 public interface AuthDataSource {
 

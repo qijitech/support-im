@@ -1,4 +1,4 @@
-package support.im.demo.features.login;
+package support.im.demo.features.auth;
 
 import android.support.annotation.NonNull;
 import support.im.demo.data.source.AuthDataSource;
@@ -27,5 +27,9 @@ public class LoginPresenter implements LoginContract.Presenter {
 
   @Override public void loginWithMobile() {
     mLoginView.showLoginMobileUi();
+  }
+
+  @Override public void register() {
+    mLoginView.showRegisterUi();
   }
 }

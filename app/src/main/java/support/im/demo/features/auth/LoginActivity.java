@@ -1,4 +1,4 @@
-package support.im.demo.features.login;
+package support.im.demo.features.auth;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

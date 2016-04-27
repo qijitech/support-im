@@ -1,4 +1,4 @@
-package support.im.demo.features.login;
+package support.im.demo.features.auth;
 
 import java.util.HashMap;
 import java.util.Map;

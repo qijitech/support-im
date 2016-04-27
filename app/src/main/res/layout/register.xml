@@ -7,13 +7,13 @@
     >
 
   <android.support.v7.widget.AppCompatEditText
-      android:id="@+id/edit_login_mobile_username"
+      android:id="@+id/edit_register_username"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginLeft="@dimen/activity_horizontal_margin"
       android:layout_marginRight="@dimen/activity_horizontal_margin"
       android:layout_marginTop="@dimen/activity_vertical_margin"
-      android:hint="@string/login_mobile_enter_username"
+      android:hint="@string/register_enter_username"
       android:inputType="phone"
       android:maxLength="12"
       android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -21,26 +21,38 @@
       />
 
   <android.support.v7.widget.AppCompatEditText
-      android:id="@+id/edit_login_mobile_password"
+      android:id="@+id/edit_register_password"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginLeft="@dimen/activity_horizontal_margin"
       android:layout_marginRight="@dimen/activity_horizontal_margin"
-      android:hint="@string/login_mobile_enter_password"
+      android:hint="@string/register_enter_password"
       android:inputType="textPassword"
       android:maxLength="12"
       android:paddingLeft="@dimen/activity_horizontal_margin"
       android:paddingRight="@dimen/activity_horizontal_margin"
       />
 
+  <android.support.v7.widget.AppCompatEditText
+      android:id="@+id/edit_register_nickname"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="@dimen/activity_horizontal_margin"
+      android:layout_marginRight="@dimen/activity_horizontal_margin"
+      android:hint="@string/register_enter_nickname"
+      android:maxLength="12"
+      android:paddingLeft="@dimen/activity_horizontal_margin"
+      android:paddingRight="@dimen/activity_horizontal_margin"
+      />
+
   <support.ui.components.SupportButton
-      android:id="@+id/btn_login_mobile"
+      android:id="@+id/btn_login_mobile_next"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginLeft="@dimen/activity_horizontal_margin"
       android:layout_marginRight="@dimen/activity_horizontal_margin"
       android:layout_marginTop="@dimen/activity_vertical_margin"
-      android:text="@string/login_mobile_submit"
+      android:text="@string/register_submit"
       android:textColor="@android:color/white"
       android:textSize="@dimen/text_size_button"
       app:supportButtonCornerRadius="@dimen/login_corner_radius"
