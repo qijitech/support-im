@@ -7,11 +7,8 @@ public final class HudUtils {
 
   private static KProgressHUD mHud;
 
-  public static KProgressHUD showMessage(Context context, String label) {
-    return KProgressHUD.create(context)
-        .setAutoDismiss(true)
-        .setLabel(label)
-        .show();
+  public static KProgressHUD showHud(Context context) {
+    return mHud = showHud(context, null);
   }
 
   public static KProgressHUD showHud(Context context, String label) {
@@ -28,9 +25,9 @@ public final class HudUtils {
   }
 
   public static void dismissHud() {
-    if (mHud != null) {
+    if (mHud != null && mHud.isShowing()) {
       mHud.dismiss();
-      mHud = null;
     }
+    mHud = null;
   }
 }

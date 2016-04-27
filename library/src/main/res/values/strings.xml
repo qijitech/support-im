@@ -7,4 +7,10 @@
   <string name="support_im_mobile_contact">手机联系人</string>
   <string name="no_mobile_contacts">没有手机联系人</string>
   <string name="support_im_un_support_message_type">暂不支持此消息类型</string>
+  <string name="support_im_add_request_sent">请求已发送</string>
+  <string name="support_im_add_request_invitation">您有新的好友申请</string>
+  <string name="support_im_add_request_invitation_action">com.avoscloud.chat.INVITATION_ACTION</string>
+  <string name="support_im_add_request_send_succeed">发送请求成功，等待对方验证</string>
+
+
 </resources>
