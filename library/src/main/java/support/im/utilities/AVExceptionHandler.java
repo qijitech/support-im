@@ -24,9 +24,12 @@ public class AVExceptionHandler {
       }
 
       if (t instanceof AVException) {
-        final String detailMessage = e.getLocalizedMessage();
-        if (detailMessage != null && detailMessage.endsWith("Connection Lost")) {
+        final int code = e.getCode();
+        if (code == 0) {
           return SupportApp.getInstance().getString(R.string.support_im_error_unknown_host);
+        }
+        if (code == 202) {
+          return SupportApp.getInstance().getString(R.string.support_im_error_user_has_been_taken);
         }
       }
 

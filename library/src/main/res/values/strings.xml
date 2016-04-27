@@ -24,6 +24,7 @@
   <string name="support_im_dialog_ok">确定</string>
   <string name="support_im_searching">正在搜索...</string>
   <string name="support_im_error_unknown_host">无网络连接</string>
+  <string name="support_im_error_user_has_been_taken">用户已经被注册</string>
 
 
 </resources>
