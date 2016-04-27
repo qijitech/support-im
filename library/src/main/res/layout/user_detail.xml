@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+  <support.ui.components.SupportButton
+      android:id="@+id/btn_support_user_detail_chat"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="@dimen/support_im_huge_padding"
+      android:layout_marginRight="@dimen/support_im_huge_padding"
+      android:layout_marginTop="@dimen/support_im_large_padding"
+      android:text="@string/support_im_user_detail_chat"
+      android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
+      android:textSize="@dimen/support_im_text_size_button"
+      app:supportButtonCornerRadius="@dimen/support_im_button_corner_radius"
+      />
+
+  <support.ui.components.SupportButton
+      android:id="@+id/btn_support_user_detail_add_contacts"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="@dimen/support_im_huge_padding"
+      android:layout_marginRight="@dimen/support_im_huge_padding"
+      android:layout_marginTop="@dimen/support_im_large_padding"
+      android:text="@string/support_im_user_detail_add_contacts"
+      android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Inverse"
+      android:textSize="@dimen/support_im_text_size_button"
+      app:supportButtonCornerRadius="@dimen/support_im_button_corner_radius"
+      />
+
+</LinearLayout>

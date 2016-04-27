@@ -1,5 +1,6 @@
 <resources>
   <string name="support_im_label_add_contacts">添加好友</string>
+  <string name="support_im_label_user_detail">详细资料</string>
 
   <string name="menu_title_contacts_add">添加联系人</string>
   <string name="support_im_conversations_title">消息</string>
@@ -15,6 +16,9 @@
   <string name="support_im_add_contacts_search_hint">用户名</string>
   <string name="support_im_add_contacts_mobile_title">手机联系人</string>
   <string name="support_im_add_contacts_mobile_subtitle">添加或邀请通讯录中的朋友</string>
+
+  <string name="support_im_user_detail_chat">发送消息</string>
+  <string name="support_im_user_detail_add_contacts">添加好友</string>
 
   <string name="support_im_user_not_found">用户不存在</string>
   <string name="support_im_dialog_ok">确定</string>

@@ -11,6 +11,7 @@ public class Constants {
 
   public static final String MEMBER_ID = getPrefixConstant("member_id");
   public static final String CONVERSATION_ID = getPrefixConstant("conversation_id");
+  public static final String SUPPORT_USER_ID = getPrefixConstant("support_user_id");
 
   //Notification
   public static final String NOTOFICATION_TAG = getPrefixConstant("notification_tag");

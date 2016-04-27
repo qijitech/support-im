@@ -3,6 +3,7 @@ package support.im.data.source;
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.AVException;
 import support.im.data.SupportUser;
+import support.im.data.cache.UsersCache;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -29,6 +30,7 @@ public class UsersRepository implements UsersDataSource {
 
     mUsersRemoteDataSource.searchUser(username, new GetUserCallback() {
       @Override public void onUserLoaded(SupportUser user) {
+        UsersCache.cacheUser(user);
         callback.onUserLoaded(user);
       }
 

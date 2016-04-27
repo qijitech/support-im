@@ -69,6 +69,14 @@
           android:value=".features.main.MainActivity"/>
     </activity>
     <activity
+        android:name="support.im.detail.UserDetailActivity"
+        android:label="@string/support_im_label_user_detail"
+        android:launchMode="singleTask">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value=".features.main.MainActivity"/>
+    </activity>
+    <activity
         android:name="support.im.mobilecontact.MobileContactsActivity"
         android:launchMode="singleTask"
         android:label="@string/support_im_mobile_contact">

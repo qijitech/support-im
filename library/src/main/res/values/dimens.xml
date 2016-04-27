@@ -14,6 +14,7 @@
   <dimen name="support_im_item_padding">2dp</dimen>
   <dimen name="support_im_huge_padding">40dp</dimen>
   <dimen name="support_im_large_huge_padding">100dp</dimen>
+  <dimen name="support_im_button_corner_radius">4dp</dimen>
 
   <dimen name="support_im_button_min_height">50dp</dimen>
 

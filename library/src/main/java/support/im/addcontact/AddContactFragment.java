@@ -11,6 +11,8 @@ import com.avos.avoscloud.AVException;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import support.im.R;
 import support.im.data.SupportUser;
+import support.im.detail.UserDetailActivity;
+import support.im.leanclound.Constants;
 import support.im.mobilecontact.MobileContactsActivity;
 import support.im.utilities.DialogUtils;
 import support.ui.SupportFragment;
@@ -91,7 +93,9 @@ public class AddContactFragment extends SupportFragment implements View.OnClickL
   }
 
   @Override public void showUser(SupportUser user) {
-    DialogUtils.simpleDialog(getContext(), user.getNickname());
+    Intent intent = new Intent(getContext(), UserDetailActivity.class);
+    intent.putExtra(Constants.SUPPORT_USER_ID, user.getObjectId());
+    startActivity(intent);
   }
 
   @Override public void showNoUser() {
