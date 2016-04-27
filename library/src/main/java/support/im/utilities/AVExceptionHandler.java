@@ -23,14 +23,18 @@ public class AVExceptionHandler {
         return SupportApp.getInstance().getString(R.string.support_im_error_unknown_host);
       }
 
-      if (t instanceof AVException) {
-        final int code = e.getCode();
-        if (code == 0) {
-          return SupportApp.getInstance().getString(R.string.support_im_error_unknown_host);
-        }
-        if (code == 202) {
-          return SupportApp.getInstance().getString(R.string.support_im_error_user_has_been_taken);
-        }
+      final int code = e.getCode();
+      if (code == 0) {
+        return SupportApp.getInstance().getString(R.string.support_im_error_unknown_host);
+      }
+      if (code == AVException.USER_DOESNOT_EXIST) {
+        return SupportApp.getInstance().getString(R.string.support_im_error_user_doesnot_exist);
+      }
+      if (code == AVException.USERNAME_PASSWORD_MISMATCH) {
+        return SupportApp.getInstance().getString(R.string.support_im_error_username_password_mismatch);
+      }
+      if (code == AVException.USERNAME_TAKEN) {
+        return SupportApp.getInstance().getString(R.string.support_im_error_user_has_been_taken);
       }
 
       return e.getLocalizedMessage();

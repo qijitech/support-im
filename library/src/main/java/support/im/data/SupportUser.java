@@ -13,7 +13,7 @@ import support.im.utilities.SupportLog;
 @SuppressLint("ParcelCreator") public class SupportUser extends AVUser {
 
   public static final String USERNAME = "username";
-  public static final String USER_ID = "user_id";
+  public static final String USER_ID = "userId";
   public static final String NICKNAME = "nickname";
   public static final String AVATAR = "avatar";
 

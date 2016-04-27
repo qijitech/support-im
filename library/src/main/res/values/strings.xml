@@ -25,6 +25,10 @@
   <string name="support_im_searching">正在搜索...</string>
   <string name="support_im_error_unknown_host">无网络连接</string>
   <string name="support_im_error_user_has_been_taken">用户已经被注册</string>
+  <string name="support_im_error_enter_username">请输入用户名</string>
+  <string name="support_im_error_enter_password">请输入密码</string>
+  <string name="support_im_error_user_doesnot_exist">用户不存在</string>
+  <string name="support_im_error_username_password_mismatch">密码不正确</string>
 
 
 </resources>
