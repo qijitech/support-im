@@ -46,5 +46,6 @@ dependencies {
   compile 'de.greenrobot:eventbus:2.4.0'
   compile 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
   compile 'com.kaopiz:kprogresshud:1.0.5'
+  compile 'com.miguelcatalan:materialsearchview:1.4.0'
 
 }

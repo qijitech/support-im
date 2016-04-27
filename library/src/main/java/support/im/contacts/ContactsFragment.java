@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import support.im.R;
+import support.im.addcontact.AddContactActivity;
 import support.im.mobilecontact.MobileContactsActivity;
 import support.ui.SupportFragment;
 
@@ -40,6 +41,10 @@ public class ContactsFragment extends SupportFragment {
     if (itemId == R.id.menu_contact_add) {
       startActivity(new Intent(getContext(), MobileContactsActivity.class));
       //startActivity(new Intent(getContext(), AddContactActivity.class));
+      return true;
+    }
+    if (itemId == R.id.menu_contact_search) {
+      startActivity(new Intent(getContext(), AddContactActivity.class));
       return true;
     }
     return super.onOptionsItemSelected(item);

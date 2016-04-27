@@ -1,5 +1,6 @@
 package support.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,20 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 
 public abstract class SupportFragment extends Fragment {
+
+  protected SupportActivity mSupportActivity;
+
+  @Override public void onAttach(Context context) {
+    super.onAttach(context);
+    if (context instanceof SupportActivity) {
+      mSupportActivity = (SupportActivity) context;
+    }
+  }
+
+  @Override public void onDetach() {
+    super.onDetach();
+    mSupportActivity = null;
+  }
 
   @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {

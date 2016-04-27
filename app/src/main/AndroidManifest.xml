@@ -61,8 +61,9 @@
     <!-- Support im START -->
     <activity
         android:name="support.im.addcontact.AddContactActivity"
-        android:launchMode="singleTask"
-        android:label="@string/support_im_add_contact">
+        android:theme="@style/AppTheme.NoActionBar"
+        android:label="@string/support_im_label_add_contacts"
+        android:launchMode="singleTask">
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
           android:value=".features.main.MainActivity"/>

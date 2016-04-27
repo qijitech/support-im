@@ -1,9 +1,11 @@
 package support.im.leanclound.contacts;
 
 import android.annotation.SuppressLint;
+import com.avos.avoscloud.AVClassName;
 import com.avos.avoscloud.AVObject;
 import support.im.data.SupportUser;
 
+@AVClassName("AddRequest")
 @SuppressLint("ParcelCreator") public class AddRequest extends AVObject {
 
   public static final int STATUS_WAIT = 0;
