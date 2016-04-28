@@ -40,11 +40,11 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
       SupportLog.d("receive msg from invalid conversation");
     }
 
-    if (ChatManager.getInstance().getSelfId() == null) {
+    if (ChatManager.getInstance().getClientId() == null) {
       SupportLog.d("selfId is null, please call setupManagerWithUserId ");
       client.close(null);
     } else {
-      if (!client.getClientId().equals(ChatManager.getInstance().getSelfId())) {
+      if (!client.getClientId().equals(ChatManager.getInstance().getClientId())) {
         client.close(null);
       } else {
         ChatManager.getInstance().getConversationsDatabase().saveConversation(message.getConversationId());

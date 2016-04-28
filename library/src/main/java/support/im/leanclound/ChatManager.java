@@ -1,6 +1,7 @@
 package support.im.leanclound;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversationQuery;
 import com.avos.avoscloud.im.v2.AVIMException;
@@ -12,25 +13,28 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import support.im.data.Conversation;
 import support.im.data.ConversationType;
 import support.im.data.source.local.ConversationsDatabase;
 import support.im.utilities.SupportLog;
+import support.ui.app.SupportApp;
 
 public class ChatManager {
 
   private static ChatManager chatManager;
 
-  private volatile AVIMClient imClient;
-  private volatile String selfId;
+  private volatile AVIMClient mIMClient;
+  private volatile String mClientId;
+  private Context mContext;
 
   private ConversationsDatabase mConversationsDatabase;
 
-  private ChatManager() {}
+  private ChatManager(Context context) {
+    mContext = context;
+  }
 
   public static synchronized ChatManager getInstance() {
     if (chatManager == null) {
-      chatManager = new ChatManager();
+      chatManager = new ChatManager(SupportApp.appContext());
     }
     return chatManager;
   }
@@ -38,8 +42,6 @@ public class ChatManager {
   /**
    * 设置是否打印 leanchatlib 的日志，发布应用的时候要关闭
    * 日志 TAG 为 leanchatlib，可以获得一些异常日志
-   *
-   * @param debugEnabled
    */
   public static void setDebugEnabled(boolean debugEnabled) {
     SupportLog.debugEnabled = debugEnabled;
@@ -48,11 +50,11 @@ public class ChatManager {
   /**
    * 请在应用一启动(Application onCreate)的时候就调用，因为 SDK 一启动，就会去连接聊天服务器
    * 这里包含了一些需要设置的 handler
-   * @param context
    */
-  public void init(Context context) {
+  public void initialize() {
     // 消息处理 handler
-    AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class, new SupportMessageHandler(context));
+    AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class,
+        new SupportMessageHandler(mContext));
 
     // 与网络相关的 handler
     AVIMClient.setClientEventHandler(SupportClientEventHandler.getInstance());
@@ -64,8 +66,8 @@ public class ChatManager {
     //AVIMClient.setSignatureFactory(new SignatureFactory());
   }
 
-  public String getSelfId() {
-    return selfId;
+  public String getClientId() {
+    return mClientId;
   }
 
   public ConversationsDatabase getConversationsDatabase() {
@@ -73,7 +75,7 @@ public class ChatManager {
   }
 
   public boolean isLogin() {
-    return null != imClient;
+    return null != mIMClient;
   }
 
   /**
@@ -81,14 +83,12 @@ public class ChatManager {
    *
    * @param callback AVException 常发生于网络错误、签名错误
    */
-  public void openClient(Context context, String userId, final AVIMClientCallback callback) {
-    this.selfId = userId;
-    mConversationsDatabase = ConversationsDatabase.databaseWithUserId(context, userId);
-
-    imClient = AVIMClient.getInstance(this.selfId);
-    imClient.open(new AVIMClientCallback() {
-      @Override
-      public void done(AVIMClient avimClient, AVIMException e) {
+  public void openClient(String clientId, final AVIMClientCallback callback) {
+    mClientId = clientId;
+    mConversationsDatabase = ConversationsDatabase.databaseWithUserId(mContext, clientId);
+    mIMClient = AVIMClient.getInstance(clientId);
+    mIMClient.open(new AVIMClientCallback() {
+      @Override public void done(AVIMClient avimClient, AVIMException e) {
         if (e != null) {
           SupportClientEventHandler.getInstance().setConnectAndNotify(false);
         } else {
@@ -107,10 +107,9 @@ public class ChatManager {
    * @param callback AVException 常见于网络错误
    */
   public void closeWithCallback(final AVIMClientCallback callback) {
-    imClient.close(new AVIMClientCallback() {
+    mIMClient.close(new AVIMClientCallback() {
 
-      @Override
-      public void done(AVIMClient avimClient, AVIMException e) {
+      @Override public void done(AVIMClient avimClient, AVIMException e) {
         if (e != null) {
           SupportLog.logException(e);
         }
@@ -119,35 +118,29 @@ public class ChatManager {
         }
       }
     });
-    imClient = null;
-    selfId = null;
+    mIMClient = null;
+    mClientId = null;
   }
 
-  public void createGroupConversation(List<String> memberIds, AVIMConversationCreatedCallback callback) {
+  public void createGroupConversation(List<String> memberIds,
+      AVIMConversationCreatedCallback callback) {
     Map<String, Object> attrs = new HashMap<>();
     attrs.put(ConversationType.TYPE_KEY, ConversationType.Group.getValue());
     attrs.put("name", getConversationName(memberIds));
-    imClient.createConversation(memberIds, "", attrs, false, true, callback);
+    mIMClient.createConversation(memberIds, "", attrs, false, true, callback);
   }
 
   public void createSingleConversation(String memberId, AVIMConversationCreatedCallback callback) {
     Map<String, Object> attrs = new HashMap<>();
     attrs.put(ConversationType.TYPE_KEY, ConversationType.Single.getValue());
-    imClient.createConversation(Arrays.asList(memberId), "", attrs, false, true, callback);
+    mIMClient.createConversation(Arrays.asList(memberId), "", attrs, false, true, callback);
   }
 
   /**
    * 获取 AVIMConversationQuery，用来查询对话
-   *
-   * @return
    */
   public AVIMConversationQuery getConversationQuery() {
-    return imClient.getQuery();
-  }
-
-  //ChatUser
-  public List<Conversation> findRecentConversations() {
-    return ChatManager.getInstance().getConversationsDatabase().loadConversations();
+    return mIMClient.getQuery();
   }
 
   private String getConversationName(List<String> userIds) {

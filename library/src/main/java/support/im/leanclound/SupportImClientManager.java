@@ -1,5 +1,6 @@
 package support.im.leanclound;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
@@ -11,19 +12,19 @@ public class SupportImClientManager {
   private AVIMClient mAVImClient;
   private String mClientId;
 
-  public synchronized static SupportImClientManager getInstance() {
+  public synchronized static SupportImClientManager getInstance(@NonNull String clientId) {
     if (null == imClientManager) {
-      imClientManager = new SupportImClientManager();
+      imClientManager = new SupportImClientManager(clientId);
     }
     return imClientManager;
   }
 
-  private SupportImClientManager() {
+  private SupportImClientManager(String clientId) {
+    mClientId = clientId;
   }
 
-  public void open(String clientId, AVIMClientCallback callback) {
-    mClientId = clientId;
-    mAVImClient = AVIMClient.getInstance(clientId);
+  public void open(AVIMClientCallback callback) {
+    mAVImClient = AVIMClient.getInstance(mClientId);
     mAVImClient.open(callback);
   }
 

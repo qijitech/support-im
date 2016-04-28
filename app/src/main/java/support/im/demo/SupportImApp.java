@@ -29,7 +29,7 @@ public class SupportImApp extends SupportApp {
     AVOSCloud.setDebugLogEnabled(BuildConfig.DEBUG);
     AVAnalytics.enableCrashReport(this, !BuildConfig.DEBUG);
 
-    ChatManager.getInstance().init(this);
+    ChatManager.getInstance().initialize();
     ChatManager.setDebugEnabled(BuildConfig.DEBUG);
 
     Fresco.initialize(appContext());

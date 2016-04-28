@@ -26,7 +26,7 @@ public final class ConversationHelper {
     int typeInt = (Integer) type;
     if (typeInt == ConversationType.Single.getValue()) {
       if (conversation.getMembers().size() != 2 ||
-          conversation.getMembers().contains(ChatManager.getInstance().getSelfId()) == false) {
+          conversation.getMembers().contains(ChatManager.getInstance().getClientId()) == false) {
         SupportLog.d("invalid reason : oneToOne conversation not correct");
         return false;
       }

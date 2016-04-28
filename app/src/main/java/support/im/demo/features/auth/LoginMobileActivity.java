@@ -52,7 +52,7 @@ public class LoginMobileActivity extends BaseActivity {
       @Override public void done(SupportUser avUser, AVException e) {
         HudUtils.dismissHud();
         if (AVExceptionHandler.handAVException(e)) {
-          ChatManager.getInstance().openClient(LoginMobileActivity.this, avUser.getUsername(), new AVIMClientCallback() {
+          ChatManager.getInstance().openClient(avUser.getUsername(), new AVIMClientCallback() {
             @Override
             public void done(AVIMClient avimClient, AVIMException e) {
               HudUtils.dismissHud();
