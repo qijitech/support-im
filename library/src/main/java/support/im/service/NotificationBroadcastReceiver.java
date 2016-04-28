@@ -19,7 +19,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
       startLoginActivity(context);
       return;
     }
-    String tag = intent.getStringExtra(Constants.NOTOFICATION_TAG);
+    String tag = intent.getStringExtra(Constants.NOTIFICATION_TAG);
     if (Constants.NOTIFICATION_GROUP_CHAT.equals(tag)) {
       startChatActivity(context, intent);
     } else if (Constants.NOTIFICATION_SINGLE_CHAT.equals(tag)) {

@@ -11,10 +11,10 @@ public class Constants {
 
   public static final String MEMBER_ID = getPrefixConstant("member_id");
   public static final String CONVERSATION_ID = getPrefixConstant("conversation_id");
-  public static final String SUPPORT_USER_ID = getPrefixConstant("support_user_id");
+  public static final String EXTRA_OBJECT_ID = getPrefixConstant("object_id");
 
   //Notification
-  public static final String NOTOFICATION_TAG = getPrefixConstant("notification_tag");
+  public static final String NOTIFICATION_TAG = getPrefixConstant("notification_tag");
   public static final String NOTIFICATION_SINGLE_CHAT = Constants.getPrefixConstant("notification_single_chat");
   public static final String NOTIFICATION_GROUP_CHAT = Constants.getPrefixConstant("notification_group_chat");
   public static final String NOTIFICATION_SYSTEM = Constants.getPrefixConstant("notification_system_chat");

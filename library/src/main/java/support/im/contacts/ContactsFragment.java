@@ -10,12 +10,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import butterknife.ButterKnife;
+import com.avos.avoscloud.AVException;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import java.util.List;
 import support.im.Injection;
 import support.im.R;
 import support.im.addcontact.AddContactActivity;
 import support.im.data.SupportUser;
+import support.im.detail.UserDetailActivity;
+import support.im.leanclound.Constants;
 import support.im.newcontacts.NewContactsActivity;
 import support.ui.SupportRecyclerViewFragment;
 
@@ -49,7 +52,8 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     mAdapter.bind(ContactsTotal.class, ContactsTotalViewHolder.class);
     mAdapter.bind(SupportUser.class, ContactsViewHolder.class);
 
-    new ContactsPresenter(Injection.provideContactsRepository(getContext()), this);
+    new ContactsPresenter(Injection.provideContactsRepository(getContext()),
+        Injection.provideUsersRepository(getContext()), this);
 
     setHasOptionsMenu(true);
   }
@@ -98,7 +102,10 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
   @Override public void onItemClick(int position, View view) {
     Object object = mAdapter.get(position);
     if (object instanceof SupportUser) {
-      //startActivity(new Intent(getContext(), UserDetailActivity.class));
+      SupportUser user = (SupportUser) object;
+      Intent intent = new Intent(getContext(), UserDetailActivity.class);
+      intent.putExtra(Constants.EXTRA_OBJECT_ID, user.getObjectId());
+      startActivity(intent);
       return;
     }
     if (object instanceof ContactsDummy) {
@@ -127,6 +134,10 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
   }
 
   @Override public void showNotLoggedIn() {
+
+  }
+
+  @Override public void onDataNotAvailable(AVException exception) {
 
   }
 

@@ -29,7 +29,7 @@ public class InvitationReceiver extends BroadcastReceiver {
             JSONObject json = new JSONObject(avosData);
             String alertStr = json.getString(PushManager.AVOS_ALERT);
             Intent notificationIntent = new Intent(context, NotificationBroadcastReceiver.class);
-            notificationIntent.putExtra(Constants.NOTOFICATION_TAG, Constants.NOTIFICATION_SYSTEM);
+            notificationIntent.putExtra(Constants.NOTIFICATION_TAG, Constants.NOTIFICATION_SYSTEM);
             NotificationUtils.showNotification(context, "SupportIm", alertStr, notificationIntent);
           } catch (JSONException e) {
             SupportLog.logException(e);

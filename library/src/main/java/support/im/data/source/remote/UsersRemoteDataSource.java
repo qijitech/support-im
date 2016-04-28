@@ -7,6 +7,7 @@ import com.avos.avoscloud.FindCallback;
 import java.util.List;
 import support.im.data.SupportUser;
 import support.im.data.source.UsersDataSource;
+import support.im.leanclound.Constants;
 import support.im.utilities.AVExceptionHandler;
 
 public class UsersRemoteDataSource implements UsersDataSource {
@@ -20,8 +21,8 @@ public class UsersRemoteDataSource implements UsersDataSource {
     return INSTANCE;
   }
 
-  @Override public void searchUser(@NonNull String username,
-      @NonNull final GetUserCallback callback) {
+  @Override
+  public void searchUser(@NonNull String username, @NonNull final GetUserCallback callback) {
     AVQuery<SupportUser> query = SupportUser.getQuery(SupportUser.class);
     query.whereContains(SupportUser.USERNAME, username);
     query.limit(1);
@@ -37,6 +38,22 @@ public class UsersRemoteDataSource implements UsersDataSource {
           return;
         }
         callback.onDataNotAvailable(e);
+      }
+    });
+  }
+
+  @Override public void fetchUsers(List<String> userIds, final LoadUsersCallback callback) {
+    AVQuery<SupportUser> q = SupportUser.getQuery(SupportUser.class);
+    q.whereContainedIn(Constants.OBJECT_ID, userIds);
+    q.setLimit(1000);
+    q.setCachePolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
+    q.findInBackground(new FindCallback<SupportUser>() {
+      @Override public void done(List<SupportUser> users, AVException e) {
+        if (AVExceptionHandler.handAVException(e, false)) {
+          callback.onUserLoaded(users);
+        } else {
+          callback.onDataNotAvailable(e);
+        }
       }
     });
   }

@@ -39,7 +39,7 @@ public class UserDetailActivity extends SupportActivity implements View.OnClickL
   }
 
   private void initialize() {
-    mUserObjectId = getIntent().getStringExtra(Constants.SUPPORT_USER_ID);
+    mUserObjectId = getIntent().getStringExtra(Constants.EXTRA_OBJECT_ID);
     mUser = UsersCache.getCachedUser(mUserObjectId);
   }
 

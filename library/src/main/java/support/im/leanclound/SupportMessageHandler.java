@@ -90,9 +90,9 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
       intent.putExtra(Constants.CONVERSATION_ID, conversation.getConversationId());
       intent.putExtra(Constants.MEMBER_ID, message.getFrom());
       if (ConversationHelper.typeOfConversation(conversation) == ConversationType.Single) {
-        intent.putExtra(Constants.NOTOFICATION_TAG, Constants.NOTIFICATION_SINGLE_CHAT);
+        intent.putExtra(Constants.NOTIFICATION_TAG, Constants.NOTIFICATION_SINGLE_CHAT);
       } else {
-        intent.putExtra(Constants.NOTOFICATION_TAG, Constants.NOTIFICATION_SINGLE_CHAT);
+        intent.putExtra(Constants.NOTIFICATION_TAG, Constants.NOTIFICATION_SINGLE_CHAT);
       }
       NotificationUtils.showNotification(mContext, title, notificationContent, null, intent);
     }

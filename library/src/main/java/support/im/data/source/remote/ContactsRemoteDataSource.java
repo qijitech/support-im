@@ -30,6 +30,10 @@ public class ContactsRemoteDataSource implements ContactsDataSource {
       query.setMaxCacheAge(TimeUnit.MINUTES.toMillis(1));
       query.findInBackground(new FindCallback<SupportUser>() {
         @Override public void done(List<SupportUser> supportUsers, AVException e) {
+          if (null != e) {
+            callback.onDataNotAvailable(e);
+            return;
+          }
           callback.onContactsLoaded(supportUsers);
         }
       });

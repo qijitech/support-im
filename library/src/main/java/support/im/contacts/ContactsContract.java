@@ -1,5 +1,6 @@
 package support.im.contacts;
 
+import com.avos.avoscloud.AVException;
 import java.util.List;
 import support.im.BasePresenter;
 import support.im.BaseView;
@@ -17,6 +18,8 @@ public interface ContactsContract {
     void showNoContacts();
 
     boolean isActive();
+
+    void onDataNotAvailable(AVException exception);
   }
 
   interface Presenter extends BasePresenter {
