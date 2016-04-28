@@ -5,9 +5,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
+import com.avos.avoscloud.im.v2.AVIMConversation;
 import support.im.R;
 import support.im.data.Conversation;
+import support.im.data.SupportUser;
+import support.im.utilities.ConversationHelper;
+import support.im.utilities.Utils;
 import support.ui.adapters.EasyViewHolder;
+import support.ui.app.SupportApp;
 
 public class ConversationsViewHolder extends EasyViewHolder<Conversation> {
 
@@ -28,7 +33,9 @@ public class ConversationsViewHolder extends EasyViewHolder<Conversation> {
 
   @Override public void bindTo(int position, Conversation value) {
     //mUnreadTextView.setText(String.valueOf(value.mUnreadCount));
-    mNameTextView.setText(value.mLastMessage.getFrom());
-    mMessageTextView.setText(value.mLastMessage.getContent());
+    AVIMConversation conversation = value.getConversation();
+    mNameTextView.setText(ConversationHelper.nameOfConversation(conversation));
+    mMessageTextView.setText(Utils.getMessageeShorthand(SupportApp.appContext(), value.mLastMessage));
+    mLatestTimeTextView.setText(Utils.millisecsToDateString(value.getLastModifyTime()));
   }
 }

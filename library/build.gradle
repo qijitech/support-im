@@ -48,4 +48,5 @@ dependencies {
   compile 'com.kaopiz:kprogresshud:1.0.5'
   compile 'com.miguelcatalan:materialsearchview:1.4.0'
   compile 'com.facebook.fresco:fresco:0.10.0'
+  compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
 }

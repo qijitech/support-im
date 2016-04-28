@@ -1,8 +1,11 @@
 package support.im.utilities;
 
+import android.text.TextUtils;
 import com.avos.avoscloud.im.v2.AVIMConversation;
+import java.util.List;
 import support.im.data.ConversationType;
 import support.im.leanclound.ChatManager;
+import support.im.leanclound.ThirdPartUserUtils;
 
 public final class ConversationHelper {
 
@@ -39,6 +42,29 @@ public final class ConversationHelper {
     return true;
   }
 
+  /**
+   * 获取单聊对话的另外一个人的 userId
+   *
+   * @param conversation
+   * @return 如果非法对话，则为 selfId
+   */
+  public static String otherIdOfConversation(AVIMConversation conversation) {
+    if (isValidConversation(conversation)) {
+      if (typeOfConversation(conversation) == ConversationType.Single) {
+        List<String> members = conversation.getMembers();
+        if (members.size() == 2) {
+          if (members.get(0).equals(ChatManager.getInstance().getClientId())) {
+            return members.get(1);
+          } else {
+            return members.get(0);
+          }
+        }
+      }
+    }
+    // 尽管异常，返回可以使用的 userId
+    return ChatManager.getInstance().getClientId();
+  }
+
   public static ConversationType typeOfConversation(AVIMConversation conversation) {
     if (isValidConversation(conversation)) {
       Object typeObject = conversation.getAttribute(ConversationType.TYPE_KEY);
@@ -48,6 +74,20 @@ public final class ConversationHelper {
       SupportLog.e("invalid conversation ");
       // 因为 Group 不需要取 otherId，检查没那么严格，避免导致崩溃
       return ConversationType.Group;
+    }
+  }
+
+  public static String nameOfConversation(AVIMConversation conversation) {
+    if (isValidConversation(conversation)) {
+      if (typeOfConversation(conversation) == ConversationType.Single) {
+        String otherId = otherIdOfConversation(conversation);
+        String userName = ThirdPartUserUtils.getInstance().getUserName(otherId);
+        return (TextUtils.isEmpty(userName) ? "对话" : userName);
+      } else {
+        return conversation.getName();
+      }
+    } else {
+      return "";
     }
   }
 
