@@ -6,9 +6,11 @@ import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import butterknife.ButterKnife;
 import support.im.R;
 import support.im.addcontact.AddContactActivity;
-import support.im.mobilecontact.MobileContactsActivity;
+import support.im.newcontacts.NewContactsActivity;
 import support.ui.SupportFragment;
 
 public class ContactsFragment extends SupportFragment {
@@ -29,6 +31,15 @@ public class ContactsFragment extends SupportFragment {
   @Override public void onResume() {
     super.onResume();
     getActivity().setTitle(R.string.support_im_contacts_title);
+  }
+
+  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    ButterKnife.findById(view, R.id.test).setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        startActivity(new Intent(getContext(), NewContactsActivity.class));
+      }
+    });
   }
 
   @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

@@ -1,6 +1,7 @@
 package support.im.data;
 
 import android.annotation.SuppressLint;
+import android.net.Uri;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVQuery;
@@ -8,6 +9,7 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SignUpCallback;
+import com.google.common.base.Strings;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import support.im.utilities.SupportLog;
@@ -49,6 +51,14 @@ import support.im.utilities.SupportLog;
 
   public String getNickname() {
     return (String) get(NICKNAME);
+  }
+
+  public Uri toAvatarUri() {
+    final String avatar = getAvatar();
+    if (!Strings.isNullOrEmpty(avatar)) {
+      return Uri.parse(avatar);
+    }
+    return null;
   }
 
   public static String getCurrentUserId () {

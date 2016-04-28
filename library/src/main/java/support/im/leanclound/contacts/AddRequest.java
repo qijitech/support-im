@@ -10,6 +10,7 @@ import support.im.data.SupportUser;
 
   public static final int STATUS_WAIT = 0;
   public static final int STATUS_DONE = 1;
+  public static final int STATUS_REFUSED = 2;
 
   public static final String FROM_USER = "fromUser";
   public static final String TO_USER = "toUser";
@@ -54,4 +55,5 @@ import support.im.data.SupportUser;
   public void setIsRead(boolean isRead) {
     put(IS_READ, isRead);
   }
+
 }

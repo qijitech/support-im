@@ -3,6 +3,7 @@ package support.im.demo;
 import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import pl.tajchert.nammu.Nammu;
 import support.im.data.SupportUser;
 import support.im.demo.features.main.MainActivity;
@@ -30,5 +31,7 @@ public class SupportImApp extends SupportApp {
 
     ChatManager.getInstance().init(this);
     ChatManager.setDebugEnabled(BuildConfig.DEBUG);
+
+    Fresco.initialize(appContext());
   }
 }

@@ -10,7 +10,7 @@
   <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
   <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
   <!-- 基础模块 END -->
-  <uses-permission android:name="android.permission.READ_CONTACTS" />
+  <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
   <application
       android:name=".SupportImApp"
@@ -59,15 +59,18 @@
 
 
     <!-- Support im START -->
+    <!--添加好友界面-->
     <activity
         android:name="support.im.addcontact.AddContactActivity"
-        android:theme="@style/AppTheme.NoActionBar"
         android:label="@string/support_im_label_add_contacts"
-        android:launchMode="singleTask">
+        android:launchMode="singleTask"
+        android:theme="@style/AppTheme.NoActionBar">
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
           android:value=".features.main.MainActivity"/>
     </activity>
+
+    <!--用户详情-->
     <activity
         android:name="support.im.detail.UserDetailActivity"
         android:label="@string/support_im_label_user_detail"
@@ -76,23 +79,44 @@
           android:name="android.support.PARENT_ACTIVITY"
           android:value=".features.main.MainActivity"/>
     </activity>
+
+    <!--手机联系人-->
     <activity
         android:name="support.im.mobilecontact.MobileContactsActivity"
-        android:launchMode="singleTask"
-        android:label="@string/support_im_mobile_contact">
+        android:label="@string/support_im_label_mobile_contact"
+        android:launchMode="singleTask">
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
           android:value="support.im.addcontact.AddContactActivity"/>
     </activity>
+
+    <!--新朋友-->
+    <activity
+        android:name="support.im.newcontacts.NewContactsActivity"
+        android:label="@string/support_im_label_new_contacts"
+        android:launchMode="singleTask">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value=".features.main.MainActivity"/>
+    </activity>
+
+    <receiver
+        android:name="support.im.service.NotificationBroadcastReceiver"
+        android:exported="false">
+      <intent-filter>
+        <action android:name="@string/support_im_client_notification_action"/>
+      </intent-filter>
+    </receiver>
+
     <!-- Support im END -->
 
     <!-- 实时通信模块、推送（若使用该功能，需添加以下声明）START -->
     <service android:name="com.avos.avoscloud.PushService"/>
     <receiver android:name="com.avos.avoscloud.AVBroadcastReceiver">
       <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED" />
-        <action android:name="android.intent.action.USER_PRESENT" />
-        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+        <action android:name="android.intent.action.BOOT_COMPLETED"/>
+        <action android:name="android.intent.action.USER_PRESENT"/>
+        <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
       </intent-filter>
     </receiver>
     <!-- 实时通信模块、推送 END -->

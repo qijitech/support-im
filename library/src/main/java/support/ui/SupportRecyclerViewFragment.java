@@ -43,7 +43,7 @@ import support.ui.content.RequiresContent;
     super.onViewCreated(view, savedInstanceState);
     mRecyclerView = ButterKnife.findById(view, R.id.support_ui_recycler_view);
     mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-    mRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).build());
+    mRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).size(1).build());
     mContainer = ButterKnife.findById(view, R.id.support_ui_content_container);
     setAdapter();
   }

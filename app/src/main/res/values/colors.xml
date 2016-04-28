@@ -3,6 +3,7 @@
   <color name="colorPrimary">#B21E24</color>
   <color name="colorPrimaryDark">#93111B</color>
   <color name="colorAccent">#5282c2</color>
+  <color name="colorControlHighlight">#0082c2</color>
   <color name="windowBackground">#F3F3F3</color>
 
   <color name="greenWechat">#04c778</color>

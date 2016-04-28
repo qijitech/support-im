@@ -1,21 +1,29 @@
 <resources>
   <string name="support_im_label_add_contacts">添加好友</string>
   <string name="support_im_label_user_detail">详细资料</string>
+  <string name="support_im_label_new_contacts">新的朋友</string>
+  <string name="support_im_label_mobile_contact">手机联系人</string>
+
+  <string name="support_im_add_request_invitation_action">support.im.chat.INVITATION_ACTION</string>
+  <string name="support_im_client_notification_action">support.im.chat.CLIENT_NOTIFICATION</string>
 
   <string name="menu_title_contacts_add">添加联系人</string>
   <string name="support_im_conversations_title">消息</string>
   <string name="support_im_contacts_title">航城科技</string>
   <string name="support_im_add_contact">添加好友</string>
-  <string name="support_im_mobile_contact">手机联系人</string>
   <string name="no_mobile_contacts">没有手机联系人</string>
   <string name="support_im_un_support_message_type">暂不支持此消息类型</string>
+  <string name="support_im_add_request_agree">接受</string>
+  <string name="support_im_add_request_refused">已拒绝</string>
+  <string name="support_im_add_request_agreed">已添加</string>
   <string name="support_im_add_request_sent">请求已发送</string>
   <string name="support_im_add_request_invitation">您有新的好友申请</string>
-  <string name="support_im_add_request_invitation_action">com.avoscloud.chat.INVITATION_ACTION</string>
   <string name="support_im_add_request_send_succeed">发送请求成功，等待对方验证</string>
   <string name="support_im_add_contacts_search_hint">用户名</string>
   <string name="support_im_add_contacts_mobile_title">手机联系人</string>
   <string name="support_im_add_contacts_mobile_subtitle">添加或邀请通讯录中的朋友</string>
+  <string name="support_im_when_agree_request">我通过了你的好友验证请求,现在我们可以开始聊天了</string>
+  <string name="support_im_when_agreed_request">你已添加了xxx,现在可以开始聊天了</string>
 
   <string name="support_im_user_detail_chat">发送消息</string>
   <string name="support_im_user_detail_add_contacts">添加好友</string>

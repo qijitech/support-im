@@ -5,4 +5,12 @@
     android:orientation="vertical"
     >
 
+
+  <support.ui.components.SupportButton
+      android:id="@+id/test"
+      android:layout_width="match_parent"
+      android:layout_height="50dp"
+      android:text="Text"
+      />
+
 </LinearLayout>
