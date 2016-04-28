@@ -9,7 +9,6 @@ import android.widget.EditText;
 import butterknife.Bind;
 import butterknife.OnClick;
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVExceptionHolder;
 import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMException;
@@ -52,7 +51,7 @@ public class LoginMobileActivity extends BaseActivity {
       @Override public void done(SupportUser avUser, AVException e) {
         HudUtils.dismissHud();
         if (AVExceptionHandler.handAVException(e)) {
-          ChatManager.getInstance().openClient(avUser.getUsername(), new AVIMClientCallback() {
+          ChatManager.getInstance().openClient(avUser.getObjectId(), new AVIMClientCallback() {
             @Override
             public void done(AVIMClient avimClient, AVIMException e) {
               HudUtils.dismissHud();
