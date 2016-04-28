@@ -2,6 +2,9 @@ package support.im.data.source.local;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import java.util.List;
+import support.im.data.Conversation;
 import support.im.data.source.ConversationsDataSource;
 import support.im.leanclound.ConversationManager;
 
@@ -29,6 +32,20 @@ public class ConversationsLocalDataSource implements ConversationsDataSource {
   }
 
   @Override public void loadConversations(@NonNull final LoadConversationCallback callback) {
+
+  }
+
+  @Override public void loadConversations(@NonNull List<Conversation> conversations,
+      @NonNull LoadConversationCallback callback) {
+
+  }
+
+  @Override public void loadAVIMConversations(@NonNull LoadAVIMConversationsCallback callback) {
+
+  }
+
+  @Override public void getLastMessage(@NonNull AVIMConversation conversation,
+      @NonNull GetLastMessageCallback callback) {
 
   }
 

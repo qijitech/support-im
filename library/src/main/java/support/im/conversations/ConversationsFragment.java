@@ -3,6 +3,7 @@ package support.im.conversations;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import com.avos.avoscloud.AVException;
 import de.greenrobot.event.EventBus;
 import java.util.List;
 import support.im.Injection;
@@ -55,8 +56,17 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
     contentPresenter.displayContentView();
   }
 
+  @Override public void updateConversation(Conversation conversation, int position) {
+    mAdapter.add(conversation, position);
+    contentPresenter.displayContentView();
+  }
+
   @Override public void showNoConversations() {
     contentPresenter.displayEmptyView();
+  }
+
+  @Override public void showError(String error, AVException e) {
+    contentPresenter.displayErrorView();
   }
 
   @Override public boolean isActive() {

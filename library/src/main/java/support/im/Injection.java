@@ -13,6 +13,7 @@ import support.im.data.source.local.MobileContactsLocalDataSource;
 import support.im.data.source.local.UsersLocalDataSource;
 import support.im.data.source.remote.AddRequestsRemoteDataSource;
 import support.im.data.source.remote.ContactsRemoteDataSource;
+import support.im.data.source.remote.ConversationsRemoteDataSource;
 import support.im.data.source.remote.UsersRemoteDataSource;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -26,7 +27,8 @@ public class Injection {
 
   public static ConversationsRepository provideConversationsRepository(@NonNull Context context) {
     checkNotNull(context);
-    return ConversationsRepository.getInstance(ConversationsLocalDataSource.getInstance(context));
+    return ConversationsRepository.getInstance(ConversationsLocalDataSource.getInstance(context),
+        ConversationsRemoteDataSource.getInstance());
   }
 
   public static UsersRepository provideUsersRepository(@NonNull Context context) {

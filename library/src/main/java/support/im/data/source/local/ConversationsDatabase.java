@@ -50,6 +50,20 @@ public class ConversationsDatabase {
     }
   }
 
+  public Conversation saveConversation(Conversation conversation) {
+    SQLiteDatabase db = mDbHelper.getWritableDatabase();
+    try {
+      ContentValues cv = new ContentValues();
+      cv.put(Conversations.COLUMN_NAME_CONVERSATION_ID, conversation.mConversationId);
+      cv.put(Conversations.COLUMN_NAME_UNREAD_COUNT, 1);
+      long id = db.insertWithOnConflict(Conversations.TABLE_NAME, null, cv, SQLiteDatabase.CONFLICT_IGNORE);
+      conversation.mId = String.valueOf(id);
+      return conversation;
+    } finally {
+      db.close();
+    }
+  }
+
   public void saveConversation(String conversationId) {
     SQLiteDatabase db = mDbHelper.getWritableDatabase();
     try {

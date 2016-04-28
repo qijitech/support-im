@@ -1,5 +1,6 @@
 package support.im.conversations;
 
+import com.avos.avoscloud.AVException;
 import java.util.List;
 import support.im.BasePresenter;
 import support.im.BaseView;
@@ -12,7 +13,11 @@ public interface ConversationsContract {
 
     void showConversations(List<Conversation> conversations);
 
+    void updateConversation(Conversation conversation, int position);
+
     void showNoConversations();
+
+    void showError(String error, AVException e);
 
     boolean isActive();
   }
