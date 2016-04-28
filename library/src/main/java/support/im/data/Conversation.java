@@ -3,8 +3,8 @@ package support.im.data;
 import android.database.Cursor;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import support.im.data.cache.AVIMConversationCache;
 import support.im.data.source.local.ConversationsPersistenceContract;
-import support.im.utilities.AVIMConversationCacheUtils;
 
 public class Conversation {
 
@@ -27,7 +27,7 @@ public class Conversation {
   }
 
   public AVIMConversation getConversation() {
-    return AVIMConversationCacheUtils.getCacheConversation(mId);
+    return AVIMConversationCache.getCacheConversation(mId);
   }
 
 

@@ -1,5 +1,6 @@
 package support.im.conversations;
 
+import com.avos.avoscloud.im.v2.AVIMException;
 import java.util.List;
 import support.im.data.Conversation;
 import support.im.data.source.ConversationsDataSource;
@@ -50,7 +51,7 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
         processConversations(conversations);
       }
 
-      @Override public void onDataNotAvailable() {
+      @Override public void onDataNotAvailable(AVIMException e) {
 
       }
     });

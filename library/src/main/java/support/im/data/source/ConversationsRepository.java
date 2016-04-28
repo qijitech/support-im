@@ -1,6 +1,7 @@
 package support.im.data.source;
 
 import android.support.annotation.NonNull;
+import com.avos.avoscloud.im.v2.AVIMException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -61,7 +62,7 @@ public class ConversationsRepository implements ConversationsDataSource {
         callback.onConversationsLoaded(new ArrayList<>(mCachedConversations.values()));
       }
 
-      @Override public void onDataNotAvailable() {
+      @Override public void onDataNotAvailable(AVIMException e) {
       }
     });
   }

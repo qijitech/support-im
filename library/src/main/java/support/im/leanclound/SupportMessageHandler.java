@@ -13,8 +13,9 @@ import support.im.R;
 import support.im.data.ConversationType;
 import support.im.leanclound.event.ImTypeMessageEvent;
 import support.im.utilities.ConversationHelper;
-import support.im.utilities.SupportLog;
 import support.im.utilities.NotificationUtils;
+import support.im.utilities.SupportLog;
+import support.ui.app.SupportApp;
 
 /**
  * AVIMTypedMessage的Handler，socket过来的AVIMTypedMessage都会通过此Handler与应用交互
@@ -86,7 +87,7 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
       String title = (TextUtils.isEmpty(userName) ? "" : userName);
 
       Intent intent = new Intent();
-      intent.setAction("com.avoscloud.chat.intent.client_notification");
+      intent.setAction(SupportApp.getInstance().getString(R.string.support_im_client_notification_action));
       intent.putExtra(Constants.CONVERSATION_ID, conversation.getConversationId());
       intent.putExtra(Constants.MEMBER_ID, message.getFrom());
       if (ConversationHelper.typeOfConversation(conversation) == ConversationType.Single) {
