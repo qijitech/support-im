@@ -2,9 +2,11 @@ package support.im.data;
 
 import android.annotation.SuppressLint;
 import com.avos.avoscloud.AVFile;
+import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SignUpCallback;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +18,7 @@ import support.im.utilities.SupportLog;
   public static final String USER_ID = "userId";
   public static final String NICKNAME = "nickname";
   public static final String AVATAR = "avatar";
+  public static final String INSTALLATION = "installation";
 
   public static void register(String username, String password, String nickname, SignUpCallback callback) {
     SupportUser user = new SupportUser();
@@ -55,6 +58,14 @@ import support.im.utilities.SupportLog;
 
   public static SupportUser getCurrentUser() {
     return getCurrentUser(SupportUser.class);
+  }
+
+  public void updateUserInstallation(SaveCallback callback) {
+    AVInstallation installation = AVInstallation.getCurrentInstallation();
+    if (installation != null) {
+      put(INSTALLATION, installation);
+      saveInBackground(callback);
+    }
   }
 
   public void findFriendsWithCachePolicy(AVQuery.CachePolicy cachePolicy, FindCallback<SupportUser>

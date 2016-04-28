@@ -13,4 +13,5 @@ public interface UsersDataSource {
   }
 
   void searchUser(@NonNull String username, @NonNull GetUserCallback callback);
+
 }

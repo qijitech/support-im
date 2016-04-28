@@ -8,6 +8,8 @@ public interface LoginContract {
   interface View extends BaseView<Presenter> {
     void showLoginMobileUi();
     void showRegisterUi();
+    void showMainUi();
+    boolean isActive();
   }
 
   interface Presenter extends BasePresenter {

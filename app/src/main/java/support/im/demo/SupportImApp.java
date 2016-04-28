@@ -5,6 +5,7 @@ import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
 import pl.tajchert.nammu.Nammu;
 import support.im.data.SupportUser;
+import support.im.demo.features.main.MainActivity;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.contacts.AddRequest;
 import support.im.service.PushManager;
@@ -23,7 +24,7 @@ public class SupportImApp extends SupportApp {
     // 节省流量
     AVOSCloud.setLastModifyEnabled(true);
 
-    PushManager.getInstance().init(appContext());
+    PushManager.getInstance().initialize(appContext(), MainActivity.class);
     AVOSCloud.setDebugLogEnabled(BuildConfig.DEBUG);
     AVAnalytics.enableCrashReport(this, !BuildConfig.DEBUG);
 

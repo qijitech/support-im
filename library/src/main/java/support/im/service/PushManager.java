@@ -1,12 +1,13 @@
 package support.im.service;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVPush;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.PushService;
-import java.util.HashMap;
+import com.google.common.collect.Maps;
 import java.util.Map;
 import support.im.data.SupportUser;
 
@@ -16,43 +17,46 @@ public class PushManager {
 
   private final static String AVOS_PUSH_ACTION = "action";
   public static final String INSTALLATION_CHANNELS = "channels";
-  private static PushManager pushManager;
-  private Context context;
+  private static PushManager sPushManager;
+  private Context mContext;
+  private Class<? extends Activity> mDefaultActivity;
+
 
   public synchronized static PushManager getInstance() {
-    if (pushManager == null) {
-      pushManager = new PushManager();
+    if (sPushManager == null) {
+      sPushManager = new PushManager();
     }
-    return pushManager;
+    return sPushManager;
   }
 
-  public void init(Context context) {
-    this.context = context;
-    //PushService.setDefaultPushCallback(context, EntrySplashActivity.class);
+  public void initialize(Context context, Class<? extends Activity> defaultActivity) {
+    mContext = context;
+    mDefaultActivity = defaultActivity;
+    PushService.setDefaultPushCallback(context, defaultActivity);
     subscribeCurrentUserChannel();
   }
 
   private void subscribeCurrentUserChannel() {
     String currentUserId = SupportUser.getCurrentUserId();
     if (!TextUtils.isEmpty(currentUserId)) {
-      //PushService.subscribe(context, currentUserId, EntrySplashActivity.class);
+      PushService.subscribe(mContext, currentUserId, mDefaultActivity);
     }
   }
 
   public void unSubscribeCurrentUserChannel() {
     String currentUserId = SupportUser.getCurrentUserId();
     if (!TextUtils.isEmpty(currentUserId)) {
-      PushService.unsubscribe(context, currentUserId);
+      PushService.unsubscribe(mContext, currentUserId);
     }
   }
 
   public void pushMessage(String userId, String message, String action) {
-    AVQuery query = AVInstallation.getQuery();
+    AVQuery<AVInstallation> query = AVInstallation.getQuery();
     query.whereContains(INSTALLATION_CHANNELS, userId);
     AVPush push = new AVPush();
     push.setQuery(query);
 
-    Map<String, Object> dataMap = new HashMap<String, Object>();
+    Map<String, Object> dataMap = Maps.newHashMap();
     dataMap.put(AVOS_ALERT, message);
     dataMap.put(AVOS_PUSH_ACTION, action);
     push.setData(dataMap);
