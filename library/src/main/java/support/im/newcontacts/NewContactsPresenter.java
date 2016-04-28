@@ -54,11 +54,11 @@ public class NewContactsPresenter implements NewContactsContract.Presenter {
       }
 
       @Override public void onAddRequestsNotFound() {
-
+        mNewContactView.showNoAddRequests();
       }
 
       @Override public void onDataNotAvailable(AVException exception) {
-
+        mNewContactView.displayError(AVExceptionHandler.getLocalizedMessage(exception), exception);
       }
     });
   }
