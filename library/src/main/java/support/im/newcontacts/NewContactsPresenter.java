@@ -1,12 +1,20 @@
 package support.im.newcontacts;
 
-import android.support.v4.app.Fragment;
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
+import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import java.util.List;
+import support.im.R;
+import support.im.data.SupportUser;
 import support.im.data.source.AddRequestsDataSource;
 import support.im.data.source.AddRequestsRepository;
+import support.im.leanclound.ChatManager;
 import support.im.leanclound.contacts.AddRequest;
 import support.im.leanclound.contacts.AddRequestManager;
+import support.im.utilities.AVExceptionHandler;
+import support.ui.app.SupportApp;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -49,7 +57,37 @@ public class NewContactsPresenter implements NewContactsContract.Presenter {
   }
 
   @Override public void agreeAddRequest(AddRequest addRequest) {
+    if (mNewContactView.isActive()) {
+      mNewContactView.showHud();
+    }
+    mAddRequestsRepository.agreeAddRequest(addRequest, new AddRequestsDataSource.AddRequestCallback() {
+      @Override public void onAddRequestLoaded(AddRequest addRequest) {
+        if (!mNewContactView.isActive()) {
+          return;
+        }
+        SupportUser fromUser = addRequest.getFromUser();
+        if (fromUser != null) {
+          ChatManager.getInstance().createSingleConversation(fromUser.getObjectId(), new AVIMConversationCreatedCallback() {
+            @Override
+            public void done(AVIMConversation avimConversation, AVIMException e) {
+              if (e == null) {
+                AVIMTextMessage message = new AVIMTextMessage();
+                message.setText(SupportApp.getInstance().getString(R.string.support_im_when_agree_request));
+                avimConversation.sendMessage(message, null);
+              }
+            }
+          });
+        }
+        mNewContactView.dismissHud();
+        addRequest.setStatus(AddRequest.STATUS_DONE);
+        mNewContactView.showAddRequestAgreed(addRequest);
+      }
 
+      @Override public void onDataNotAvailable(AVException exception) {
+        mNewContactView.dismissHud();
+        mNewContactView.showError(AVExceptionHandler.getLocalizedMessage(exception), exception);
+      }
+    });
   }
 
   @Override public void deleteAddRequest(AddRequest addRequest) {

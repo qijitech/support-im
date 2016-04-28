@@ -3,9 +3,13 @@ package support.im.newcontacts;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import com.avos.avoscloud.AVException;
+import de.greenrobot.event.EventBus;
 import java.util.List;
+import support.im.events.NewContactAgreeEvent;
 import support.im.leanclound.contacts.AddRequest;
 import support.ui.SupportRecyclerViewFragment;
+import support.ui.utilities.HudUtils;
+import support.ui.utilities.ToastUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -25,18 +29,28 @@ public class NewContactsFragment extends SupportRecyclerViewFragment implements 
   @Override public void onResume() {
     super.onResume();
     mPresenter.start();
+    EventBus.getDefault().register(this);
+  }
+
+  @Override public void onPause() {
+    super.onPause();
+    EventBus.getDefault().unregister(this);
+  }
+
+  @SuppressWarnings("unused") public void onEvent(NewContactAgreeEvent event) {
+    mPresenter.agreeAddRequest(event.mAddRequest);
   }
 
   @Override public void setLoadingIndicator(boolean active) {
     contentPresenter.displayLoadView();
   }
 
-  @Override public void showHud(boolean active) {
-
+  @Override public void showHud() {
+    HudUtils.showHud(getContext());
   }
 
   @Override public void dismissHud() {
-
+    HudUtils.dismissHud();
   }
 
   @Override public void showAddRequests(List<AddRequest> addRequests) {
@@ -46,6 +60,14 @@ public class NewContactsFragment extends SupportRecyclerViewFragment implements 
 
   @Override public void showNoAddRequests() {
     contentPresenter.displayEmptyView();
+  }
+
+  @Override public void showAddRequestAgreed(AddRequest addRequest) {
+    mAdapter.notifyDataSetChanged();
+  }
+
+  @Override public void showError(String error, AVException exception) {
+    ToastUtils.toast(error);
   }
 
   @Override public void displayError(String error, AVException exception) {

@@ -14,5 +14,11 @@ public interface AddRequestsDataSource {
     void onDataNotAvailable(AVException exception);
   }
 
+  interface AddRequestCallback {
+    void onAddRequestLoaded(AddRequest addRequest);
+    void onDataNotAvailable(AVException exception);
+  }
+
   void loadAddRequests(int skip, int limit, LoadAddRequestsCallback callback);
+  void agreeAddRequest(AddRequest addRequest, AddRequestCallback callback);
 }

@@ -11,13 +11,17 @@ public interface NewContactsContract {
   interface View extends BaseView<Presenter> {
     void setLoadingIndicator(boolean active);
 
-    void showHud(boolean active);
+    void showHud();
 
     void dismissHud();
 
     void showAddRequests(List<AddRequest> addRequests);
 
     void showNoAddRequests();
+
+    void showAddRequestAgreed(AddRequest addRequest);
+
+    void showError(String error, AVException exception);
 
     void displayError(String error, AVException exception);
 

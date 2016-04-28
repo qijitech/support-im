@@ -41,4 +41,15 @@ public class AddRequestsRepository implements AddRequestsDataSource {
       }
     });
   }
+
+  @Override public void agreeAddRequest(AddRequest addRequest, final AddRequestCallback callback) {
+    mAddRequestsRemoteDataSource.agreeAddRequest(addRequest, new AddRequestCallback() {
+      @Override public void onAddRequestLoaded(AddRequest addRequest) {
+        callback.onAddRequestLoaded(addRequest);
+      }
+      @Override public void onDataNotAvailable(AVException exception) {
+        callback.onDataNotAvailable(exception);
+      }
+    });
+  }
 }

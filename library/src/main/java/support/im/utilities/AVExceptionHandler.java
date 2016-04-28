@@ -8,8 +8,14 @@ import support.ui.utilities.ToastUtils;
 public class AVExceptionHandler {
 
   public static boolean handAVException(AVException e) {
+    return handAVException(e, true);
+  }
+
+  public static boolean handAVException(AVException e, boolean showToast) {
     if (e != null) {
-      ToastUtils.toast(getLocalizedMessage(e));
+      if (showToast) {
+        ToastUtils.toast(getLocalizedMessage(e));
+      }
       return false;
     } else {
       return true;
