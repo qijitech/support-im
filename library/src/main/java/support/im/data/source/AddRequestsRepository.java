@@ -29,11 +29,14 @@ public class AddRequestsRepository implements AddRequestsDataSource {
   public void loadAddRequests(int skip, int limit, final LoadAddRequestsCallback callback) {
     mAddRequestsRemoteDataSource.loadAddRequests(skip, limit, new LoadAddRequestsCallback() {
       @Override public void onAddRequestsLoaded(List<AddRequest> addRequests) {
+        if (addRequests == null || addRequests.size() == 0) {
+          callback.onAddRequestsNotFound();
+          return;
+        }
         callback.onAddRequestsLoaded(addRequests);
       }
 
       @Override public void onAddRequestsNotFound() {
-        callback.onAddRequestsNotFound();
       }
 
       @Override public void onDataNotAvailable(AVException exception) {
