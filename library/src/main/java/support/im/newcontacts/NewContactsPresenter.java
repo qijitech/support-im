@@ -5,6 +5,7 @@ import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
+import com.google.common.collect.Lists;
 import java.util.List;
 import support.im.R;
 import support.im.data.SupportUser;
@@ -40,10 +41,16 @@ public class NewContactsPresenter implements NewContactsContract.Presenter {
     mAddRequestsRepository.loadAddRequests(skip, limit, new AddRequestsDataSource.LoadAddRequestsCallback() {
       @Override public void onAddRequestsLoaded(List<AddRequest> addRequests) {
         AddRequestManager.getInstance().markAddRequestsRead(addRequests);
+        List<AddRequest> addRequestsToShow = Lists.newArrayList();
+        for (AddRequest addRequest : addRequests) {
+          if (addRequest.getFromUser() != null) {
+            addRequestsToShow.add(addRequest);
+          }
+        }
         if (!mNewContactView.isActive()) {
           return;
         }
-        mNewContactView.showAddRequests(addRequests);
+        mNewContactView.showAddRequests(addRequestsToShow);
       }
 
       @Override public void onAddRequestsNotFound() {
