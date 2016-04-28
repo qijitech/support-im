@@ -3,12 +3,14 @@ package support.im;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import support.im.data.source.AddRequestsRepository;
+import support.im.data.source.ContactsRepository;
 import support.im.data.source.ConversationsRepository;
 import support.im.data.source.MobileContactsRepository;
 import support.im.data.source.UsersRepository;
 import support.im.data.source.local.ConversationsLocalDataSource;
 import support.im.data.source.local.MobileContactsLocalDataSource;
 import support.im.data.source.remote.AddRequestsRemoteDataSource;
+import support.im.data.source.remote.ContactsRemoteDataSource;
 import support.im.data.source.remote.UsersRemoteDataSource;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -33,5 +35,10 @@ public class Injection {
   public static AddRequestsRepository provideAddRequestsRepository(@NonNull Context context) {
     checkNotNull(context);
     return AddRequestsRepository.getInstance(AddRequestsRemoteDataSource.getInstance());
+  }
+
+  public static ContactsRepository provideContactsRepository(@NonNull Context context) {
+    checkNotNull(context);
+    return ContactsRepository.getInstance(ContactsRemoteDataSource.getInstance());
   }
 }

@@ -6,8 +6,6 @@ import com.avos.avoscloud.FindCallback;
 import java.util.ArrayList;
 import java.util.List;
 import support.im.data.SupportUser;
-import support.im.leanclound.Constants;
-import support.im.utilities.AVExceptionHandler;
 import support.im.utilities.UserCacheUtils;
 
 public class ContactsManager {
@@ -47,25 +45,5 @@ public class ContactsManager {
           }
         });
   }
-
-  //public static void searchUser(int skip, String search) {
-  //  AVQuery<SupportUser> q = SupportUser.getQuery(SupportUser.class);
-  //  q.whereContains(SupportUser.USERNAME, search);
-  //  q.limit(Constants.PAGE_SIZE);
-  //  q.skip(skip);
-  //  SupportUser user = SupportUser.getCurrentUser();
-  //  List<String> friendIds = new ArrayList<String>(ContactsManager.getFriendIds());
-  //  friendIds.add(user.getObjectId());
-  //  q.whereNotContainedIn(Constants.OBJECT_ID, friendIds);
-  //  q.orderByDescending(Constants.UPDATED_AT);
-  //  q.setCachePolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
-  //  q.findInBackground(new FindCallback<SupportUser>() {
-  //    @Override public void done(List<SupportUser> list, AVException e) {
-  //      if (AVExceptionHandler.handAVException(e)) {
-  //        UserCacheUtils.cacheUsers(list);
-  //      }
-  //    }
-  //  });
-  //}
 
 }

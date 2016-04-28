@@ -8,12 +8,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import butterknife.ButterKnife;
+import java.util.List;
+import support.im.Injection;
 import support.im.R;
 import support.im.addcontact.AddContactActivity;
+import support.im.data.SupportUser;
 import support.im.newcontacts.NewContactsActivity;
 import support.ui.SupportFragment;
 
-public class ContactsFragment extends SupportFragment {
+import static com.google.common.base.Preconditions.checkNotNull;
+
+public class ContactsFragment extends SupportFragment implements ContactsContract.View {
+
+  ContactsContract.Presenter mPresenter;
 
   public static ContactsFragment create() {
     return new ContactsFragment();
@@ -25,12 +32,16 @@ public class ContactsFragment extends SupportFragment {
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    new ContactsPresenter(Injection.provideContactsRepository(getContext()), this);
+
     setHasOptionsMenu(true);
   }
 
   @Override public void onResume() {
     super.onResume();
     getActivity().setTitle(R.string.support_im_contacts_title);
+    mPresenter.start();
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -54,5 +65,29 @@ public class ContactsFragment extends SupportFragment {
       return true;
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  @Override public void setLoadingIndicator(boolean active) {
+
+  }
+
+  @Override public void showContacts(List<SupportUser> contacts) {
+
+  }
+
+  @Override public void showNotLoggedIn() {
+
+  }
+
+  @Override public void showNoContacts() {
+
+  }
+
+  @Override public boolean isActive() {
+    return isAdded();
+  }
+
+  @Override public void setPresenter(ContactsContract.Presenter presenter) {
+    mPresenter = checkNotNull(presenter);
   }
 }
