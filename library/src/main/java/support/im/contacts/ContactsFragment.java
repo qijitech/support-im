@@ -3,6 +3,7 @@ package support.im.contacts;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -87,16 +88,33 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
 
   @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
     super.onCreateOptionsMenu(menu, inflater);
-    inflater.inflate(R.menu.contact_menus, menu);
+    inflater.inflate(R.menu.contacts_menu, menu);
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     final int itemId = item.getItemId();
-    if (itemId == R.id.menu_add_contacts) {
-      startActivity(new Intent(getContext(), AddContactActivity.class));
+    if (itemId == R.id.menu_support_im_contacts_add) {
+      showMorePopUpMenu();
       return true;
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  private void showMorePopUpMenu() {
+    PopupMenu popup = new PopupMenu(getContext(), getActivity().findViewById(R.id.menu_support_im_contacts_add));
+    popup.getMenuInflater().inflate(R.menu.contacts_menu_add, popup.getMenu());
+    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+      public boolean onMenuItemClick(MenuItem item) {
+        final int menuId = item.getItemId();
+        if (menuId == R.id.menu_support_im_add_contact) {
+          startActivity(new Intent(getContext(), AddContactActivity.class));
+          return true;
+        }
+        return false;
+      }
+    });
+
+    popup.show();
   }
 
   @Override public void onItemClick(int position, View view) {
