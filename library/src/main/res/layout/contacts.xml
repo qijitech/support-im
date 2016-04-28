@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@id/support_ui_content_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:animateLayoutChanges="true"
     >
-
-
-  <support.ui.components.SupportButton
-      android:id="@+id/test"
+  <FrameLayout
+      android:id="@id/support_ui_content_view"
       android:layout_width="match_parent"
-      android:layout_height="50dp"
-      android:text="Text"
-      />
+      android:layout_height="match_parent"
+      >
+    <android.support.v7.widget.RecyclerView
+        android:id="@id/support_ui_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        />
+  </FrameLayout>
 
-</LinearLayout>
+</FrameLayout>

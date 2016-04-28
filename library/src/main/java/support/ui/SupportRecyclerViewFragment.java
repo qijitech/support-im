@@ -10,6 +10,7 @@ import butterknife.ButterKnife;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import support.im.R;
 import support.ui.adapters.EasyRecyclerAdapter;
+import support.ui.adapters.EasyViewHolder;
 import support.ui.content.ContentPresenter;
 import support.ui.content.EmptyView;
 import support.ui.content.ErrorView;
@@ -17,6 +18,7 @@ import support.ui.content.ReflectionContentPresenterFactory;
 import support.ui.content.RequiresContent;
 
 @RequiresContent public class SupportRecyclerViewFragment extends SupportFragment implements
+    EasyViewHolder.OnItemClickListener,
     EmptyView.OnEmptyViewClickListener,
     ErrorView.OnErrorViewClickListener {
 
@@ -35,6 +37,7 @@ import support.ui.content.RequiresContent;
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mAdapter = new EasyRecyclerAdapter(getContext());
+    mAdapter.setOnClickListener(this);
     contentPresenter = factory.createContentPresenter();
     contentPresenter.onCreate(getContext());
   }
@@ -74,6 +77,10 @@ import support.ui.content.RequiresContent;
   }
 
   @Override public void onErrorViewClick(View view) {
+
+  }
+
+  @Override public void onItemClick(int position, View view) {
 
   }
 }

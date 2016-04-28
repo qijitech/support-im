@@ -3,24 +3,32 @@ package support.im.contacts;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import butterknife.ButterKnife;
+import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import java.util.List;
 import support.im.Injection;
 import support.im.R;
 import support.im.addcontact.AddContactActivity;
 import support.im.data.SupportUser;
 import support.im.newcontacts.NewContactsActivity;
-import support.ui.SupportFragment;
+import support.ui.SupportRecyclerViewFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ContactsFragment extends SupportFragment implements ContactsContract.View {
+public class ContactsFragment extends SupportRecyclerViewFragment implements ContactsContract.View {
 
   ContactsContract.Presenter mPresenter;
+  private FrameLayout mContentView;
+
+  protected ContactsAdapter mAdapter;
+  private ContactsDummy mNewContacts;
+  private ContactsDummy mGroup;
 
   public static ContactsFragment create() {
     return new ContactsFragment();
@@ -32,10 +40,26 @@ public class ContactsFragment extends SupportFragment implements ContactsContrac
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    mNewContacts = ContactsDummy.newContacts();
+    mGroup = ContactsDummy.group();
+
+    mAdapter = new ContactsAdapter(getContext());
+    mAdapter.setOnClickListener(this);
+    mAdapter.bind(ContactsDummy.class, ContactsDummyViewHolder.class);
+    mAdapter.bind(ContactsTotal.class, ContactsTotalViewHolder.class);
+    mAdapter.bind(SupportUser.class, ContactsViewHolder.class);
 
     new ContactsPresenter(Injection.provideContactsRepository(getContext()), this);
 
     setHasOptionsMenu(true);
+  }
+
+  protected void setAdapter() {
+    mRecyclerView.setAdapter(mAdapter);
+  }
+
+  @Override protected View getAttachContentView() {
+    return mContentView;
   }
 
   @Override public void onResume() {
@@ -46,9 +70,13 @@ public class ContactsFragment extends SupportFragment implements ContactsContrac
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    ButterKnife.findById(view, R.id.test).setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        startActivity(new Intent(getContext(), NewContactsActivity.class));
+    mContentView = ButterKnife.findById(view, R.id.support_ui_content_view);
+    final StickyRecyclerHeadersDecoration headersDecor = new StickyRecyclerHeadersDecoration(mAdapter);
+    mRecyclerView.addItemDecoration(headersDecor);
+    mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+      @Override
+      public void onChanged() {
+        headersDecor.invalidateHeaders();
       }
     });
   }
@@ -67,12 +95,35 @@ public class ContactsFragment extends SupportFragment implements ContactsContrac
     return super.onOptionsItemSelected(item);
   }
 
-  @Override public void setLoadingIndicator(boolean active) {
+  @Override public void onItemClick(int position, View view) {
+    Object object = mAdapter.get(position);
+    if (object instanceof SupportUser) {
+      //startActivity(new Intent(getContext(), UserDetailActivity.class));
+      return;
+    }
+    if (object instanceof ContactsDummy) {
+      ContactsDummy contactsDummy = (ContactsDummy) object;
+      switch (contactsDummy.mTag) {
+        case ContactsDummy.NEW_CONTACTS:
+          startActivity(new Intent(getContext(), NewContactsActivity.class));
+          break;
+        case ContactsDummy.GROUP:
+          break;
+      }
+    }
+  }
 
+  @Override public void setLoadingIndicator(boolean active) {
+    contentPresenter.displayLoadView();
   }
 
   @Override public void showContacts(List<SupportUser> contacts) {
-
+    mAdapter.addAll(contacts);
+    final int size = contacts.size();
+    mAdapter.add(mNewContacts, 0);
+    mAdapter.add(mGroup, 1);
+    mAdapter.add(new ContactsTotal(size));
+    contentPresenter.displayContentView();
   }
 
   @Override public void showNotLoggedIn() {
@@ -80,7 +131,7 @@ public class ContactsFragment extends SupportFragment implements ContactsContrac
   }
 
   @Override public void showNoContacts() {
-
+    contentPresenter.displayEmptyView();
   }
 
   @Override public boolean isActive() {
@@ -90,4 +141,5 @@ public class ContactsFragment extends SupportFragment implements ContactsContrac
   @Override public void setPresenter(ContactsContract.Presenter presenter) {
     mPresenter = checkNotNull(presenter);
   }
+
 }

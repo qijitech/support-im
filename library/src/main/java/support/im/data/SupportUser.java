@@ -22,7 +22,18 @@ import support.im.utilities.SupportLog;
   public static final String AVATAR = "avatar";
   public static final String INSTALLATION = "installation";
 
-  public static void register(String username, String password, String nickname, SignUpCallback callback) {
+  private String mSortLetters;
+
+  public void setSortLetters(String sortLetters) {
+    mSortLetters = sortLetters;
+  }
+
+  public String getSortLetters() {
+    return mSortLetters;
+  }
+
+  public static void register(String username, String password, String nickname,
+      SignUpCallback callback) {
     SupportUser user = new SupportUser();
     user.put(USER_ID, UUID.randomUUID());
     user.put(AVATAR, "http://img1.imgtn.bdimg.com/it/u=1248462995,728310824&fm=21&gp=0.jpg");
@@ -61,7 +72,7 @@ import support.im.utilities.SupportLog;
     return null;
   }
 
-  public static String getCurrentUserId () {
+  public static String getCurrentUserId() {
     SupportUser currentUser = getCurrentUser(SupportUser.class);
     return (null != currentUser ? currentUser.getObjectId() : null);
   }
@@ -78,8 +89,8 @@ import support.im.utilities.SupportLog;
     }
   }
 
-  public void findFriendsWithCachePolicy(AVQuery.CachePolicy cachePolicy, FindCallback<SupportUser>
-      findCallback) {
+  public void findFriendsWithCachePolicy(AVQuery.CachePolicy cachePolicy,
+      FindCallback<SupportUser> findCallback) {
     try {
       AVQuery<SupportUser> q = followeeQuery(SupportUser.class);
       q.setCachePolicy(cachePolicy);
@@ -88,6 +99,5 @@ import support.im.utilities.SupportLog;
     } catch (Exception e) {
       SupportLog.logException(e);
     }
-
   }
 }

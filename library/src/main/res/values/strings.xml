@@ -6,6 +6,9 @@
 
   <string name="support_im_add_request_invitation_action">support.im.chat.INVITATION_ACTION</string>
   <string name="support_im_client_notification_action">support.im.chat.CLIENT_NOTIFICATION</string>
+  <string name="support_im_contacts_new_contact">新的朋友</string>
+  <string name="support_im_contacts_group">群聊</string>
+  <string name="support_im_contacts_total">%1$d位联系人</string>
 
   <string name="menu_title_contacts_add">添加联系人</string>
   <string name="support_im_conversations_title">消息</string>
