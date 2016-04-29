@@ -17,6 +17,7 @@ import java.util.List;
 import support.im.Injection;
 import support.im.R;
 import support.im.addcontact.AddContactActivity;
+import support.im.data.SimpleUser;
 import support.im.data.SupportUser;
 import support.im.detail.UserDetailActivity;
 import support.im.leanclound.Constants;
@@ -122,7 +123,7 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     if (object instanceof SupportUser) {
       SupportUser user = (SupportUser) object;
       Intent intent = new Intent(getContext(), UserDetailActivity.class);
-      intent.putExtra(Constants.EXTRA_OBJECT_ID, user.getObjectId());
+      intent.putExtra(Constants.EXTRA_USER_ID, user.getUserId());
       startActivity(intent);
       return;
     }
@@ -142,7 +143,7 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     contentPresenter.displayLoadView();
   }
 
-  @Override public void showContacts(List<SupportUser> contacts) {
+  @Override public void showContacts(List<SimpleUser> contacts) {
     mAdapter.addAll(contacts);
     final int size = contacts.size();
     mAdapter.add(mNewContacts, 0);

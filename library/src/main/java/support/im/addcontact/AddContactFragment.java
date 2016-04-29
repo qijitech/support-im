@@ -10,7 +10,7 @@ import butterknife.ButterKnife;
 import com.avos.avoscloud.AVException;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import support.im.R;
-import support.im.data.SupportUser;
+import support.im.data.SimpleUser;
 import support.im.detail.UserDetailActivity;
 import support.im.leanclound.Constants;
 import support.im.mobilecontact.MobileContactsActivity;
@@ -92,9 +92,9 @@ public class AddContactFragment extends SupportFragment implements View.OnClickL
     HudUtils.dismissHud();
   }
 
-  @Override public void showUser(SupportUser user) {
+  @Override public void showUser(SimpleUser user) {
     Intent intent = new Intent(getContext(), UserDetailActivity.class);
-    intent.putExtra(Constants.EXTRA_OBJECT_ID, user.getObjectId());
+    intent.putExtra(Constants.EXTRA_USER_ID, user.getUserId());
     startActivity(intent);
   }
 

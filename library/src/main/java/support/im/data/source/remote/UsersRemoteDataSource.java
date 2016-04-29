@@ -31,7 +31,7 @@ public class UsersRemoteDataSource implements UsersDataSource {
       @Override public void done(List<SupportUser> users, AVException e) {
         if (AVExceptionHandler.handAVException(e)) {
           if (users != null && users.size() >= 1) {
-            callback.onUserLoaded(users.get(0));
+            callback.onUserLoaded(users.get(0).toSimpleUser());
             return;
           }
           callback.onUserNotFound();
@@ -50,7 +50,7 @@ public class UsersRemoteDataSource implements UsersDataSource {
     q.findInBackground(new FindCallback<SupportUser>() {
       @Override public void done(List<SupportUser> users, AVException e) {
         if (AVExceptionHandler.handAVException(e, false)) {
-          callback.onUserLoaded(users);
+          callback.onUserLoaded(SupportUser.toSimpleUsers(users));
         } else {
           callback.onDataNotAvailable(e);
         }

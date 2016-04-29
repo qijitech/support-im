@@ -83,7 +83,7 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
       String notificationContent = message instanceof AVIMTextMessage ?
           ((AVIMTextMessage) message).getText() : mContext.getString(R.string.support_im_un_support_message_type);
 
-      String userName = ThirdPartUserUtils.getInstance().getUserName(message.getFrom());
+      String userName = "SupportMessageHandler:86行"; //ThirdPartUserUtils.getInstance().getUserName(message.getFrom());
       String title = (TextUtils.isEmpty(userName) ? "" : userName);
 
       Intent intent = new Intent();

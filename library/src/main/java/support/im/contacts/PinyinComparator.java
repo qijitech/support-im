@@ -1,11 +1,11 @@
 package support.im.contacts;
 
 import java.util.Comparator;
-import support.im.data.SupportUser;
+import support.im.data.SimpleUser;
 
-public class PinyinComparator implements Comparator<SupportUser> {
+public class PinyinComparator implements Comparator<SimpleUser> {
 
-  public int compare(SupportUser o1, SupportUser o2) {
+  public int compare(SimpleUser o1, SimpleUser o2) {
     if (o1.getSortLetters().equals("@") || o2.getSortLetters().equals("#")) {
       return -1;
     } else if (o1.getSortLetters().equals("#") || o2.getSortLetters().equals("@")) {

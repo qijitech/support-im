@@ -3,7 +3,7 @@ package support.im.data;
 import android.database.Cursor;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
-import support.im.data.cache.AVIMConversationCache;
+import support.im.data.cache.CacheManager;
 import support.im.data.source.local.ConversationsPersistenceContract;
 import support.im.leanclound.ChatManager;
 
@@ -30,7 +30,7 @@ public class Conversation {
   }
 
   public AVIMConversation getConversation() {
-    return AVIMConversationCache.getCacheConversation(mConversationId);
+    return CacheManager.getInstance().getCacheConversation(mConversationId);
   }
 
   public static Conversation createConversationFromCursor(Cursor cursor) {

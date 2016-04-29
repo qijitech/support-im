@@ -2,8 +2,8 @@ package support.im.data.source.local;
 
 import android.support.annotation.NonNull;
 import java.util.List;
-import support.im.data.SupportUser;
-import support.im.data.cache.ContactsCache;
+import support.im.data.SimpleUser;
+import support.im.data.cache.CacheManager;
 import support.im.data.source.ContactsDataSource;
 
 public class ContactsLocalDataSource implements ContactsDataSource {
@@ -18,7 +18,7 @@ public class ContactsLocalDataSource implements ContactsDataSource {
   }
 
   @Override public void getContacts(@NonNull LoadContactsCallback callback) {
-    List<SupportUser> contacts = ContactsCache.getCachedContacts();
+    List<SimpleUser> contacts = CacheManager.getInstance().getCacheContacts();
     callback.onContactsLoaded(contacts);
   }
 

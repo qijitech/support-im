@@ -124,14 +124,6 @@ public class ChatManager {
     mClientId = null;
   }
 
-  public void createGroupConversation(List<String> memberIds,
-      AVIMConversationCreatedCallback callback) {
-    Map<String, Object> attrs = new HashMap<>();
-    attrs.put(ConversationType.TYPE_KEY, ConversationType.Group.getValue());
-    attrs.put("name", getConversationName(memberIds));
-    mIMClient.createConversation(memberIds, "", attrs, false, true, callback);
-  }
-
   public void createSingleConversation(String memberId, AVIMConversationCreatedCallback callback) {
     Map<String, Object> attrs = new HashMap<>();
     attrs.put(ConversationType.TYPE_KEY, ConversationType.Single.getValue());
@@ -141,9 +133,9 @@ public class ChatManager {
   public void createSingleConversation(SupportUser toUser, AVIMConversationCreatedCallback callback) {
     Map<String, Object> attrs = new HashMap<>();
     attrs.put(ConversationType.TYPE_KEY, ConversationType.Single.getValue());
-    SimpleUser simpleToUser = new SimpleUser(toUser.getObjectId(), toUser.getUserId(), toUser.getDisplayName(), toUser.getAvatar());
+    SimpleUser simpleToUser = toUser.toSimpleUser();
     SupportUser supportUser = SupportUser.getCurrentUser();
-    SimpleUser fromUser = new SimpleUser(supportUser.getObjectId(), supportUser.getUserId(), supportUser.getDisplayName(), supportUser.getAvatar());
+    SimpleUser fromUser = supportUser.toSimpleUser();
     List<SimpleUser> members = Lists.newArrayList(simpleToUser, fromUser);
     attrs.put(Conversation.ATTRS_MEMBERS, members);
     final String memberId = toUser.getObjectId();
@@ -157,19 +149,4 @@ public class ChatManager {
     return mIMClient.getQuery();
   }
 
-  private String getConversationName(List<String> userIds) {
-    StringBuilder sb = new StringBuilder();
-    for (int i = 0; i < userIds.size(); i++) {
-      String id = userIds.get(i);
-      if (i != 0) {
-        sb.append(",");
-      }
-      sb.append(ThirdPartUserUtils.getInstance().getUserName(id));
-    }
-    if (sb.length() > 50) {
-      return sb.subSequence(0, 50).toString();
-    } else {
-      return sb.toString();
-    }
-  }
 }

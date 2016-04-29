@@ -3,18 +3,18 @@ package support.im.data.source;
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.AVException;
 import java.util.List;
-import support.im.data.SupportUser;
+import support.im.data.SimpleUser;
 
 public interface UsersDataSource {
 
   interface LoadUsersCallback {
-    void onUserLoaded(List<SupportUser> users);
+    void onUserLoaded(List<SimpleUser> users);
 
     void onDataNotAvailable(AVException exception);
   }
 
   interface GetUserCallback {
-    void onUserLoaded(SupportUser user);
+    void onUserLoaded(SimpleUser user);
 
     void onUserNotFound();
 

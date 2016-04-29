@@ -2,10 +2,12 @@ package support.im.contacts;
 
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.ops.SingleValueOp;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
+import support.im.data.SimpleUser;
 import support.im.data.SupportUser;
 import support.im.data.source.ContactsDataSource;
 import support.im.data.source.ContactsRepository;
@@ -38,13 +40,13 @@ public class ContactsPresenter implements ContactsContract.Presenter {
 
   @Override public void loadContacts(boolean forceUpdate) {
     mContactsRepository.getContacts(new ContactsDataSource.LoadContactsCallback() {
-      @Override public void onContactsLoaded(List<SupportUser> contacts) {
-        final List<String> objectIds = Lists.newArrayList();
-        for (SupportUser user : contacts) {
-          objectIds.add(user.getObjectId());
+      @Override public void onContactsLoaded(List<SimpleUser> contacts) {
+        final List<String> userIds = Lists.newArrayList();
+        for (SimpleUser user : contacts) {
+          userIds.add(user.getUserId());
         }
-        mUsersRepository.fetchUsers(objectIds, new UsersDataSource.LoadUsersCallback() {
-          @Override public void onUserLoaded(List<SupportUser> users) {
+        mUsersRepository.fetchUsers(userIds, new UsersDataSource.LoadUsersCallback() {
+          @Override public void onUserLoaded(List<SimpleUser> users) {
             processUsers(users);
             if (!mContactsView.isActive()) {
               return;
@@ -71,8 +73,8 @@ public class ContactsPresenter implements ContactsContract.Presenter {
     });
   }
 
-  private void processUsers(List<SupportUser> contacts) {
-    for (SupportUser u : contacts) {
+  private void processUsers(List<SimpleUser> contacts) {
+    for (SimpleUser u : contacts) {
       final String nickname = u.getDisplayName();
       if (!Strings.isNullOrEmpty(nickname)) {
         String pinyin = characterParser.getSelling(u.getDisplayName());

@@ -1,18 +1,14 @@
 package support.im.utilities;
 
-import android.text.TextUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.avos.avoscloud.JSONHelper;
 import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.google.common.collect.Lists;
 import java.util.List;
 import support.im.data.Conversation;
 import support.im.data.ConversationType;
 import support.im.data.SimpleUser;
 import support.im.leanclound.ChatManager;
-import support.im.leanclound.ThirdPartUserUtils;
 
 public final class ConversationHelper {
 
@@ -80,20 +76,6 @@ public final class ConversationHelper {
       SupportLog.e("invalid conversation ");
       // 因为 Group 不需要取 otherId，检查没那么严格，避免导致崩溃
       return ConversationType.Group;
-    }
-  }
-
-  public static String nameOfConversation(AVIMConversation conversation) {
-    if (isValidConversation(conversation)) {
-      if (typeOfConversation(conversation) == ConversationType.Single) {
-        String otherId = otherIdOfConversation(conversation);
-        String userName = ThirdPartUserUtils.getInstance().getUserName(otherId);
-        return (TextUtils.isEmpty(userName) ? "对话" : userName);
-      } else {
-        return conversation.getName();
-      }
-    } else {
-      return "";
     }
   }
 

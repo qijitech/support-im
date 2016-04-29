@@ -3,15 +3,13 @@ package support.im.data;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import com.avos.avoscloud.AVInstallation;
-import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
-import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SignUpCallback;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-import support.im.utilities.SupportLog;
 
 @SuppressLint("ParcelCreator") public class SupportUser extends AVUser {
 
@@ -20,16 +18,6 @@ import support.im.utilities.SupportLog;
   public static final String DISPLAY_NAME = "displayName";
   public static final String AVATAR = "avatar";
   public static final String INSTALLATION = "installation";
-
-  private String mSortLetters;
-
-  public void setSortLetters(String sortLetters) {
-    mSortLetters = sortLetters;
-  }
-
-  public String getSortLetters() {
-    return mSortLetters;
-  }
 
   public static void register(String username, String password, String nickname,
       SignUpCallback callback) {
@@ -100,15 +88,18 @@ import support.im.utilities.SupportLog;
     }
   }
 
-  public void findFriendsWithCachePolicy(AVQuery.CachePolicy cachePolicy,
-      FindCallback<SupportUser> findCallback) {
-    try {
-      AVQuery<SupportUser> q = followeeQuery(SupportUser.class);
-      q.setCachePolicy(cachePolicy);
-      q.setMaxCacheAge(TimeUnit.MINUTES.toMillis(1));
-      q.findInBackground(findCallback);
-    } catch (Exception e) {
-      SupportLog.logException(e);
+  public static List<SimpleUser> toSimpleUsers(List<SupportUser> supportUsers) {
+    if (supportUsers == null) {
+      return Lists.newArrayList();
     }
+    List<SimpleUser> simpleUsers = Lists.newArrayListWithCapacity(supportUsers.size());
+    for (SupportUser supportUser : supportUsers) {
+      simpleUsers.add(supportUser.toSimpleUser());
+    }
+    return simpleUsers;
+  }
+
+  public SimpleUser toSimpleUser() {
+    return new SimpleUser(getObjectId(), getUserId(), getDisplayName(), getAvatar());
   }
 }

@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import support.im.data.Conversation;
-import support.im.data.cache.AVIMConversationCache;
+import support.im.data.cache.CacheManager;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -118,7 +118,7 @@ public class ConversationsRepository implements ConversationsDataSource {
   }
 
   private void refreshAVIMConversationCache(List<AVIMConversation> avimConversations) {
-    AVIMConversationCache.cacheConversations(avimConversations);
+    CacheManager.getInstance().cacheConversations(avimConversations);
   }
 
   @Override public void refreshConversations() {

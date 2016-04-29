@@ -6,14 +6,14 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import com.facebook.drawee.view.SimpleDraweeView;
 import support.im.R;
-import support.im.data.SupportUser;
+import support.im.data.SimpleUser;
 import support.ui.adapters.EasyViewHolder;
 
-public class ContactsViewHolder extends EasyViewHolder<SupportUser> {
+public class ContactsViewHolder extends EasyViewHolder<SimpleUser> {
 
   SimpleDraweeView mAvatarView;
   TextView mNicknameTextView;
-  SupportUser mUser;
+  SimpleUser mUser;
 
   public ContactsViewHolder(Context context, ViewGroup parent) {
     super(context, parent, R.layout.contacts_item);
@@ -21,7 +21,7 @@ public class ContactsViewHolder extends EasyViewHolder<SupportUser> {
     mNicknameTextView = ButterKnife.findById(itemView, R.id.text_support_im_contacts_nickname);
   }
 
-  @Override public void bindTo(int position, SupportUser value) {
+  @Override public void bindTo(int position, SimpleUser value) {
     mUser = value;
     mAvatarView.setImageURI(value.toAvatarUri());
     mNicknameTextView.setText(value.getDisplayName());

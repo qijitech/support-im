@@ -3,8 +3,9 @@ package support.im.data.source.local;
 import android.support.annotation.NonNull;
 import com.google.common.collect.Lists;
 import java.util.List;
+import support.im.data.SimpleUser;
 import support.im.data.SupportUser;
-import support.im.data.cache.UsersCache;
+import support.im.data.cache.CacheManager;
 import support.im.data.source.UsersDataSource;
 
 public class UsersLocalDataSource implements UsersDataSource {
@@ -22,11 +23,11 @@ public class UsersLocalDataSource implements UsersDataSource {
 
   }
 
-  @Override public void fetchUsers(List<String> objectIds, LoadUsersCallback callback) {
-    List<SupportUser> users = Lists.newArrayList();
-    for (String objectId : objectIds) {
-      if (UsersCache.hasCachedUser(objectId)) {
-        users.add(UsersCache.getCachedUser(objectId));
+  @Override public void fetchUsers(List<String> userIds, LoadUsersCallback callback) {
+    List<SimpleUser> users = Lists.newArrayList();
+    for (String userId : userIds) {
+      if (CacheManager.getInstance().hasCacheSimpleUser(userId)) {
+        users.add(CacheManager.getInstance().getCacheSimpleUser(userId));
       }
     }
     callback.onUserLoaded(users);

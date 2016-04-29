@@ -3,8 +3,9 @@ package support.im.data.source;
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.AVException;
 import java.util.List;
+import support.im.data.SimpleUser;
 import support.im.data.SupportUser;
-import support.im.data.cache.ContactsCache;
+import support.im.data.cache.CacheManager;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -32,7 +33,7 @@ public class ContactsRepository implements ContactsDataSource {
 
   @Override public void getContacts(@NonNull final LoadContactsCallback callback) {
     mContactsLocalDataSource.getContacts(new LoadContactsCallback() {
-      @Override public void onContactsLoaded(List<SupportUser> contacts) {
+      @Override public void onContactsLoaded(List<SimpleUser> contacts) {
         callback.onContactsLoaded(contacts);
       }
       @Override public void notLoggedIn() {
@@ -42,8 +43,8 @@ public class ContactsRepository implements ContactsDataSource {
     });
 
     mContactsRemoteDataSource.getContacts(new LoadContactsCallback() {
-      @Override public void onContactsLoaded(List<SupportUser> users) {
-        ContactsCache.cacheContacts(users);
+      @Override public void onContactsLoaded(List<SimpleUser> users) {
+        CacheManager.getInstance().cacheContacts(users);
         callback.onContactsLoaded(users);
       }
 

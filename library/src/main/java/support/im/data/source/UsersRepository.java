@@ -5,8 +5,8 @@ import com.avos.avoscloud.AVException;
 import com.google.common.collect.Sets;
 import java.util.List;
 import java.util.Set;
-import support.im.data.SupportUser;
-import support.im.data.cache.UsersCache;
+import support.im.data.SimpleUser;
+import support.im.data.cache.CacheManager;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -36,8 +36,8 @@ public class UsersRepository implements UsersDataSource {
     checkNotNull(callback);
 
     mUsersRemoteDataSource.searchUser(username, new GetUserCallback() {
-      @Override public void onUserLoaded(SupportUser user) {
-        UsersCache.cacheUser(user);
+      @Override public void onUserLoaded(SimpleUser user) {
+        CacheManager.getInstance().cacheSimpleUser(user);
         callback.onUserLoaded(user);
       }
 
@@ -54,7 +54,7 @@ public class UsersRepository implements UsersDataSource {
   @Override public void fetchUsers(final List<String> objectIds, final LoadUsersCallback callback) {
     Set<String> unCachedIds = Sets.newHashSet();
     for (String objectId : objectIds) {
-      if (!UsersCache.hasCachedUser(objectId)) {
+      if (!CacheManager.getInstance().hasCacheSimpleUser(objectId)) {
         unCachedIds.add(objectId);
       }
     }
@@ -65,8 +65,8 @@ public class UsersRepository implements UsersDataSource {
     }
 
     mUsersRemoteDataSource.fetchUsers(objectIds, new LoadUsersCallback() {
-      @Override public void onUserLoaded(List<SupportUser> users) {
-        UsersCache.cacheUsers(users);
+      @Override public void onUserLoaded(List<SimpleUser> users) {
+        CacheManager.getInstance().cacheSimpleUsers(users);
         getUsersFromCache(objectIds, callback);
       }
 
@@ -78,7 +78,7 @@ public class UsersRepository implements UsersDataSource {
 
   private void getUsersFromCache(List<String> objectIds, final LoadUsersCallback callback) {
     mUsersLocalDataSource.fetchUsers(objectIds, new LoadUsersCallback() {
-      @Override public void onUserLoaded(List<SupportUser> users) {
+      @Override public void onUserLoaded(List<SimpleUser> users) {
         callback.onUserLoaded(users);
       }
 

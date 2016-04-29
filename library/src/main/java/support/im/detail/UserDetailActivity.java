@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import butterknife.ButterKnife;
 import support.im.R;
-import support.im.data.SupportUser;
-import support.im.data.cache.UsersCache;
+import support.im.data.SimpleUser;
+import support.im.data.cache.CacheManager;
 import support.im.leanclound.Constants;
 import support.im.leanclound.contacts.AddRequestManager;
 import support.ui.SupportActivity;
@@ -14,8 +14,8 @@ import support.ui.components.SupportButton;
 
 public class UserDetailActivity extends SupportActivity implements View.OnClickListener {
 
-  SupportUser mUser;
-  String mUserObjectId;
+  SimpleUser mUser;
+  String mUserId;
 
   private SupportButton mAddContactsBtn;
   private SupportButton mChatBtn;
@@ -39,8 +39,8 @@ public class UserDetailActivity extends SupportActivity implements View.OnClickL
   }
 
   private void initialize() {
-    mUserObjectId = getIntent().getStringExtra(Constants.EXTRA_OBJECT_ID);
-    mUser = UsersCache.getCachedUser(mUserObjectId);
+    mUserId = getIntent().getStringExtra(Constants.EXTRA_USER_ID);
+    mUser = CacheManager.getInstance().getCacheSimpleUser(mUserId);
   }
 
   @Override public void onClick(View v) {
