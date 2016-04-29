@@ -73,9 +73,9 @@ public class ContactsPresenter implements ContactsContract.Presenter {
 
   private void processUsers(List<SupportUser> contacts) {
     for (SupportUser u : contacts) {
-      final String nickname = u.getNickname();
+      final String nickname = u.getDisplayName();
       if (!Strings.isNullOrEmpty(nickname)) {
-        String pinyin = characterParser.getSelling(u.getNickname());
+        String pinyin = characterParser.getSelling(u.getDisplayName());
         String sortString = pinyin.substring(0, 1).toUpperCase();
         if (sortString.matches("[A-Z]")) {
           u.setSortLetters(sortString.toUpperCase());

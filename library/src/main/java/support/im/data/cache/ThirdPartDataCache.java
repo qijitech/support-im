@@ -1,10 +1,12 @@
-package support.im.leanclound;
+package support.im.data.cache;
 
 import android.text.TextUtils;
 import java.util.HashMap;
 import java.util.Map;
+import support.im.leanclound.ThirdPartUserUtils;
 
-public class ThirdPartDataCache {
+public final class ThirdPartDataCache {
+
   private Map<String, ThirdPartUserUtils.ThirdPartUser> userMap;
 
   private ThirdPartDataCache() {

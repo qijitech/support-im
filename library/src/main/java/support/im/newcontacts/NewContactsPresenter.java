@@ -74,7 +74,7 @@ public class NewContactsPresenter implements NewContactsContract.Presenter {
         }
         SupportUser fromUser = addRequest.getFromUser();
         if (fromUser != null) {
-          ChatManager.getInstance().createSingleConversation(fromUser.getObjectId(), new AVIMConversationCreatedCallback() {
+          ChatManager.getInstance().createSingleConversation(fromUser, new AVIMConversationCreatedCallback() {
             @Override
             public void done(AVIMConversation avimConversation, AVIMException e) {
               if (e == null) {

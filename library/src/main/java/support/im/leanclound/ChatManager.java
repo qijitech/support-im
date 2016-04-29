@@ -1,7 +1,6 @@
 package support.im.leanclound;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversationQuery;
 import com.avos.avoscloud.im.v2.AVIMException;
@@ -9,11 +8,13 @@ import com.avos.avoscloud.im.v2.AVIMMessageManager;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
-import java.util.Arrays;
+import com.google.common.collect.Lists;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import support.im.data.ConversationType;
+import support.im.data.SimpleUser;
+import support.im.data.SupportUser;
 import support.im.data.source.local.ConversationsDatabase;
 import support.im.utilities.SupportLog;
 import support.ui.app.SupportApp;
@@ -133,7 +134,19 @@ public class ChatManager {
   public void createSingleConversation(String memberId, AVIMConversationCreatedCallback callback) {
     Map<String, Object> attrs = new HashMap<>();
     attrs.put(ConversationType.TYPE_KEY, ConversationType.Single.getValue());
-    mIMClient.createConversation(Arrays.asList(memberId), "", attrs, false, true, callback);
+    mIMClient.createConversation(Lists.newArrayList(memberId), "", attrs, false, true, callback);
+  }
+
+  public void createSingleConversation(SupportUser toUser, AVIMConversationCreatedCallback callback) {
+    Map<String, Object> attrs = new HashMap<>();
+    attrs.put(ConversationType.TYPE_KEY, ConversationType.Single.getValue());
+    SimpleUser simpleToUser = new SimpleUser(toUser.getObjectId(), toUser.getUserId(), toUser.getDisplayName(), toUser.getAvatar());
+    SupportUser supportUser = SupportUser.getCurrentUser();
+    SimpleUser fromUser = new SimpleUser(supportUser.getObjectId(), supportUser.getUserId(), supportUser.getDisplayName(), supportUser.getAvatar());
+    List<SimpleUser> members = Lists.newArrayList(simpleToUser, fromUser);
+    attrs.put("members", members);
+    final String memberId = toUser.getObjectId();
+    mIMClient.createConversation(Lists.newArrayList(memberId), "", attrs, false, true, callback);
   }
 
   /**

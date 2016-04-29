@@ -24,6 +24,6 @@ public class ContactsViewHolder extends EasyViewHolder<SupportUser> {
   @Override public void bindTo(int position, SupportUser value) {
     mUser = value;
     mAvatarView.setImageURI(value.toAvatarUri());
-    mNicknameTextView.setText(value.getNickname());
+    mNicknameTextView.setText(value.getDisplayName());
   }
 }

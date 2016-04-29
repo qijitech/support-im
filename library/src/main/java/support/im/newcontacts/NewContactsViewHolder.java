@@ -45,7 +45,7 @@ public class NewContactsViewHolder extends EasyViewHolder<AddRequest> implements
       mActionBtn.setEnabled(false);
     }
     mAvatarView.setImageURI(supportUser.toAvatarUri());
-    mNicknameTextView.setText(supportUser.getNickname());
+    mNicknameTextView.setText(supportUser.getDisplayName());
   }
 
   @Override public void onClick(View v) {

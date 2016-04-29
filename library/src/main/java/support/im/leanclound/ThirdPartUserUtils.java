@@ -2,6 +2,7 @@ package support.im.leanclound;
 
 import java.util.Arrays;
 import java.util.List;
+import support.im.data.cache.ThirdPartDataCache;
 
 /**
  * Created by wli on 15/12/4.
