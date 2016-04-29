@@ -16,7 +16,7 @@ public class CacheManager {
   private static final int DISK_CACHE_SIZE = 100;
   private static final int RAM_CACHE_SIZE = 50;
   private static final int CACHE_APP_VERSION = 1;
-  private static final String CACHE_PREFIX = "support.im_";
+  private static final String CACHE_PREFIX = "support_im_";
   private static final String SIMPLE_USER_CACHE_NAME = CACHE_PREFIX + "simple_user";
   private static final String CONTACTS_CACHE_NAME = CACHE_PREFIX + "contacts";
   private static final String CONVERSATIONS_CACHE_NAME = CACHE_PREFIX + "conversations";

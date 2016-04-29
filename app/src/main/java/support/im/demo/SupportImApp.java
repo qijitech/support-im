@@ -4,6 +4,7 @@ import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.stetho.Stetho;
 import pl.tajchert.nammu.Nammu;
 import support.im.data.SupportUser;
 import support.im.demo.features.main.MainActivity;
@@ -33,5 +34,10 @@ public class SupportImApp extends SupportApp {
     ChatManager.setDebugEnabled(BuildConfig.DEBUG);
 
     Fresco.initialize(appContext());
+
+    Stetho.initialize(Stetho.newInitializerBuilder(this)
+        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+        .build());
   }
 }
