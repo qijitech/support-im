@@ -54,8 +54,4 @@ dependencies {
   compile 'com.miguelcatalan:materialsearchview:1.4.0'
   compile 'com.facebook.fresco:fresco:0.10.0'
   compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
-
-  compile ('com.vincentbrison.openlibraries.android:dualcache:2.2.2@jar') {
-    transitive = true
-  }
 }

@@ -35,9 +35,6 @@ public interface ConversationsDataSource {
 
   void loadConversations(@NonNull LoadConversationCallback callback);
 
-  void loadConversations(@NonNull List<Conversation> conversations,
-      @NonNull LoadConversationCallback callback);
-
   void getLastMessage(@NonNull AVIMConversation conversation,
       @NonNull GetLastMessageCallback callback);
 

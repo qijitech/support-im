@@ -80,11 +80,6 @@ public class ConversationsRepository implements ConversationsDataSource {
     });
   }
 
-  @Override public void loadConversations(@NonNull List<Conversation> conversations,
-      @NonNull LoadConversationCallback callback) {
-
-  }
-
   @Override public void getLastMessage(@NonNull AVIMConversation conversation,
       @NonNull final GetLastMessageCallback callback) {
     mConversationsRemoteDataSource.getLastMessage(conversation, new GetLastMessageCallback() {
@@ -101,6 +96,21 @@ public class ConversationsRepository implements ConversationsDataSource {
   }
 
   @Override public void loadAVIMConversations(@NonNull final LoadAVIMConversationsCallback callback) {
+    checkNotNull(callback);
+
+    // Respond immediately with cache if available and not dirty
+    if (CacheManager.getInstance().hasCacheConversations() && !mCacheIsDirty) {
+      callback.onAVIMConversationsLoaded(CacheManager.getInstance().getCacheConversations());
+      return;
+    }
+
+    if (mCacheIsDirty) {
+      // If the cache is dirty we need to fetch new data from the network.
+      getAVIMConversationsFromRemoteDataSource(callback);
+    }
+  }
+
+  private void getAVIMConversationsFromRemoteDataSource(final LoadAVIMConversationsCallback callback) {
     mConversationsRemoteDataSource.loadAVIMConversations(new LoadAVIMConversationsCallback() {
       @Override public void onAVIMConversationsLoaded(List<AVIMConversation> avimConversations) {
         refreshAVIMConversationCache(avimConversations);
@@ -119,10 +129,11 @@ public class ConversationsRepository implements ConversationsDataSource {
 
   private void refreshAVIMConversationCache(List<AVIMConversation> avimConversations) {
     CacheManager.getInstance().cacheConversations(avimConversations);
+    mCacheIsDirty = false;
   }
 
   @Override public void refreshConversations() {
-
+    mCacheIsDirty = true;
   }
 
   private void refreshCache(List<Conversation> conversations) {

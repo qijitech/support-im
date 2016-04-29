@@ -39,8 +39,13 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
     if (!mConversationsView.isActive()) {
       return;
     }
+
     if (showLoadingUI) {
       mConversationsView.setLoadingIndicator(false);
+    }
+
+    if (forceUpdate) {
+      mConversationsRepository.refreshConversations();
     }
 
     mConversationsRepository.loadAVIMConversations(new ConversationsDataSource.LoadAVIMConversationsCallback() {

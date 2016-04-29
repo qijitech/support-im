@@ -32,14 +32,9 @@ public class ConversationsRemoteDataSource implements ConversationsDataSource {
   @Override public void loadConversations(@NonNull final LoadConversationCallback callback) {
   }
 
-  @Override public void loadConversations(@NonNull List<Conversation> conversations,
-      @NonNull LoadConversationCallback callback) {
-
-  }
-
   @Override public void loadAVIMConversations(@NonNull final LoadAVIMConversationsCallback callback) {
     AVIMConversationQuery conversationQuery = ChatManager.getInstance().getConversationQuery();
-    conversationQuery.setLimit(1000);
+    conversationQuery.setLimit(100);
     conversationQuery.setQueryPolicy(AVQuery.CachePolicy.CACHE_THEN_NETWORK);
     conversationQuery.findInBackground(new AVIMConversationQueryCallback() {
       @Override public void done(List<AVIMConversation> aVIMConversations, AVIMException e) {
