@@ -6,9 +6,9 @@ import support.im.data.SimpleUser;
 public class PinyinComparator implements Comparator<SimpleUser> {
 
   public int compare(SimpleUser o1, SimpleUser o2) {
-    if (o1.getSortLetters().equals("@") || o2.getSortLetters().equals("#")) {
+    if ("@".equals(o1.getSortLetters()) || "#".equals(o2.getSortLetters())) {
       return -1;
-    } else if (o1.getSortLetters().equals("#") || o2.getSortLetters().equals("@")) {
+    } else if ("#".equals(o1.getSortLetters()) || "@".equals(o2.getSortLetters())) {
       return 1;
     } else {
       return o1.getSortLetters().compareTo(o2.getSortLetters());

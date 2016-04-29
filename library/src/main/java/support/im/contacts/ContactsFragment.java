@@ -52,10 +52,9 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     mAdapter.setOnClickListener(this);
     mAdapter.bind(ContactsDummy.class, ContactsDummyViewHolder.class);
     mAdapter.bind(ContactsTotal.class, ContactsTotalViewHolder.class);
-    mAdapter.bind(SupportUser.class, ContactsViewHolder.class);
+    mAdapter.bind(SimpleUser.class, ContactsViewHolder.class);
 
-    new ContactsPresenter(Injection.provideContactsRepository(getContext()),
-        Injection.provideUsersRepository(getContext()), this);
+    new ContactsPresenter(Injection.provideContactsRepository(getContext()), this);
 
     setHasOptionsMenu(true);
   }
@@ -123,7 +122,7 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     if (object instanceof SupportUser) {
       SupportUser user = (SupportUser) object;
       Intent intent = new Intent(getContext(), UserDetailActivity.class);
-      intent.putExtra(Constants.EXTRA_USER_ID, user.getUserId());
+      intent.putExtra(Constants.EXTRA_OBJECT_ID, user.getObjectId());
       startActivity(intent);
       return;
     }

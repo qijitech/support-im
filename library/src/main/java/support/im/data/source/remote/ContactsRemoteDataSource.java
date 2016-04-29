@@ -23,7 +23,7 @@ public class ContactsRemoteDataSource implements ContactsDataSource {
 
   @Override public void getContacts(@NonNull final LoadContactsCallback callback) {
     try {
-      AVQuery.CachePolicy policy = AVQuery.CachePolicy.NETWORK_ELSE_CACHE;
+      AVQuery.CachePolicy policy = AVQuery.CachePolicy.CACHE_THEN_NETWORK;
       SupportUser currentUser = SupportUser.getCurrentUser();
       AVQuery<SupportUser> query = currentUser.followeeQuery(SupportUser.class);
       query.setCachePolicy(policy);

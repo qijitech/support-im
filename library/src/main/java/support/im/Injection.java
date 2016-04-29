@@ -7,7 +7,6 @@ import support.im.data.source.ContactsRepository;
 import support.im.data.source.ConversationsRepository;
 import support.im.data.source.MobileContactsRepository;
 import support.im.data.source.UsersRepository;
-import support.im.data.source.local.ContactsLocalDataSource;
 import support.im.data.source.local.ConversationsLocalDataSource;
 import support.im.data.source.local.MobileContactsLocalDataSource;
 import support.im.data.source.local.UsersLocalDataSource;
@@ -44,7 +43,7 @@ public class Injection {
 
   public static ContactsRepository provideContactsRepository(@NonNull Context context) {
     checkNotNull(context);
-    return ContactsRepository.getInstance(ContactsLocalDataSource.getInstance(),
-        ContactsRemoteDataSource.getInstance());
+    return ContactsRepository.getInstance(ContactsRemoteDataSource.getInstance(),
+        provideUsersRepository(context));
   }
 }

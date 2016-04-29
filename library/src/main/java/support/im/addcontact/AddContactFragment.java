@@ -94,7 +94,7 @@ public class AddContactFragment extends SupportFragment implements View.OnClickL
 
   @Override public void showUser(SimpleUser user) {
     Intent intent = new Intent(getContext(), UserDetailActivity.class);
-    intent.putExtra(Constants.EXTRA_USER_ID, user.getUserId());
+    intent.putExtra(Constants.EXTRA_OBJECT_ID, user.getObjectId());
     startActivity(intent);
   }
 

@@ -7,7 +7,6 @@ import android.widget.TextView;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 import support.im.R;
 import support.im.data.SimpleUser;
-import support.im.data.SupportUser;
 import support.ui.adapters.EasyRecyclerAdapter;
 import support.ui.adapters.EasyViewHolder;
 
@@ -35,9 +34,9 @@ public class ContactsAdapter extends EasyRecyclerAdapter implements
 
   @Override public long getHeaderId(int position) {
     final Object object = get(position);
-    if (object instanceof SupportUser) {
-      SimpleUser supportUser = (SimpleUser) object;
-      return supportUser.getSortLetters().charAt(0);
+    if (object instanceof SimpleUser) {
+      SimpleUser simpleUser = (SimpleUser) object;
+      return simpleUser.getSortLetters().charAt(0);
     }
     return RecyclerView.NO_POSITION;
   }
@@ -53,8 +52,8 @@ public class ContactsAdapter extends EasyRecyclerAdapter implements
     TextView textView = (TextView) holder.itemView;
     final Object object = get(position);
     if (object instanceof SimpleUser) {
-      SimpleUser supportUser = (SimpleUser) object;
-      String showValue = String.valueOf(supportUser.getSortLetters().charAt(0));
+      SimpleUser simpleUser = (SimpleUser) object;
+      String showValue = String.valueOf(simpleUser.getSortLetters().charAt(0));
       textView.setText(showValue);
     }
   }

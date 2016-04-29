@@ -15,7 +15,7 @@ import support.ui.components.SupportButton;
 public class UserDetailActivity extends SupportActivity implements View.OnClickListener {
 
   SimpleUser mUser;
-  String mUserId;
+  String mObjectId;
 
   private SupportButton mAddContactsBtn;
   private SupportButton mChatBtn;
@@ -39,8 +39,8 @@ public class UserDetailActivity extends SupportActivity implements View.OnClickL
   }
 
   private void initialize() {
-    mUserId = getIntent().getStringExtra(Constants.EXTRA_USER_ID);
-    mUser = CacheManager.getInstance().getCacheSimpleUser(mUserId);
+    mObjectId = getIntent().getStringExtra(Constants.EXTRA_OBJECT_ID);
+    mUser = CacheManager.getInstance().getCacheSimpleUser(mObjectId);
   }
 
   @Override public void onClick(View v) {

@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import com.avos.avoscloud.AVException;
 import java.util.List;
 import support.im.data.SimpleUser;
-import support.im.data.SupportUser;
 
 public interface ContactsDataSource {
 

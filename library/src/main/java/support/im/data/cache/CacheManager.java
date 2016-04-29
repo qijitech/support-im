@@ -9,7 +9,6 @@ import support.im.data.SimpleUser;
 public class CacheManager {
 
   private ArrayMap<String, SimpleUser> mSimpleUserCache = new ArrayMap<>();
-  private ArrayMap<String, SimpleUser> mContactsCache = new ArrayMap<>();
   private ArrayMap<String, AVIMConversation> mAVIMConversationsCache = new ArrayMap<>();
 
   private static CacheManager INSTANCE = null;
@@ -26,7 +25,7 @@ public class CacheManager {
 
   public void cacheSimpleUser(SimpleUser simpleUser) {
     if (simpleUser != null) {
-      mSimpleUserCache.put(simpleUser.getUserId(), simpleUser);
+      mSimpleUserCache.put(simpleUser.getObjectId(), simpleUser);
     }
   }
 
@@ -38,50 +37,20 @@ public class CacheManager {
     }
   }
 
-  public SimpleUser getCacheSimpleUser(String userId) {
-    return mSimpleUserCache.get(userId);
+  public SimpleUser getCacheSimpleUser(String objectId) {
+    return mSimpleUserCache.get(objectId);
   }
 
   public List<SimpleUser> getCacheSimpleUsers() {
     return Lists.newArrayList(mSimpleUserCache.values());
   }
 
-  public boolean hasCacheSimpleUser(String userId) {
-    return mSimpleUserCache.containsKey(userId);
+  public boolean hasCacheSimpleUser(String objectId) {
+    return mSimpleUserCache.containsKey(objectId);
   }
 
   public boolean hasCacheSimpleUser(SimpleUser simpleUser) {
-    return hasCacheSimpleUser(simpleUser.getUserId());
-  }
-
-  public void cacheContact(SimpleUser contact) {
-    if (contact != null) {
-      mContactsCache.put(contact.getUserId(), contact);
-    }
-  }
-
-  public void cacheContacts(List<SimpleUser> contacts) {
-    if (contacts != null) {
-      for (SimpleUser contact : contacts) {
-        cacheContact(contact);
-      }
-    }
-  }
-
-  public SimpleUser getCacheContact(String userId) {
-    return mContactsCache.get(userId);
-  }
-
-  public List<SimpleUser> getCacheContacts() {
-    return Lists.newArrayList(mContactsCache.values());
-  }
-
-  public boolean hasCacheContact(String contactId) {
-    return mContactsCache.containsKey(contactId);
-  }
-
-  public boolean hasCacheContact(SimpleUser contact) {
-    return hasCacheContact(contact.getUserId());
+    return hasCacheSimpleUser(simpleUser.getObjectId());
   }
 
   public void cacheConversation(AVIMConversation conversation) {
