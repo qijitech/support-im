@@ -2,7 +2,6 @@ package support.im.conversations;
 
 import android.content.Context;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import com.avos.avoscloud.im.v2.AVIMConversation;
