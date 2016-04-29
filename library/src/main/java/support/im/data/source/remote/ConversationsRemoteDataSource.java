@@ -1,6 +1,7 @@
 package support.im.data.source.remote;
 
 import android.support.annotation.NonNull;
+import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMConversationQuery;
 import com.avos.avoscloud.im.v2.AVIMException;
@@ -39,6 +40,7 @@ public class ConversationsRemoteDataSource implements ConversationsDataSource {
   @Override public void loadAVIMConversations(@NonNull final LoadAVIMConversationsCallback callback) {
     AVIMConversationQuery conversationQuery = ChatManager.getInstance().getConversationQuery();
     conversationQuery.setLimit(1000);
+    conversationQuery.setQueryPolicy(AVQuery.CachePolicy.CACHE_THEN_NETWORK);
     conversationQuery.findInBackground(new AVIMConversationQueryCallback() {
       @Override public void done(List<AVIMConversation> aVIMConversations, AVIMException e) {
         if (!AVExceptionHandler.handAVException(e, false)) {

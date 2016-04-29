@@ -9,6 +9,8 @@ import support.im.leanclound.ChatManager;
 
 public class Conversation {
 
+  public static final String ATTRS_MEMBERS = "members";
+
   public String mId;
   public String mConversationId;
   public AVIMMessage mLastMessage;
@@ -28,9 +30,8 @@ public class Conversation {
   }
 
   public AVIMConversation getConversation() {
-    return AVIMConversationCache.getCacheConversation(mId);
+    return AVIMConversationCache.getCacheConversation(mConversationId);
   }
-
 
   public static Conversation createConversationFromCursor(Cursor cursor) {
     Conversation conversation = new Conversation();

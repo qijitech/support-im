@@ -17,6 +17,14 @@ public class AVIMConversationCache {
     sAVIMConversations = new ArrayMap<>();
   }
 
+  public static void cacheConversations(List<AVIMConversation> avimConversations) {
+    if (avimConversations != null) {
+      for (AVIMConversation avimConversation: avimConversations) {
+        cacheConversation(avimConversation);
+      }
+    }
+  }
+
   public static void cacheConversation(AVIMConversation conversation) {
     sAVIMConversations.put(conversation.getConversationId(), conversation);
   }

@@ -1,9 +1,16 @@
 package support.im.utilities;
 
 import android.text.TextUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.avos.avoscloud.JSONHelper;
 import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.google.common.collect.Lists;
 import java.util.List;
+import support.im.data.Conversation;
 import support.im.data.ConversationType;
+import support.im.data.SimpleUser;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.ThirdPartUserUtils;
 
@@ -28,8 +35,8 @@ public final class ConversationHelper {
 
     int typeInt = (Integer) type;
     if (typeInt == ConversationType.Single.getValue()) {
-      if (conversation.getMembers().size() != 2 ||
-          conversation.getMembers().contains(ChatManager.getInstance().getClientId()) == false) {
+      if (conversation.getMembers().size() != 2
+          || conversation.getMembers().contains(ChatManager.getInstance().getClientId()) == false) {
         SupportLog.d("invalid reason : oneToOne conversation not correct");
         return false;
       }
@@ -45,7 +52,6 @@ public final class ConversationHelper {
   /**
    * 获取单聊对话的另外一个人的 userId
    *
-   * @param conversation
    * @return 如果非法对话，则为 selfId
    */
   public static String otherIdOfConversation(AVIMConversation conversation) {
@@ -89,6 +95,32 @@ public final class ConversationHelper {
     } else {
       return "";
     }
+  }
+
+  public static String displayNameOfConversation(AVIMConversation conversation) {
+    if (!isValidConversation(conversation)) {
+      return "";
+    }
+
+    if (typeOfConversation(conversation) == ConversationType.Group) {
+      return conversation.getName();
+    }
+
+    // 单聊
+    String otherId = otherIdOfConversation(conversation);
+    Object object = conversation.getAttribute(Conversation.ATTRS_MEMBERS);
+    if (object instanceof JSONArray) {
+      JSONArray jsonArray = (JSONArray) object;
+      final int size = jsonArray.size();
+      for(int i = 0; i < size;i++){
+        JSONObject jsonObject = (JSONObject)jsonArray.get(i);
+        SimpleUser user = JSON.toJavaObject(jsonObject,SimpleUser.class);
+        if (otherId.equals(user.getObjectId())) {
+          return user.getDisplayName();
+        }
+      }
+    }
+    return "对话";
   }
 
 }

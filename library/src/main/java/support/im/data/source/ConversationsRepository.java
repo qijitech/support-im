@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import support.im.data.Conversation;
+import support.im.data.cache.AVIMConversationCache;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -101,8 +102,9 @@ public class ConversationsRepository implements ConversationsDataSource {
 
   @Override public void loadAVIMConversations(@NonNull final LoadAVIMConversationsCallback callback) {
     mConversationsRemoteDataSource.loadAVIMConversations(new LoadAVIMConversationsCallback() {
-      @Override public void onAVIMConversationsLoaded(List<AVIMConversation> avimConversation) {
-        callback.onAVIMConversationsLoaded(avimConversation);
+      @Override public void onAVIMConversationsLoaded(List<AVIMConversation> avimConversations) {
+        refreshAVIMConversationCache(avimConversations);
+        callback.onAVIMConversationsLoaded(avimConversations);
       }
 
       @Override public void onAVIMConversationsNotFound() {
@@ -113,6 +115,10 @@ public class ConversationsRepository implements ConversationsDataSource {
         callback.onDataNotAvailable(e);
       }
     });
+  }
+
+  private void refreshAVIMConversationCache(List<AVIMConversation> avimConversations) {
+    AVIMConversationCache.cacheConversations(avimConversations);
   }
 
   @Override public void refreshConversations() {
