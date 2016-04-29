@@ -9,8 +9,10 @@ import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
+import com.facebook.drawee.view.SimpleDraweeView;
 import support.im.R;
 import support.im.data.Conversation;
+import support.im.data.SimpleUser;
 import support.im.utilities.ConversationHelper;
 import support.im.utilities.Utils;
 import support.ui.adapters.EasyViewHolder;
@@ -18,7 +20,7 @@ import support.ui.app.SupportApp;
 
 public class ConversationsViewHolder extends EasyViewHolder<Conversation> {
 
-  ImageView mAvatarImageView;
+  SimpleDraweeView mAvatarImageView;
   //TextView mUnreadTextView;
   TextView mNameTextView;
   TextView mLatestTimeTextView;
@@ -36,6 +38,10 @@ public class ConversationsViewHolder extends EasyViewHolder<Conversation> {
   @Override public void bindTo(int position, Conversation value) {
     //mUnreadTextView.setText(String.valueOf(value.mUnreadCount));
     AVIMConversation conversation = value.getConversation();
+    SimpleUser simpleUser = ConversationHelper.getSimpleUser(conversation);
+    if (simpleUser != null) {
+      mAvatarImageView.setImageURI(simpleUser.toAvatarUri());
+    }
     mNameTextView.setText(ConversationHelper.displayNameOfConversation(conversation));
     conversation.getLastMessage(new AVIMSingleMessageQueryCallback() {
       @Override public void done(AVIMMessage avimMessage, AVIMException e) {

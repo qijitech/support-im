@@ -1,5 +1,6 @@
 package support.im.utilities;
 
+import android.support.annotation.NonNull;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -103,6 +104,23 @@ public final class ConversationHelper {
       }
     }
     return "对话";
+  }
+
+  public static SimpleUser getSimpleUser(@NonNull AVIMConversation conversation) {
+    String otherId = otherIdOfConversation(conversation);
+    Object object = conversation.getAttribute(Conversation.ATTRS_MEMBERS);
+    if (object instanceof JSONArray) {
+      JSONArray jsonArray = (JSONArray) object;
+      final int size = jsonArray.size();
+      for(int i = 0; i < size;i++){
+        JSONObject jsonObject = (JSONObject)jsonArray.get(i);
+        SimpleUser user = JSON.toJavaObject(jsonObject,SimpleUser.class);
+        if (otherId.equals(user.getObjectId())) {
+          return user;
+        }
+      }
+    }
+    return null;
   }
 
 }

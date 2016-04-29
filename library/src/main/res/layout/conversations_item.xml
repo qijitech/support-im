@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="72dp"
     android:background="@android:color/white"
@@ -14,11 +15,14 @@
       android:layout_height="wrap_content"
       android:layout_gravity="center_vertical"
       >
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/image_support_im_conversations_avatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/support_im_placeholder_avatar"
+        android:layout_gravity="center_vertical"
+        fresco:placeholderImage="@drawable/support_im_placeholder_avatar"
+        fresco:placeholderImageScaleType="centerCrop"
+        fresco:roundAsCircle="true"
         />
   </FrameLayout>
 
