@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import support.im.data.SimpleUser;
 import support.im.data.SupportUser;
+import support.im.data.cache.CacheManager;
 import support.im.data.source.ContactsDataSource;
 import support.im.data.source.ContactsRepository;
 import support.im.data.source.UsersDataSource;
@@ -87,6 +88,7 @@ public class ContactsPresenter implements ContactsContract.Presenter {
       u.setSortLetters("#");
     }
     Collections.sort(contacts, pinyinComparator);
+    CacheManager.getInstance().cacheContacts(contacts);
   }
 
   @Override public void start() {

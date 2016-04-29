@@ -44,7 +44,6 @@ public class ContactsRepository implements ContactsDataSource {
 
     mContactsRemoteDataSource.getContacts(new LoadContactsCallback() {
       @Override public void onContactsLoaded(List<SimpleUser> users) {
-        CacheManager.getInstance().cacheContacts(users);
         callback.onContactsLoaded(users);
       }
 
