@@ -21,7 +21,7 @@ public class BigEmoticonsAdapter extends EmoticonsAdapter<EmoticonEntity> {
   public BigEmoticonsAdapter(Context context, EmoticonPageEntity emoticonPageEntity,
       EmoticonClickListener onEmoticonClickListener) {
     super(context, emoticonPageEntity, onEmoticonClickListener);
-    this.mItemHeight = (int) context.getResources().getDimension(R.dimen.item_emoticon_size_big);
+    this.mItemHeight = (int) context.getResources().getDimension(R.dimen.support_im_emoticon_item_big_size);
     this.mItemHeightMaxRatio = DEF_HEIGHTMAXTATIO;
   }
 
