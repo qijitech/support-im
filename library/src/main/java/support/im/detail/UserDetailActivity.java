@@ -1,5 +1,7 @@
 package support.im.detail;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -20,6 +22,12 @@ public class UserDetailActivity extends SupportActivity implements View.OnClickL
 
   private SupportButton mAddContactsBtn;
   private SupportButton mChatBtn;
+
+  public static void startUserDetail(Context context, String objectId) {
+    Intent intent = new Intent(context, UserDetailActivity.class);
+    intent.putExtra(Constants.EXTRA_OBJECT_ID, objectId);
+    context.startActivity(intent);
+  }
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

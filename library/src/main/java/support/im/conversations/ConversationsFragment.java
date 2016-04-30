@@ -26,6 +26,7 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mAdapter.bind(Conversation.class, ConversationsViewHolder.class);
+    mAdapter.setOnClickListener(this);
     new ConversationsPresenter(Injection.provideConversationsRepository(getContext()), this);
   }
 
@@ -79,7 +80,6 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
   }
 
   @Override public void onItemClick(int position, View view) {
-    super.onItemClick(position, view);
     ChatsActivity.startChats(getContext());
   }
 }

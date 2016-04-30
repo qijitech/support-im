@@ -18,9 +18,7 @@ import support.im.Injection;
 import support.im.R;
 import support.im.addcontact.AddContactActivity;
 import support.im.data.SimpleUser;
-import support.im.data.SupportUser;
 import support.im.detail.UserDetailActivity;
-import support.im.leanclound.Constants;
 import support.im.newcontacts.NewContactsActivity;
 import support.ui.SupportRecyclerViewFragment;
 
@@ -119,11 +117,9 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
 
   @Override public void onItemClick(int position, View view) {
     Object object = mAdapter.get(position);
-    if (object instanceof SupportUser) {
-      SupportUser user = (SupportUser) object;
-      Intent intent = new Intent(getContext(), UserDetailActivity.class);
-      intent.putExtra(Constants.EXTRA_OBJECT_ID, user.getObjectId());
-      startActivity(intent);
+    if (object instanceof SimpleUser) {
+      SimpleUser user = (SimpleUser) object;
+      UserDetailActivity.startUserDetail(getContext(), user.getObjectId());
       return;
     }
     if (object instanceof ContactsDummy) {
