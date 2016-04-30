@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import butterknife.ButterKnife;
 import support.im.R;
+import support.im.chats.ChatsActivity;
 import support.im.data.SimpleUser;
 import support.im.data.cache.CacheManager;
 import support.im.leanclound.Constants;
@@ -50,7 +51,7 @@ public class UserDetailActivity extends SupportActivity implements View.OnClickL
       return;
     }
     if (viewId == R.id.btn_support_user_detail_chat) {
-      return;
+      ChatsActivity.startChats(this);
     }
   }
 }

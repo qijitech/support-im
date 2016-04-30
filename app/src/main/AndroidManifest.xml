@@ -70,6 +70,16 @@
           android:value=".features.main.MainActivity"/>
     </activity>
 
+    <!--聊天界面-->
+    <activity
+        android:name="support.im.chats.ChatsActivity"
+        android:label="@string/support_im_label_chats"
+        android:launchMode="singleTask">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value=".features.main.MainActivity"/>
+    </activity>
+
     <!--用户详情-->
     <activity
         android:name="support.im.detail.UserDetailActivity"

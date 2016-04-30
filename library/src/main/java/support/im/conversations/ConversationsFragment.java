@@ -8,6 +8,7 @@ import de.greenrobot.event.EventBus;
 import java.util.List;
 import support.im.Injection;
 import support.im.R;
+import support.im.chats.ChatsActivity;
 import support.im.data.Conversation;
 import support.im.leanclound.event.ImTypeMessageEvent;
 import support.ui.SupportRecyclerViewFragment;
@@ -75,5 +76,10 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
 
   @Override public void setPresenter(ConversationsContract.Presenter presenter) {
     mPresenter = checkNotNull(presenter);
+  }
+
+  @Override public void onItemClick(int position, View view) {
+    super.onItemClick(position, view);
+    ChatsActivity.startChats(getContext());
   }
 }
