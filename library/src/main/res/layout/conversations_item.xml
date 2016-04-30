@@ -17,8 +17,8 @@
       >
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/image_support_im_conversations_avatar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_gravity="center_vertical"
         fresco:placeholderImage="@drawable/support_im_placeholder_avatar"
         fresco:placeholderImageScaleType="centerCrop"

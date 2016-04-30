@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.ButterKnife;
+import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
