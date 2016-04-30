@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<support.im.chats.SupportEmoticonsKeyBoard xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/emoticons_key_board"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
 
-</LinearLayout>
+  <android.support.v7.widget.RecyclerView
+      android:id="@android:id/list"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:cacheColorHint="#00000000"
+      android:divider="@null"
+      android:fadingEdge="none"
+      android:fitsSystemWindows="true"
+      android:listSelector="#00000000"
+      android:scrollbarStyle="outsideOverlay"
+      android:scrollingCache="false"
+      android:smoothScrollbar="true"
+      android:stackFromBottom="true"
+      />
+
+</support.im.chats.SupportEmoticonsKeyBoard>
+
