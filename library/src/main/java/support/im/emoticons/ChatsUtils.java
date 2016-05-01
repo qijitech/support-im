@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import com.google.common.collect.Lists;
 import com.sj.emoji.DefEmoticons;
 import com.sj.emoji.EmojiBean;
 import com.sj.emoji.EmojiDisplay;
@@ -33,6 +34,9 @@ import sj.keyboard.widget.EmoticonsEditText;
 import support.im.R;
 
 public final class ChatsUtils {
+
+  private static final int EMOJI_PAGE_ROW = 7;
+  private static final int EMOJI_PAGE_LINE = 3;
 
   private ChatsUtils() {
 
@@ -83,7 +87,7 @@ public final class ChatsUtils {
     PageSetAdapter pageSetAdapter = new PageSetAdapter();
     addEmojiPageSetEntity(pageSetAdapter, context, emoticonClickListener);
     addXhsPageSetEntity(pageSetAdapter, context, emoticonClickListener);
-    addWechatPageSetEntity(pageSetAdapter, context, emoticonClickListener);
+    //addWechatPageSetEntity(pageSetAdapter, context, emoticonClickListener);
     return pageSetAdapter;
   }
 
@@ -92,38 +96,36 @@ public final class ChatsUtils {
    */
   public static void addEmojiPageSetEntity(PageSetAdapter pageSetAdapter, Context context,
       final EmoticonClickListener emoticonClickListener) {
-    ArrayList<EmojiBean> emojiArray = new ArrayList<>();
-    Collections.addAll(emojiArray, DefEmoticons.sEmojiArray);
-    EmoticonPageSetEntity emojiPageSetEntity = new EmoticonPageSetEntity.Builder().setLine(3)
-        .setRow(7)
-        .setEmoticonList(emojiArray)
-        .setIPageViewInstantiateItem(
-            getDefaultEmoticonPageViewInstantiateItem(new EmoticonDisplayListener<Object>() {
-              @Override public void onBindView(int position, ViewGroup parent,
-                  EmoticonsAdapter.ViewHolder viewHolder, Object object, final boolean isDelBtn) {
-                final EmojiBean emojiBean = (EmojiBean) object;
-                if (emojiBean == null && !isDelBtn) {
-                  return;
-                }
-
-                viewHolder.ly_root.setBackgroundResource(com.keyboard.view.R.drawable.bg_emoticon);
-
-                if (isDelBtn) {
-                  viewHolder.iv_emoticon.setImageResource(R.drawable.icon_del);
-                } else {
-                  viewHolder.iv_emoticon.setImageResource(emojiBean.icon);
-                }
-
-                viewHolder.rootView.setOnClickListener(new View.OnClickListener() {
-                  @Override public void onClick(View v) {
-                    if (emoticonClickListener != null) {
-                      emoticonClickListener.onEmoticonClick(emojiBean,
-                          Constants.EMOTICON_CLICK_TEXT, isDelBtn);
-                    }
-                  }
-                });
+    ArrayList<EmojiBean> emojis = Lists.newArrayList();
+    Collections.addAll(emojis, DefEmoticons.sEmojiArray);
+    EmoticonPageSetEntity.Builder builder = new EmoticonPageSetEntity.Builder()
+        .setLine(EMOJI_PAGE_LINE).setRow(EMOJI_PAGE_ROW);
+    EmoticonPageSetEntity emojiPageSetEntity = builder.setEmoticonList(emojis).setIPageViewInstantiateItem(
+        getDefaultEmoticonPageViewInstantiateItem(new EmoticonDisplayListener<Object>() {
+            @Override public void onBindView(int position, ViewGroup parent,
+                EmoticonsAdapter.ViewHolder viewHolder, Object object, final boolean isDelBtn) {
+              final EmojiBean emojiBean = (EmojiBean) object;
+              if (emojiBean == null && !isDelBtn) {
+                return;
               }
-            }))
+
+              viewHolder.ly_root.setBackgroundResource(R.drawable.list_selector_white);
+
+              if (isDelBtn) {
+                viewHolder.iv_emoticon.setImageResource(R.drawable.icon_del);
+              } else {
+                viewHolder.iv_emoticon.setImageResource(emojiBean.icon);
+              }
+
+              viewHolder.rootView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                  if (emoticonClickListener != null) {
+                    emoticonClickListener.onEmoticonClick(emojiBean, Constants.EMOTICON_CLICK_TEXT, isDelBtn);
+                  }
+                }
+              });
+            }
+        }))
         .setShowDelBtn(EmoticonPageEntity.DelBtnStatus.LAST)
         .setIconUri(ImageBase.Scheme.DRAWABLE.toUri("icon_emoji"))
         .build();
@@ -135,12 +137,10 @@ public final class ChatsUtils {
    */
   public static void addXhsPageSetEntity(PageSetAdapter pageSetAdapter, Context context,
       EmoticonClickListener emoticonClickListener) {
-    EmoticonPageSetEntity xhsPageSetEntity = new EmoticonPageSetEntity.Builder().setLine(3)
-        .setRow(7)
-        .setEmoticonList(
-            ParseDataUtils.ParseXhsData(SupportEmoticons.xhsEmoticonArray, ImageBase.Scheme.ASSETS))
-        .setIPageViewInstantiateItem(getDefaultEmoticonPageViewInstantiateItem(
-            getCommonEmoticonDisplayListener(emoticonClickListener, Constants.EMOTICON_CLICK_TEXT)))
+    EmoticonPageSetEntity xhsPageSetEntity = new EmoticonPageSetEntity.Builder()
+        .setLine(EMOJI_PAGE_LINE).setRow(EMOJI_PAGE_ROW)
+        .setEmoticonList(ParseDataUtils.ParseXhsData(SupportEmoticons.xhsEmoticonArray, ImageBase.Scheme.ASSETS))
+        .setIPageViewInstantiateItem(getDefaultEmoticonPageViewInstantiateItem(getCommonEmoticonDisplayListener(emoticonClickListener, Constants.EMOTICON_CLICK_TEXT)))
         .setShowDelBtn(EmoticonPageEntity.DelBtnStatus.LAST)
         .setIconUri(ImageBase.Scheme.ASSETS.toUri("xhsemoji_19.png"))
         .build();
@@ -158,16 +158,12 @@ public final class ChatsUtils {
     if (emoticonPageSetEntity == null) {
       return;
     }
-    EmoticonPageSetEntity pageSetEntity =
-        new EmoticonPageSetEntity.Builder().setLine(emoticonPageSetEntity.getLine())
-            .setRow(emoticonPageSetEntity.getRow())
-            .setEmoticonList(emoticonPageSetEntity.getEmoticonList())
-            .setIPageViewInstantiateItem(
-                getEmoticonPageViewInstantiateItem(BigEmoticonsAdapter.class,
-                    emoticonClickListener))
-            .setIconUri(
-                ImageBase.Scheme.FILE.toUri(filePath + "/" + emoticonPageSetEntity.getIconUri()))
-            .build();
+    EmoticonPageSetEntity pageSetEntity = new EmoticonPageSetEntity.Builder()
+        .setLine(emoticonPageSetEntity.getLine()).setRow(emoticonPageSetEntity.getRow())
+        .setEmoticonList(emoticonPageSetEntity.getEmoticonList())
+        .setIPageViewInstantiateItem(getEmoticonPageViewInstantiateItem(BigEmoticonsAdapter.class, emoticonClickListener))
+        .setIconUri(ImageBase.Scheme.FILE.toUri(filePath + "/" + emoticonPageSetEntity.getIconUri()))
+        .build();
     pageSetAdapter.add(pageSetEntity);
   }
 
@@ -205,8 +201,7 @@ public final class ChatsUtils {
           pageView.setNumColumns(pageEntity.getRow());
           pageEntity.setRootView(pageView);
           try {
-            EmoticonsAdapter adapter =
-                (EmoticonsAdapter) newInstance(_class, container.getContext(), pageEntity,
+            EmoticonsAdapter adapter = (EmoticonsAdapter) newInstance(_class, container.getContext(), pageEntity,
                     onEmoticonClickListener);
             if (emoticonDisplayListener != null) {
               adapter.setOnDisPlayListener(emoticonDisplayListener);
@@ -232,19 +227,18 @@ public final class ChatsUtils {
         if (emoticonEntity == null && !isDelBtn) {
           return;
         }
-        viewHolder.ly_root.setBackgroundResource(com.keyboard.view.R.drawable.bg_emoticon);
+        viewHolder.ly_root.setBackgroundResource(R.drawable.list_selector);
 
         if (isDelBtn) {
           viewHolder.iv_emoticon.setImageResource(R.drawable.icon_del);
         } else {
           try {
-            ImageLoader.getInstance(viewHolder.iv_emoticon.getContext())
-                .displayImage(emoticonEntity.getIconUri(), viewHolder.iv_emoticon);
+            ImageLoader.getInstance(viewHolder.iv_emoticon.getContext()).displayImage(emoticonEntity.getIconUri(),
+                viewHolder.iv_emoticon);
           } catch (IOException e) {
             e.printStackTrace();
           }
         }
-
         viewHolder.rootView.setOnClickListener(new View.OnClickListener() {
           @Override public void onClick(View v) {
             if (onEmoticonClickListener != null) {

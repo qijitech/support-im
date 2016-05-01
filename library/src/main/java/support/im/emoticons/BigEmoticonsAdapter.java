@@ -81,8 +81,7 @@ public class BigEmoticonsAdapter extends EmoticonsAdapter<EmoticonEntity> {
     viewHolder.rootView.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         if (mOnEmoticonClickListener != null) {
-          mOnEmoticonClickListener.onEmoticonClick(emoticonEntity,
-              Constants.EMOTICON_CLICK_BIGIMAGE, isDelBtn);
+          mOnEmoticonClickListener.onEmoticonClick(emoticonEntity, Constants.EMOTICON_CLICK_BIGIMAGE, isDelBtn);
         }
       }
     });
