@@ -4,10 +4,12 @@ import android.content.Context;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMReservedMessageType;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
+import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import java.io.Closeable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.ocpsoft.prettytime.PrettyTime;
+import support.im.leanclound.EmotionHelper;
 
 public final class Utils {
 
@@ -38,7 +40,7 @@ public final class Utils {
       AVIMReservedMessageType type = AVIMReservedMessageType.getAVIMReservedMessageType(((AVIMTypedMessage) message).getMessageType());
       switch (type) {
         case TextMessageType:
-          //return EmotionHelper.replace(context, ((AVIMTextMessage) message).getText());
+          return EmotionHelper.replace(context, ((AVIMTextMessage) message).getText());
         case ImageMessageType:
           return "[图片]";
         case LocationMessageType:

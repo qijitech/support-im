@@ -60,7 +60,7 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
 
   @Override public void notifyItemChanged(Conversation conversation) {
     final int position = mAdapter.getIndex(conversation);
-    mAdapter.add(conversation, position);
+    mAdapter.update(conversation, position);
   }
 
   @Override public void showNoConversations() {

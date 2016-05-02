@@ -4,11 +4,7 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.ButterKnife;
-import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
-import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
 import com.facebook.drawee.view.SimpleDraweeView;
 import support.im.R;
 import support.im.data.Conversation;
@@ -43,19 +39,10 @@ public class ConversationsViewHolder extends EasyViewHolder<Conversation> {
       mAvatarImageView.setImageURI(simpleUser.toAvatarUri());
     }
     mNameTextView.setText(ConversationHelper.displayNameOfConversation(conversation));
-    conversation.getLastMessage(new AVIMSingleMessageQueryCallback() {
-      @Override public void done(AVIMMessage avimMessage, AVIMException e) {
-        if (avimMessage != null) {
-          mLatestTimeTextView.setText(Utils.millisecsToDateString(avimMessage.getTimestamp()));
-          mMessageTextView.setText(Utils.getMessageeShorthand(SupportApp.appContext(), avimMessage));
-        } else {
-          mLatestTimeTextView.setText("");
-          mMessageTextView.setText("");
-        }
-      }
-    });
     if (value.mLastMessage != null) {
       mMessageTextView.setText(Utils.getMessageeShorthand(SupportApp.appContext(), value.mLastMessage));
+    } else {
+      mMessageTextView.setText("");
     }
     mLatestTimeTextView.setText(Utils.millisecsToDateString(value.getLastModifyTime()));
   }
