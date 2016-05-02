@@ -3,6 +3,8 @@ package support.im.chats;
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.avos.avoscloud.im.v2.AVIMTypedMessage;
+import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import java.util.List;
 import support.im.data.source.ChatsDataSource;
 import support.im.utilities.AVExceptionHandler;
@@ -72,5 +74,34 @@ public class ChatsPresenter implements ChatsContract.Presenter {
       // Show the list of messages
       mChatsView.showMessages(messages);
     }
+  }
+
+  @Override public void sendTextMessage(String content) {
+    AVIMTextMessage message = new AVIMTextMessage();
+    message.setText(content);
+    sendMessage(message);
+  }
+
+  private void sendMessage(AVIMTypedMessage message) {
+    if (!mChatsView.isActive()) {
+      return;
+    }
+    mChatsView.notifyItemInserted(message);
+
+    mChatsRepository.sendMessage(message, new ChatsDataSource.GetMessageCallback() {
+      @Override public void onMessageLoaded(AVIMMessage message) {
+        if (!mChatsView.isActive()) {
+          return;
+        }
+        mChatsView.notifyDataSetChanged();
+      }
+
+      @Override public void onDataNotAvailable(AVException exception) {
+        if (!mChatsView.isActive()) {
+          return;
+        }
+        mChatsView.onDataNotAvailable(AVExceptionHandler.getLocalizedMessage(exception), exception);
+      }
+    });
   }
 }

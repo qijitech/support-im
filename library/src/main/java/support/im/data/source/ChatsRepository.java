@@ -3,6 +3,7 @@ package support.im.data.source;
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.util.List;
@@ -75,6 +76,22 @@ public class ChatsRepository implements ChatsDataSource {
   }
 
   @Override public void refreshMessages() {
+    mCacheIsDirty = true;
+  }
 
+  @Override public void sendMessage(@NonNull AVIMTypedMessage message,
+      @NonNull final GetMessageCallback callback) {
+    checkNotNull(message);
+    checkNotNull(callback);
+
+    mChatsRemoteDataSource.sendMessage(message, new GetMessageCallback() {
+      @Override public void onMessageLoaded(AVIMMessage message) {
+        callback.onMessageLoaded(message);
+      }
+
+      @Override public void onDataNotAvailable(AVException exception) {
+        callback.onDataNotAvailable(exception);
+      }
+    });
   }
 }

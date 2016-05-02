@@ -11,6 +11,7 @@ import butterknife.ButterKnife;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.sj.emoji.EmojiBean;
 import java.util.List;
 import sj.keyboard.data.EmoticonEntity;
@@ -130,24 +131,16 @@ public class ChatsFragment extends SupportFragment
         });
     mEmoticonsKeyBoard.getBtnSend().setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
-        OnSendBtnClick(mEmoticonsKeyBoard.getEtChat().getText().toString());
+        mPresenter.sendTextMessage(mEmoticonsKeyBoard.getEtChat().getText().toString());
         mEmoticonsKeyBoard.getEtChat().setText("");
       }
     });
     //mEmoticonsKeyBoard.getEmoticonsToolBarView().addFixedToolItemView();
   }
 
-  private void OnSendBtnClick(String msg) {
-    if (!TextUtils.isEmpty(msg)) {
-      AVIMMessage avimMessage = new AVIMMessage();
-      mAdapter.add(avimMessage);
-      scrollToBottom();
-    }
-  }
-
   private void OnSendImage(String image) {
     if (!TextUtils.isEmpty(image)) {
-      OnSendBtnClick("[img]" + image);
+      mPresenter.sendTextMessage("[img]" + image);
     }
   }
 
@@ -166,6 +159,15 @@ public class ChatsFragment extends SupportFragment
 
   @Override public void setLoadingIndicator(boolean active) {
 
+  }
+
+  @Override public void notifyItemInserted(AVIMTypedMessage message) {
+    mAdapter.add(message);
+    scrollToBottom();
+  }
+
+  @Override public void notifyDataSetChanged() {
+    mAdapter.notifyDataSetChanged();
   }
 
   @Override public void showMessages(List<AVIMMessage> messages) {
