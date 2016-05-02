@@ -52,7 +52,7 @@
           android:layout_height="wrap_content"
           android:orientation="horizontal"
           >
-        <include layout="@layout/chats_item_left_text"/>
+        <include layout="@layout/chats_left_item_text"/>
       </FrameLayout>
     </LinearLayout>
 
