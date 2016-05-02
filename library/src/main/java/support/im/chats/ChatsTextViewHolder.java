@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import butterknife.ButterKnife;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import support.im.R;
@@ -21,10 +22,10 @@ public class ChatsTextViewHolder extends ChatsViewHolder {
     super.setupView();
     if (mIsLeft) {
       mContentContainer.addView(View.inflate(mContext, R.layout.chats_left_item_text, null));
-      mContentTextView = (TextView) itemView.findViewById(R.id.text_support_im_chats_item_left_content);
+      mContentTextView = ButterKnife.findById(itemView, R.id.text_support_im_chats_item_left_content);
     } else {
       mContentContainer.addView(View.inflate(mContext, R.layout.chats_right_item_text, null));
-      mContentTextView = (TextView) itemView.findViewById(R.id.text_support_im_chats_item_right_content);
+      mContentTextView = ButterKnife.findById(itemView, R.id.text_support_im_chats_item_right_content);
     }
   }
 
