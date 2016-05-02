@@ -5,7 +5,7 @@ import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import support.im.data.cache.CacheManager;
 import support.im.data.source.local.ConversationsPersistenceContract;
-import support.im.leanclound.ChatManager;
+import support.im.leanclound.ConversationManager;
 
 public class Conversation {
 
@@ -45,7 +45,7 @@ public class Conversation {
     Conversation conversation = new Conversation();
     conversation.mConversationId = avimConversation.getConversationId();
     conversation.mUnreadCount = 1;
-    conversation = ChatManager.getInstance().getConversationsDatabase().saveConversation(conversation);
+    conversation = ConversationManager.getInstance().getConversationsDatabase().saveConversation(conversation);
     return conversation;
   }
 

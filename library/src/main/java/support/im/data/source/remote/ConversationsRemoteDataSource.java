@@ -8,8 +8,10 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
+import com.google.common.collect.Lists;
 import java.util.List;
 import support.im.data.Conversation;
+import support.im.data.cache.CacheManager;
 import support.im.data.source.ConversationsDataSource;
 import support.im.leanclound.ChatManager;
 import support.im.utilities.AVExceptionHandler;
@@ -29,25 +31,36 @@ public class ConversationsRemoteDataSource implements ConversationsDataSource {
     return INSTANCE;
   }
 
-  @Override public void loadConversations(@NonNull final LoadConversationCallback callback) {
+  @Override public void loadCachedConversations(@NonNull final LoadConversationsCallback callback) {
+    // ConversationsLocalDataSource
   }
 
-  @Override public void loadAVIMConversations(@NonNull final LoadAVIMConversationsCallback callback) {
+  @Override public void loadServerConversations(@NonNull final LoadConversationsCallback callback) {
     AVIMConversationQuery conversationQuery = ChatManager.getInstance().getConversationQuery();
-    conversationQuery.setLimit(100);
+    conversationQuery.setLimit(1000);
     conversationQuery.setQueryPolicy(AVQuery.CachePolicy.CACHE_THEN_NETWORK);
     conversationQuery.findInBackground(new AVIMConversationQueryCallback() {
       @Override public void done(List<AVIMConversation> aVIMConversations, AVIMException e) {
         if (!AVExceptionHandler.handAVException(e, false)) {
           callback.onDataNotAvailable(e);
+          return;
         }
-        if (aVIMConversations != null && aVIMConversations.size() > 0) {
-          callback.onAVIMConversationsLoaded(aVIMConversations);
-        } else {
-          callback.onAVIMConversationsNotFound();
+        if (aVIMConversations == null || aVIMConversations.isEmpty()) {
+          callback.onConversationsNotFound();
+          return;
         }
+        List<Conversation> conversations = Lists.newArrayListWithCapacity(aVIMConversations.size());
+        for (AVIMConversation aVIMConversation : aVIMConversations) {
+          refreshAVIMConversationCache(aVIMConversation);
+          conversations.add(Conversation.createConversation(aVIMConversation));
+        }
+        callback.onConversationsLoaded(conversations);
       }
     });
+  }
+
+  private void refreshAVIMConversationCache(AVIMConversation avimConversation) {
+    CacheManager.getInstance().cacheConversation(avimConversation);
   }
 
   @Override public void getLastMessage(@NonNull AVIMConversation conversation,

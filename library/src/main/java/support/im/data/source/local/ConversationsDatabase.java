@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 import com.google.common.collect.Lists;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,11 +21,11 @@ public class ConversationsDatabase {
     mDbHelper = dbHelper;
   }
 
-  public synchronized static ConversationsDatabase databaseWithUserId(Context context, String userId) {
-    ConversationsDatabase database = sDatabases.get(userId);
+  public synchronized static ConversationsDatabase databaseWithUserId(Context context, String clientId) {
+    ConversationsDatabase database = sDatabases.get(clientId);
     if (database == null) {
-      database = new ConversationsDatabase(new ConversationsDbHelper(context.getApplicationContext(), userId));
-      sDatabases.put(userId, database);
+      database = new ConversationsDatabase(new ConversationsDbHelper(context.getApplicationContext(), clientId));
+      sDatabases.put(clientId, database);
     }
     return database;
   }
@@ -35,7 +34,7 @@ public class ConversationsDatabase {
     SQLiteDatabase db = mDbHelper.getReadableDatabase();
     Cursor cursor = null;
     try {
-      List<Conversation> conversations = new ArrayList<>();
+      List<Conversation> conversations = Lists.newArrayList();
       cursor = db.query(Conversations.TABLE_NAME, null, null, null, null, null, null);
       while (cursor != null && cursor.moveToNext()) {
         Conversation conversation = Conversation.createConversationFromCursor(cursor);

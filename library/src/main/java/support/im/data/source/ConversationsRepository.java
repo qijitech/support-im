@@ -4,12 +4,11 @@ import android.support.annotation.NonNull;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.google.common.collect.Maps;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import support.im.data.Conversation;
-import support.im.data.cache.CacheManager;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -56,7 +55,7 @@ public class ConversationsRepository implements ConversationsDataSource {
     INSTANCE = null;
   }
 
-  @Override public void loadConversations(@NonNull final LoadConversationCallback callback) {
+  @Override public void loadCachedConversations(@NonNull final LoadConversationsCallback callback) {
     checkNotNull(callback);
 
     // Respond immediately with cache if available and not dirty
@@ -65,19 +64,18 @@ public class ConversationsRepository implements ConversationsDataSource {
       return;
     }
 
-    mConversationsRemoteDataSource.loadConversations(new LoadConversationCallback() {
+    mConversationsLocalDataSource.loadCachedConversations(new LoadConversationsCallback() {
       @Override public void onConversationsLoaded(List<Conversation> conversations) {
-        refreshCache(conversations);
-        callback.onConversationsLoaded(new ArrayList<>(mCachedConversations.values()));
+        callback.onConversationsLoaded(conversations);
       }
-
       @Override public void onConversationsNotFound() {
-
+        callback.onConversationsNotFound();
       }
-
       @Override public void onDataNotAvailable(AVIMException e) {
+        callback.onDataNotAvailable(e);
       }
     });
+
   }
 
   @Override public void getLastMessage(@NonNull AVIMConversation conversation,
@@ -95,12 +93,12 @@ public class ConversationsRepository implements ConversationsDataSource {
     });
   }
 
-  @Override public void loadAVIMConversations(@NonNull final LoadAVIMConversationsCallback callback) {
+  @Override public void loadServerConversations(@NonNull final LoadConversationsCallback callback) {
     checkNotNull(callback);
 
     // Respond immediately with cache if available and not dirty
-    if (CacheManager.getInstance().hasCacheConversations() && !mCacheIsDirty) {
-      callback.onAVIMConversationsLoaded(CacheManager.getInstance().getCacheConversations());
+    if (mCachedConversations != null && !mCacheIsDirty) {
+      callback.onConversationsLoaded(new ArrayList<>(mCachedConversations.values()));
       return;
     }
 
@@ -110,15 +108,15 @@ public class ConversationsRepository implements ConversationsDataSource {
     }
   }
 
-  private void getAVIMConversationsFromRemoteDataSource(final LoadAVIMConversationsCallback callback) {
-    mConversationsRemoteDataSource.loadAVIMConversations(new LoadAVIMConversationsCallback() {
-      @Override public void onAVIMConversationsLoaded(List<AVIMConversation> avimConversations) {
-        refreshAVIMConversationCache(avimConversations);
-        callback.onAVIMConversationsLoaded(avimConversations);
+  private void getAVIMConversationsFromRemoteDataSource(final LoadConversationsCallback callback) {
+    mConversationsRemoteDataSource.loadServerConversations(new LoadConversationsCallback() {
+      @Override public void onConversationsLoaded(List<Conversation> conversations) {
+        refreshConversationCache(conversations);
+        callback.onConversationsLoaded(conversations);
       }
 
-      @Override public void onAVIMConversationsNotFound() {
-        callback.onAVIMConversationsNotFound();
+      @Override public void onConversationsNotFound() {
+        callback.onConversationsNotFound();
       }
 
       @Override public void onDataNotAvailable(AVIMException e) {
@@ -127,23 +125,18 @@ public class ConversationsRepository implements ConversationsDataSource {
     });
   }
 
-  private void refreshAVIMConversationCache(List<AVIMConversation> avimConversations) {
-    CacheManager.getInstance().cacheConversations(avimConversations);
+  private void refreshConversationCache(List<Conversation> conversations) {
+    if (mCachedConversations == null) {
+      mCachedConversations = Maps.newLinkedHashMap();
+    }
+    mCachedConversations.clear();
+    for (Conversation conversation : conversations) {
+      mCachedConversations.put(conversation.mConversationId, conversation);
+    }
     mCacheIsDirty = false;
   }
 
   @Override public void refreshConversations() {
     mCacheIsDirty = true;
-  }
-
-  private void refreshCache(List<Conversation> conversations) {
-    if (mCachedConversations == null) {
-      mCachedConversations = new LinkedHashMap<>();
-    }
-    mCachedConversations.clear();
-    for (Conversation conversation : conversations) {
-      mCachedConversations.put(conversation.mId, conversation);
-    }
-    mCacheIsDirty = false;
   }
 }

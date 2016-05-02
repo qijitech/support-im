@@ -16,9 +16,10 @@ import support.im.data.Conversation;
 import support.im.data.ConversationType;
 import support.im.data.SimpleUser;
 import support.im.data.SupportUser;
-import support.im.data.source.local.ConversationsDatabase;
 import support.im.utilities.SupportLog;
 import support.ui.app.SupportApp;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ChatManager {
 
@@ -27,8 +28,6 @@ public class ChatManager {
   private volatile AVIMClient mIMClient;
   private volatile String mClientId;
   private Context mContext;
-
-  private ConversationsDatabase mConversationsDatabase;
 
   private ChatManager(Context context) {
     mContext = context;
@@ -72,10 +71,6 @@ public class ChatManager {
     return mClientId;
   }
 
-  public ConversationsDatabase getConversationsDatabase() {
-    return mConversationsDatabase;
-  }
-
   public boolean isLogin() {
     return null != mIMClient;
   }
@@ -86,8 +81,8 @@ public class ChatManager {
    * @param callback AVException 常发生于网络错误、签名错误
    */
   public void openClient(String clientId, final AVIMClientCallback callback) {
-    mClientId = clientId;
-    mConversationsDatabase = ConversationsDatabase.databaseWithUserId(mContext, clientId);
+    mClientId = checkNotNull(clientId, "clientId cannot be null");
+    ConversationManager.getInstance().initialize(clientId);
     mIMClient = AVIMClient.getInstance(clientId);
     mIMClient.open(new AVIMClientCallback() {
       @Override public void done(AVIMClient avimClient, AVIMException e) {

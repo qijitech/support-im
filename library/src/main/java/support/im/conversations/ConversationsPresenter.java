@@ -2,7 +2,8 @@ package support.im.conversations;
 
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
-import com.google.common.collect.Lists;
+import com.avos.avoscloud.im.v2.AVIMMessage;
+import java.util.Collections;
 import java.util.List;
 import support.im.data.Conversation;
 import support.im.data.source.ConversationsDataSource;
@@ -15,13 +16,15 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
 
   private final ConversationsContract.View mConversationsView;
   private final ConversationsRepository mConversationsRepository;
-
+  private final ConversationsComparator mConversationsComparator;
   private boolean mFirstLoad = true;
 
   public ConversationsPresenter(ConversationsRepository conversationsRepository,
       ConversationsContract.View conversationsView) {
     mConversationsView = checkNotNull(conversationsView);
     mConversationsRepository = checkNotNull(conversationsRepository);
+
+    mConversationsComparator = new ConversationsComparator();
     mConversationsView.setPresenter(this);
   }
 
@@ -30,11 +33,11 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
   }
 
   @Override public void loadConversations(boolean forceUpdate) {
-    loadConversations(forceUpdate || mFirstLoad, true);
+    loadServerConversations(forceUpdate || mFirstLoad, true);
     mFirstLoad = false;
   }
 
-  private void loadConversations(boolean forceUpdate, final boolean showLoadingUI) {
+  private void loadServerConversations(boolean forceUpdate, final boolean showLoadingUI) {
     // The view may not be able to handle UI updates anymore
     if (!mConversationsView.isActive()) {
       return;
@@ -48,27 +51,37 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
       mConversationsRepository.refreshConversations();
     }
 
-    mConversationsRepository.loadAVIMConversations(new ConversationsDataSource.LoadAVIMConversationsCallback() {
-      @Override public void onAVIMConversationsLoaded(List<AVIMConversation> avimConversations) {
-        if (avimConversations == null || avimConversations.size() <= 0) {
-          if (mConversationsView.isActive()) {
-            mConversationsView.showNoConversations();
-          }
+    mConversationsRepository.loadServerConversations(new ConversationsDataSource.LoadConversationsCallback() {
+      @Override public void onConversationsLoaded(List<Conversation> conversations) {
+        // sorted
+        Collections.sort(conversations, mConversationsComparator);
+
+        if (!mConversationsView.isActive()) {
           return;
         }
-        final int size = avimConversations.size();
-        List<Conversation> conversations = Lists.newArrayListWithCapacity(size);
-        for (int index = 0; index<size ;index++) {
-          AVIMConversation avimConversation = avimConversations.get(index);
-          final Conversation conversation = Conversation.createConversation(avimConversation);
-          conversations.add(conversation);
-        }
-        if (mConversationsView.isActive()) {
-          mConversationsView.showConversations(conversations);
+
+        mConversationsView.notifyDataSetChanged(conversations);
+
+        for (final Conversation conversation : conversations) {
+          AVIMConversation aVIMConversation = conversation.getConversation();
+          if (aVIMConversation != null) {
+            mConversationsRepository.getLastMessage(aVIMConversation, new ConversationsDataSource.GetLastMessageCallback() {
+              @Override public void onLastMessageLoaded(AVIMMessage avimMessage) {
+                conversation.mLastMessage = avimMessage;
+                if (mConversationsView.isActive()) {
+                  mConversationsView.notifyItemChanged(conversation);
+                }
+              }
+              @Override public void onLastMessageNotFound() {
+              }
+              @Override public void onDataNotAvailable(AVIMException e) {
+              }
+            });
+          }
         }
       }
 
-      @Override public void onAVIMConversationsNotFound() {
+      @Override public void onConversationsNotFound() {
         if (mConversationsView.isActive()) {
           mConversationsView.showNoConversations();
         }
@@ -80,20 +93,6 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
         }
       }
     });
-
   }
 
-  private void processConversations(List<Conversation> conversations) {
-    if (conversations.isEmpty()) {
-      // Show a message indicating there are no tasks for that filter type.
-      processEmptyConversations();
-    } else {
-      // Show the list of tasks
-      mConversationsView.showConversations(conversations);
-    }
-  }
-
-  private void processEmptyConversations() {
-    mConversationsView.showNoConversations();
-  }
 }

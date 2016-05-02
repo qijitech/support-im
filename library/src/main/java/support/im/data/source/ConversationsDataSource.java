@@ -9,14 +9,14 @@ import support.im.data.Conversation;
 
 public interface ConversationsDataSource {
 
-  interface LoadConversationCallback {
+  interface LoadConversationsCallback {
     void onConversationsLoaded(List<Conversation> conversations);
 
     void onConversationsNotFound();
 
     void onDataNotAvailable(AVIMException e);
   }
-
+  
   interface GetLastMessageCallback {
     void onLastMessageLoaded(AVIMMessage avimMessage);
 
@@ -25,20 +25,12 @@ public interface ConversationsDataSource {
     void onDataNotAvailable(AVIMException e);
   }
 
-  interface LoadAVIMConversationsCallback {
-    void onAVIMConversationsLoaded(List<AVIMConversation> avimConversations);
+  void loadCachedConversations(@NonNull LoadConversationsCallback callback);
 
-    void onAVIMConversationsNotFound();
-
-    void onDataNotAvailable(AVIMException e);
-  }
-
-  void loadConversations(@NonNull LoadConversationCallback callback);
+  void loadServerConversations(@NonNull LoadConversationsCallback callback);
 
   void getLastMessage(@NonNull AVIMConversation conversation,
       @NonNull GetLastMessageCallback callback);
-
-  void loadAVIMConversations(@NonNull LoadAVIMConversationsCallback callback);
 
   void refreshConversations();
 }

@@ -14,6 +14,7 @@ import support.im.data.SimpleUser;
 import support.im.data.cache.CacheManager;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.Constants;
+import support.im.leanclound.ConversationManager;
 import support.im.utilities.AVExceptionHandler;
 import support.im.utilities.ConversationHelper;
 import support.im.utilities.SupportLog;
@@ -94,7 +95,7 @@ public class ChatsActivity extends SupportSinglePaneActivity {
       @Override
       public void done(AVIMConversation avimConversation, AVIMException e) {
         if (AVExceptionHandler.handAVException(e)) {
-          ChatManager.getInstance().getConversationsDatabase().saveConversation(avimConversation.getConversationId());
+          ConversationManager.getInstance().getConversationsDatabase().saveConversation(avimConversation.getConversationId());
           updateConversation(avimConversation);
         }
       }

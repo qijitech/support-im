@@ -80,7 +80,11 @@ public class CacheManager {
   }
 
   public boolean hasCacheConversation(AVIMConversation conversation) {
-    return mAVIMConversationsCache.containsKey(conversation.getConversationId());
+    return hasCacheConversation(conversation.getConversationId());
+  }
+
+  public boolean hasCacheConversation(String conversationId) {
+    return mAVIMConversationsCache.containsKey(conversationId);
   }
 
 }

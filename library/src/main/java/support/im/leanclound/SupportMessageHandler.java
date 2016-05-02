@@ -48,12 +48,12 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
       if (!client.getClientId().equals(ChatManager.getInstance().getClientId())) {
         client.close(null);
       } else {
-        ChatManager.getInstance().getConversationsDatabase().saveConversation(message.getConversationId());
+        ConversationManager.getInstance().getConversationsDatabase().saveConversation(message.getConversationId());
         if (!message.getFrom().equals(client.getClientId())) {
           if (NotificationUtils.isShowNotification(conversation.getConversationId())) {
             sendNotification(message, conversation);
           }
-          ChatManager.getInstance().getConversationsDatabase().increaseUnreadCount(message.getConversationId());
+          ConversationManager.getInstance().getConversationsDatabase().increaseUnreadCount(message.getConversationId());
           sendEvent(message, conversation);
         }
       }

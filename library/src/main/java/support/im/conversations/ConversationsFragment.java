@@ -27,7 +27,7 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
     super.onCreate(savedInstanceState);
     mAdapter.bind(Conversation.class, ConversationsViewHolder.class);
     mAdapter.setOnClickListener(this);
-    new ConversationsPresenter(Injection.provideConversationsRepository(getContext()), this);
+    new ConversationsPresenter(Injection.provideConversationsRepository(), this);
   }
 
   @Override public void onResume() {
@@ -53,14 +53,14 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
     contentPresenter.displayLoadView();
   }
 
-  @Override public void showConversations(List<Conversation> conversations) {
+  @Override public void notifyDataSetChanged(List<Conversation> conversations) {
     mAdapter.addAll(conversations);
     contentPresenter.displayContentView();
   }
 
-  @Override public void updateConversation(Conversation conversation, int position) {
+  @Override public void notifyItemChanged(Conversation conversation) {
+    final int position = mAdapter.getIndex(conversation);
     mAdapter.add(conversation, position);
-    contentPresenter.displayContentView();
   }
 
   @Override public void showNoConversations() {
