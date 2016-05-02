@@ -171,7 +171,7 @@ public class ChatsFragment extends SupportFragment
   }
 
   @Override public void showMessages(List<AVIMMessage> messages) {
-
+    mAdapter.addAll(messages);
   }
 
   @Override public void showNoMessages() {
