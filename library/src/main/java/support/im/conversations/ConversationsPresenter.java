@@ -33,7 +33,7 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
   }
 
   @Override public void loadConversations(boolean forceUpdate) {
-    loadServerConversations(forceUpdate || mFirstLoad, true);
+    loadCachedConversations(forceUpdate || mFirstLoad, true);
     mFirstLoad = false;
   }
 
@@ -53,32 +53,7 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
 
     mConversationsRepository.loadServerConversations(new ConversationsDataSource.LoadConversationsCallback() {
       @Override public void onConversationsLoaded(List<Conversation> conversations) {
-        // sorted
-        Collections.sort(conversations, mConversationsComparator);
-
-        if (!mConversationsView.isActive()) {
-          return;
-        }
-
-        mConversationsView.notifyDataSetChanged(conversations);
-
-        for (final Conversation conversation : conversations) {
-          AVIMConversation aVIMConversation = conversation.getConversation();
-          if (aVIMConversation != null) {
-            mConversationsRepository.getLastMessage(aVIMConversation, new ConversationsDataSource.GetLastMessageCallback() {
-              @Override public void onLastMessageLoaded(AVIMMessage avimMessage) {
-                conversation.mLastMessage = avimMessage;
-                if (mConversationsView.isActive()) {
-                  mConversationsView.notifyItemChanged(conversation);
-                }
-              }
-              @Override public void onLastMessageNotFound() {
-              }
-              @Override public void onDataNotAvailable(AVIMException e) {
-              }
-            });
-          }
-        }
+        processConversations(conversations);
       }
 
       @Override public void onConversationsNotFound() {
@@ -93,6 +68,66 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
         }
       }
     });
+  }
+
+  private void loadCachedConversations(boolean forceUpdate, final boolean showLoadingUI) {
+    if (!mConversationsView.isActive()) {
+      return;
+    }
+
+    if (showLoadingUI) {
+      mConversationsView.setLoadingIndicator(false);
+    }
+
+    if (forceUpdate) {
+      mConversationsRepository.refreshConversations();
+    }
+
+    mConversationsRepository.loadCachedConversations(new ConversationsDataSource.LoadConversationsCallback() {
+      @Override public void onConversationsLoaded(List<Conversation> conversations) {
+        processConversations(conversations);
+      }
+
+      @Override public void onConversationsNotFound() {
+        if (mConversationsView.isActive()) {
+          mConversationsView.showNoConversations();
+        }
+      }
+
+      @Override public void onDataNotAvailable(AVIMException e) {
+        if (mConversationsView.isActive()) {
+          mConversationsView.showError(AVExceptionHandler.getLocalizedMessage(e), e);
+        }
+      }
+    });
+  }
+
+  private void processConversations(List<Conversation> conversations) {
+    Collections.sort(conversations, mConversationsComparator);
+
+    if (!mConversationsView.isActive()) {
+      return;
+    }
+
+    mConversationsView.notifyDataSetChanged(conversations);
+
+    for (final Conversation conversation : conversations) {
+      AVIMConversation aVIMConversation = conversation.getConversation();
+      if (aVIMConversation != null) {
+        mConversationsRepository.getLastMessage(aVIMConversation, new ConversationsDataSource.GetLastMessageCallback() {
+          @Override public void onLastMessageLoaded(AVIMMessage avimMessage) {
+            conversation.mLastMessage = avimMessage;
+            if (mConversationsView.isActive()) {
+              mConversationsView.notifyItemChanged(conversation);
+            }
+          }
+          @Override public void onLastMessageNotFound() {
+          }
+          @Override public void onDataNotAvailable(AVIMException e) {
+          }
+        });
+      }
+    }
   }
 
 }

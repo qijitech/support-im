@@ -3,14 +3,17 @@ package support.im.data.source.local;
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMConversationQuery;
+import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import com.google.common.collect.Lists;
 import java.util.List;
 import support.im.data.Conversation;
+import support.im.data.cache.CacheManager;
 import support.im.data.source.ConversationsDataSource;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.Constants;
 import support.im.leanclound.ConversationManager;
+import support.im.utilities.AVExceptionHandler;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -42,33 +45,31 @@ public class ConversationsLocalDataSource implements ConversationsDataSource {
       return;
     }
 
-    callback.onConversationsLoaded(conversations);
-
     // 判断本地是否有AVIMConversation缓存
-    //List<String> unCachedConversationIds = Lists.newArrayList();
-    //for (Conversation conversation : conversations) {
-    //  final String conversationId = conversation.mConversationId;
-    //  if (!CacheManager.getInstance().hasCacheConversation(conversationId)) {
-    //    unCachedConversationIds.add(conversationId);
-    //  }
-    //}
-    //
-    //// 如果有就不用像服务器获取
-    //if (unCachedConversationIds.isEmpty()) {
-    //  callback.onConversationsLoaded(conversations);
-    //  return;
-    //}
-    //
-    //findConversationsByConversationIds(unCachedConversationIds, new AVIMConversationQueryCallback() {
-    //  @Override public void done(List<AVIMConversation> aVIMConversations, AVIMException e) {
-    //    if (AVExceptionHandler.handAVException(e, false)) {
-    //      for (AVIMConversation aVIMConversation : aVIMConversations) {
-    //        CacheManager.getInstance().cacheConversation(aVIMConversation);
-    //      }
-    //      callback.onConversationsLoaded(conversations);
-    //    }
-    //  }
-    //});
+    List<String> unCachedConversationIds = Lists.newArrayList();
+    for (Conversation conversation : conversations) {
+      final String conversationId = conversation.mConversationId;
+      if (!CacheManager.getInstance().hasCacheConversation(conversationId)) {
+        unCachedConversationIds.add(conversationId);
+      }
+    }
+
+    // 如果有就不用像服务器获取
+    if (unCachedConversationIds.isEmpty()) {
+      callback.onConversationsLoaded(conversations);
+      return;
+    }
+
+    findConversationsByConversationIds(unCachedConversationIds, new AVIMConversationQueryCallback() {
+      @Override public void done(List<AVIMConversation> aVIMConversations, AVIMException e) {
+        if (AVExceptionHandler.handAVException(e, false)) {
+          for (AVIMConversation aVIMConversation : aVIMConversations) {
+            CacheManager.getInstance().cacheConversation(aVIMConversation);
+          }
+          callback.onConversationsLoaded(conversations);
+        }
+      }
+    });
   }
 
   public static void findConversationsByConversationIds(List<String> ids, final AVIMConversationQueryCallback callback) {

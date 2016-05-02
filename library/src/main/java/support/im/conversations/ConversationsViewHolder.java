@@ -34,6 +34,9 @@ public class ConversationsViewHolder extends EasyViewHolder<Conversation> {
   @Override public void bindTo(int position, Conversation value) {
     //mUnreadTextView.setText(String.valueOf(value.mUnreadCount));
     AVIMConversation conversation = value.getConversation();
+    if (conversation == null) {
+      return;
+    }
     SimpleUser simpleUser = ConversationHelper.getSimpleUser(conversation);
     if (simpleUser != null) {
       mAvatarImageView.setImageURI(simpleUser.toAvatarUri());
