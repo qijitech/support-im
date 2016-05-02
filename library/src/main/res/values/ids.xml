@@ -16,4 +16,6 @@
   <item name="text_support_im_chats_item_right_content" type="id"/>
   <item name="image_support_im_chats_item_content" type="id"/>
   <item name="text_support_im_chats_item_location" type="id"/>
+  <item name="text_support_im_chats_item_audio_duration" type="id"/>
+  <item name="btn_support_im_chats_item_audio_play" type="id"/>
 </resources>

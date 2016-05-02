@@ -14,4 +14,8 @@
     <item name="android:layout_height">50dp</item>
   </style>
 
+  <declare-styleable name="ChatsPlayBtn">
+    <attr format="boolean" name="left"/>
+  </declare-styleable>
+
 </resources>
