@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@id/text_support_im_chats_item_location"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/support_im_chats_location_default"
+    android:gravity="center_horizontal"
+    android:textColor="@android:color/white"
+    tools:text="Text"
+    />

@@ -15,4 +15,5 @@
   <item name="text_support_im_chats_item_left_content" type="id"/>
   <item name="text_support_im_chats_item_right_content" type="id"/>
   <item name="image_support_im_chats_item_content" type="id"/>
+  <item name="text_support_im_chats_item_location" type="id"/>
 </resources>
