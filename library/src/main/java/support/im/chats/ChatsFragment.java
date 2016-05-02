@@ -79,7 +79,8 @@ public class ChatsFragment extends SupportFragment
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mAdapter = new EasyRecyclerAdapter(getContext());
-    mAdapter.bind(AVIMMessage.class, ChatsRightViewHolder.class);
+    mAdapter.bind(AVIMMessage.class, ChatsViewHolder.class);
+    mAdapter.viewHolderFactory(new ChatsViewHolderFactory(getContext()));
     mLayoutManager = new LinearLayoutManager(getContext());
   }
 

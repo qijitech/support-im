@@ -88,8 +88,8 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
 
       Intent intent = new Intent();
       intent.setAction(SupportApp.getInstance().getString(R.string.support_im_client_notification_action));
-      intent.putExtra(Constants.CONVERSATION_ID, conversation.getConversationId());
-      intent.putExtra(Constants.MEMBER_ID, message.getFrom());
+      intent.putExtra(Constants.EXTRA_CONVERSATION_ID, conversation.getConversationId());
+      intent.putExtra(Constants.EXTRA_MEMBER_ID, message.getFrom());
       if (ConversationHelper.typeOfConversation(conversation) == ConversationType.Single) {
         intent.putExtra(Constants.NOTIFICATION_TAG, Constants.NOTIFICATION_SINGLE_CHAT);
       } else {

@@ -28,27 +28,25 @@ public class ChatsViewHolderFactory extends BaseEasyViewHolderFactory {
 
   @Override public EasyViewHolder create(int viewType, ViewGroup parent) {
     switch (viewType) {
-      //case ITEM_LEFT_TEXT:
-      //  return new ChatItemTextHolder(parent.getContext(), parent, true);
-      //case ITEM_LEFT_IMAGE:
-      //  return new ChatItemImageHolder(parent.getContext(), parent, true);
-      //case ITEM_LEFT_AUDIO:
-      //  return new ChatItemAudioHolder(parent.getContext(), parent, true);
-      //case ITEM_LEFT_LOCATION:
-      //  return new ChatItemLocationHolder(parent.getContext(), parent, true);
-      //case ITEM_RIGHT_TEXT:
-      //  return new ChatItemTextHolder(parent.getContext(), parent, false);
-      //case ITEM_RIGHT_IMAGE:
-      //  return new ChatItemImageHolder(parent.getContext(), parent, false);
-      //case ITEM_RIGHT_AUDIO:
-      //  return new ChatItemAudioHolder(parent.getContext(), parent, false);
-      //case ITEM_RIGHT_LOCATION:
-      //  return new ChatItemLocationHolder(parent.getContext(), parent, false);
+      case ITEM_LEFT_TEXT:
+        return new ChatsTextViewHolder(parent.getContext(), parent, true);
+      case ITEM_LEFT_IMAGE:
+        return new ChatsImageViewHolder(parent.getContext(), parent, true);
+      case ITEM_LEFT_AUDIO:
+        return new ChatsAudioViewHolder(parent.getContext(), parent, true);
+      case ITEM_LEFT_LOCATION:
+        return new ChatsLocationViewHolder(parent.getContext(), parent, true);
+      case ITEM_RIGHT_TEXT:
+        return new ChatsTextViewHolder(parent.getContext(), parent, false);
+      case ITEM_RIGHT_IMAGE:
+        return new ChatsImageViewHolder(parent.getContext(), parent, false);
+      case ITEM_RIGHT_AUDIO:
+        return new ChatsAudioViewHolder(parent.getContext(), parent, false);
+      case ITEM_RIGHT_LOCATION:
+        return new ChatsLocationViewHolder(parent.getContext(), parent, false);
       default:
-        //TODO 此处还要判断左右
-        //return new ChatItemTextHolder(parent.getContext(), parent, true);
+        return super.create(viewType, parent);
     }
-    return super.create(viewType, parent);
   }
 
   @Override public int itemViewType(Object object) {
