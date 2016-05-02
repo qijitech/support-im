@@ -124,6 +124,17 @@ public class ChatManager {
     mClientId = null;
   }
 
+  public void createSingleConversation(SimpleUser simpleToUser, AVIMConversationCreatedCallback callback) {
+    Map<String, Object> attrs = new HashMap<>();
+    attrs.put(ConversationType.TYPE_KEY, ConversationType.Single.getValue());
+    SupportUser supportUser = SupportUser.getCurrentUser();
+    SimpleUser fromUser = supportUser.toSimpleUser();
+    List<SimpleUser> members = Lists.newArrayList(simpleToUser, fromUser);
+    attrs.put(Conversation.ATTRS_MEMBERS, members);
+    final String memberId = simpleToUser.getObjectId();
+    mIMClient.createConversation(Lists.newArrayList(memberId), "", attrs, false, true, callback);
+  }
+
   public void createSingleConversation(SupportUser toUser, AVIMConversationCreatedCallback callback) {
     Map<String, Object> attrs = new HashMap<>();
     attrs.put(ConversationType.TYPE_KEY, ConversationType.Single.getValue());
