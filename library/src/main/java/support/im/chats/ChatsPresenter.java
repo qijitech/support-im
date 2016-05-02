@@ -2,6 +2,7 @@ package support.im.chats;
 
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
@@ -18,10 +19,15 @@ public class ChatsPresenter implements ChatsContract.Presenter {
 
   private boolean mFirstLoad = true;
 
-  public ChatsPresenter(@NonNull ChatsDataSource chatsRepository,
-      @NonNull ChatsContract.View chatsView) {
+  private final AVIMConversation mAVIMConversation;
+
+  public ChatsPresenter(
+      @NonNull ChatsDataSource chatsRepository,
+      @NonNull ChatsContract.View chatsView,
+      @NonNull AVIMConversation aVIMConversation) {
     mChatsRepository = checkNotNull(chatsRepository, "chatsRepository cannot be null");
     mChatsView = checkNotNull(chatsView, "chatsView cannot be null!");
+    mAVIMConversation = checkNotNull(aVIMConversation, "aVIMConversation cannot be null!");
 
     mChatsView.setPresenter(this);
   }
@@ -43,7 +49,7 @@ public class ChatsPresenter implements ChatsContract.Presenter {
       mChatsRepository.refreshMessages();
     }
 
-    mChatsRepository.loadMessages(new ChatsDataSource.LoadMessagesCallback() {
+    mChatsRepository.loadMessages(mAVIMConversation, new ChatsDataSource.LoadMessagesCallback() {
       @Override public void onMessagesLoaded(List<AVIMMessage> messages) {
         // The view may not be able to handle UI updates anymore
         if (!mChatsView.isActive()) {
@@ -88,7 +94,7 @@ public class ChatsPresenter implements ChatsContract.Presenter {
     }
     mChatsView.notifyItemInserted(message);
 
-    mChatsRepository.sendMessage(message, new ChatsDataSource.GetMessageCallback() {
+    mChatsRepository.sendMessage(mAVIMConversation, message, new ChatsDataSource.GetMessageCallback() {
       @Override public void onMessageLoaded(AVIMMessage message) {
         if (!mChatsView.isActive()) {
           return;

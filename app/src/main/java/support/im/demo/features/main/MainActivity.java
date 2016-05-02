@@ -54,16 +54,22 @@ public class MainActivity extends BaseActivity {
       @Override public void onMenuTabSelected(@IdRes int menuItemId) {
         switch (menuItemId) {
           case R.id.menu_conversation:
-            mNavigator.showFragment(INDEX_CONVERSIONS);
-            mBottomBar.selectTabAtPosition(INDEX_CONVERSIONS, true);
+            if (mNavigator.getCurrentPosition() != INDEX_CONVERSIONS) {
+              mNavigator.showFragment(INDEX_CONVERSIONS);
+              mBottomBar.selectTabAtPosition(INDEX_CONVERSIONS, true);
+            }
             break;
           case R.id.menu_contact:
-            mNavigator.showFragment(INDEX_CONTACTS);
-            mBottomBar.selectTabAtPosition(INDEX_CONTACTS, true);
+            if (mNavigator.getCurrentPosition() != INDEX_CONTACTS) {
+              mNavigator.showFragment(INDEX_CONTACTS);
+              mBottomBar.selectTabAtPosition(INDEX_CONTACTS, true);
+            }
             break;
           case R.id.menu_accounts:
-            mNavigator.showFragment(INDEX_ACCOUNTS);
-            mBottomBar.selectTabAtPosition(INDEX_ACCOUNTS, true);
+            if (mNavigator.getCurrentPosition() != INDEX_ACCOUNTS) {
+              mNavigator.showFragment(INDEX_ACCOUNTS);
+              mBottomBar.selectTabAtPosition(INDEX_ACCOUNTS, true);
+            }
             break;
         }
       }

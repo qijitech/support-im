@@ -2,7 +2,6 @@ package support.im;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import com.avos.avoscloud.im.v2.AVIMConversation;
 import support.im.data.source.AddRequestsRepository;
 import support.im.data.source.ChatsRepository;
 import support.im.data.source.ContactsRepository;
@@ -50,8 +49,7 @@ public class Injection {
         provideUsersRepository(context));
   }
 
-  public static ChatsRepository provideChatsRepository(@NonNull AVIMConversation avimConversation) {
-    checkNotNull(avimConversation);
-    return ChatsRepository.getInstance(ChatsRemoteDataSource.getInstance(avimConversation));
+  public static ChatsRepository provideChatsRepository() {
+    return ChatsRepository.getInstance(ChatsRemoteDataSource.getInstance());
   }
 }

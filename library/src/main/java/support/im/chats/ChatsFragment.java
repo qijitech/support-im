@@ -96,7 +96,7 @@ public class ChatsFragment extends SupportFragment
   }
 
   public void setConversation(AVIMConversation avimConversation) {
-    new ChatsPresenter(Injection.provideChatsRepository(avimConversation), this);
+    new ChatsPresenter(Injection.provideChatsRepository(), this, avimConversation);
     mPresenter.start();
   }
 
@@ -172,6 +172,7 @@ public class ChatsFragment extends SupportFragment
 
   @Override public void showMessages(List<AVIMMessage> messages) {
     mAdapter.addAll(messages);
+    scrollToBottom();
   }
 
   @Override public void showNoMessages() {

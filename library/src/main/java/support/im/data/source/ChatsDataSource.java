@@ -2,6 +2,7 @@ package support.im.data.source;
 
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import java.util.List;
@@ -20,11 +21,14 @@ public interface ChatsDataSource {
     void onDataNotAvailable(AVException exception);
   }
 
-  void sendMessage(AVIMTypedMessage message, GetMessageCallback callback);
+  void sendMessage(@NonNull AVIMConversation aVIMConversation,
+      @NonNull AVIMTypedMessage message,
+      GetMessageCallback callback);
 
-  void loadMessages(@NonNull LoadMessagesCallback callback);
+  void loadMessages(@NonNull AVIMConversation aVIMConversation, @NonNull LoadMessagesCallback callback);
 
   void loadMessages(
+      @NonNull AVIMConversation aVIMConversation,
       @NonNull final String messageId,
       final long timestamp, final int limit,
       @NonNull LoadMessagesCallback callback);

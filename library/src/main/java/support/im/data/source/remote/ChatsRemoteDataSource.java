@@ -15,23 +15,24 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ChatsRemoteDataSource implements ChatsDataSource {
 
-  private final AVIMConversation mAVIMConversation;
 
-  private ChatsRemoteDataSource(@NonNull AVIMConversation aVIMConversation) {
-    mAVIMConversation = checkNotNull(aVIMConversation);
+  private ChatsRemoteDataSource() {
   }
 
   private static ChatsRemoteDataSource INSTANCE = null;
 
-  public static ChatsRemoteDataSource getInstance(AVIMConversation aVIMConversation) {
+  public static ChatsRemoteDataSource getInstance() {
     if (INSTANCE == null) {
-      INSTANCE = new ChatsRemoteDataSource(aVIMConversation);
+      INSTANCE = new ChatsRemoteDataSource();
     }
     return INSTANCE;
   }
 
-  @Override public void loadMessages(@NonNull final LoadMessagesCallback callback) {
-    mAVIMConversation.queryMessages(new AVIMMessagesQueryCallback() {
+  @Override public void loadMessages(@NonNull AVIMConversation aVIMConversation,
+      @NonNull final LoadMessagesCallback callback) {
+    checkNotNull(aVIMConversation);
+    checkNotNull(callback);
+    aVIMConversation.queryMessages(new AVIMMessagesQueryCallback() {
       @Override public void done(List<AVIMMessage> messages, AVIMException e) {
         if (AVExceptionHandler.handAVException(e, false)) {
           callback.onMessagesLoaded(messages);
@@ -42,10 +43,11 @@ public class ChatsRemoteDataSource implements ChatsDataSource {
     });
   }
 
-  @Override public void loadMessages(@NonNull String messageId, long timestamp, int limit,
+  @Override public void loadMessages(@NonNull AVIMConversation aVIMConversation, @NonNull String messageId, long timestamp, int limit,
       @NonNull final LoadMessagesCallback callback) {
+    checkNotNull(aVIMConversation);
     checkNotNull(messageId);
-    mAVIMConversation.queryMessages(messageId, timestamp, limit, new AVIMMessagesQueryCallback() {
+    aVIMConversation.queryMessages(messageId, timestamp, limit, new AVIMMessagesQueryCallback() {
       @Override public void done(List<AVIMMessage> messages, AVIMException e) {
         if (AVExceptionHandler.handAVException(e, false)) {
           callback.onMessagesLoaded(messages);
@@ -60,12 +62,13 @@ public class ChatsRemoteDataSource implements ChatsDataSource {
 
   }
 
-  @Override public void sendMessage(@NonNull final AVIMTypedMessage message,
+  @Override public void sendMessage(@NonNull AVIMConversation aVIMConversation, @NonNull final AVIMTypedMessage message,
       @NonNull final GetMessageCallback callback) {
+    checkNotNull(aVIMConversation);
     checkNotNull(message);
     checkNotNull(callback);
 
-    mAVIMConversation.sendMessage(message, new AVIMConversationCallback() {
+    aVIMConversation.sendMessage(message, new AVIMConversationCallback() {
       @Override public void done(AVIMException e) {
         if (AVExceptionHandler.handAVException(e, false)) {
           callback.onDataNotAvailable(e);
