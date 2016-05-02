@@ -6,7 +6,7 @@ package support.im.data;
 public enum ConversationType {
 
   Single(0),
-  Group(1);
+  Group(1), ;
 
   /**
    * 创建的时候直接设置 type 字段

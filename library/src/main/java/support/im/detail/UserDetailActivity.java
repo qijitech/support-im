@@ -59,7 +59,7 @@ public class UserDetailActivity extends SupportActivity implements View.OnClickL
       return;
     }
     if (viewId == R.id.btn_support_user_detail_chat) {
-      ChatsActivity.startChats(this);
+      ChatsActivity.startChatsWithMemberId(this, mObjectId);
     }
   }
 }

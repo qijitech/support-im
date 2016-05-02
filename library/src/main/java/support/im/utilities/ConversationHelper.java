@@ -46,6 +46,19 @@ public final class ConversationHelper {
     return true;
   }
 
+  public static String titleOfConversation(AVIMConversation conversation) {
+    if (isValidConversation(conversation)) {
+      if (typeOfConversation(conversation) == ConversationType.Single) {
+        return displayNameOfConversation(conversation);
+      } else {
+        List<String> members = conversation.getMembers();
+        return displayNameOfConversation(conversation) + " (" + members.size() + ")";
+      }
+    } else {
+      return "";
+    }
+  }
+
   /**
    * 获取单聊对话的另外一个人的 userId
    *
@@ -95,9 +108,9 @@ public final class ConversationHelper {
     if (object instanceof JSONArray) {
       JSONArray jsonArray = (JSONArray) object;
       final int size = jsonArray.size();
-      for(int i = 0; i < size;i++){
-        JSONObject jsonObject = (JSONObject)jsonArray.get(i);
-        SimpleUser user = JSON.toJavaObject(jsonObject,SimpleUser.class);
+      for (int i = 0; i < size; i++) {
+        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+        SimpleUser user = JSON.toJavaObject(jsonObject, SimpleUser.class);
         if (otherId.equals(user.getObjectId())) {
           return user.getDisplayName();
         }
@@ -112,9 +125,9 @@ public final class ConversationHelper {
     if (object instanceof JSONArray) {
       JSONArray jsonArray = (JSONArray) object;
       final int size = jsonArray.size();
-      for(int i = 0; i < size;i++){
-        JSONObject jsonObject = (JSONObject)jsonArray.get(i);
-        SimpleUser user = JSON.toJavaObject(jsonObject,SimpleUser.class);
+      for (int i = 0; i < size; i++) {
+        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+        SimpleUser user = JSON.toJavaObject(jsonObject, SimpleUser.class);
         if (otherId.equals(user.getObjectId())) {
           return user;
         }
@@ -122,5 +135,4 @@ public final class ConversationHelper {
     }
     return null;
   }
-
 }

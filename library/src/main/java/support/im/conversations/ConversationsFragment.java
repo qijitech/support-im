@@ -80,6 +80,7 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
   }
 
   @Override public void onItemClick(int position, View view) {
-    ChatsActivity.startChats(getContext());
+    Conversation conversation = (Conversation) mAdapter.get(position);
+    ChatsActivity.startChatsWithConversationId(getContext(), conversation.mConversationId);
   }
 }

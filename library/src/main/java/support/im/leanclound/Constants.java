@@ -9,8 +9,8 @@ public class Constants {
   public static final String CREATED_AT = "createdAt";
   public static final String UPDATED_AT = "updatedAt";
 
-  public static final String MEMBER_ID = getPrefixConstant("member_id");
-  public static final String CONVERSATION_ID = getPrefixConstant("conversation_id");
+  public static final String EXTRA_MEMBER_ID = getPrefixConstant("member_id");
+  public static final String EXTRA_CONVERSATION_ID = getPrefixConstant("conversation_id");
   public static final String EXTRA_OBJECT_ID = getPrefixConstant("object_id");
 
   //Notification

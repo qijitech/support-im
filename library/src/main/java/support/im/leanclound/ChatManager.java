@@ -124,12 +124,6 @@ public class ChatManager {
     mClientId = null;
   }
 
-  public void createSingleConversation(String memberId, AVIMConversationCreatedCallback callback) {
-    Map<String, Object> attrs = new HashMap<>();
-    attrs.put(ConversationType.TYPE_KEY, ConversationType.Single.getValue());
-    mIMClient.createConversation(Lists.newArrayList(memberId), "", attrs, false, true, callback);
-  }
-
   public void createSingleConversation(SupportUser toUser, AVIMConversationCreatedCallback callback) {
     Map<String, Object> attrs = new HashMap<>();
     attrs.put(ConversationType.TYPE_KEY, ConversationType.Single.getValue());

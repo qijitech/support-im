@@ -1,6 +1,5 @@
 package support.im.chats;
 
-import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,14 +8,16 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import butterknife.ButterKnife;
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.sj.emoji.EmojiBean;
-import pl.tajchert.nammu.Nammu;
-import pl.tajchert.nammu.PermissionCallback;
+import java.util.List;
 import sj.keyboard.data.EmoticonEntity;
 import sj.keyboard.interfaces.EmoticonClickListener;
 import sj.keyboard.widget.EmoticonsEditText;
 import sj.keyboard.widget.FuncLayout;
+import support.im.Injection;
 import support.im.R;
 import support.im.emoticons.ChatsUtils;
 import support.im.emoticons.Constants;
@@ -24,12 +25,17 @@ import support.im.emoticons.SupportImFuncView;
 import support.ui.SupportFragment;
 import support.ui.adapters.EasyRecyclerAdapter;
 
-public class ChatsFragment extends SupportFragment implements FuncLayout.OnFuncKeyBoardListener {
+import static com.google.common.base.Preconditions.checkNotNull;
+
+public class ChatsFragment extends SupportFragment
+    implements ChatsContract.View, FuncLayout.OnFuncKeyBoardListener {
 
   private SupportEmoticonsKeyBoard mEmoticonsKeyBoard;
   RecyclerView mRecyclerView;
   LinearLayoutManager mLayoutManager;
   EasyRecyclerAdapter mAdapter;
+
+  ChatsContract.Presenter mPresenter;
 
   EmoticonClickListener emoticonClickListener = new EmoticonClickListener() {
     @Override public void onEmoticonClick(Object o, int actionType, boolean isDelBtn) {
@@ -83,34 +89,25 @@ public class ChatsFragment extends SupportFragment implements FuncLayout.OnFuncK
     mLayoutManager = null;
   }
 
+  @Override public void onResume() {
+    super.onResume();
+  }
+
+  public void setConversation(AVIMConversation avimConversation) {
+    new ChatsPresenter(Injection.provideChatsRepository(avimConversation), this);
+    mPresenter.start();
+  }
+
+  public void shouldShowDisplayName(boolean shouldShow) {
+
+  }
+
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     mEmoticonsKeyBoard = ButterKnife.findById(view, R.id.emoticons_key_board);
     mRecyclerView = ButterKnife.findById(view, android.R.id.list);
     setupEmoticonsKeyBoardBar();
     setupRecyclerView();
-  }
-
-  private void loadChats() {
-    if (Nammu.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-      //mPresenter.start();
-    } else {
-      Nammu.askForPermission(getActivity(), Manifest.permission.READ_CONTACTS,
-          new PermissionCallback() {
-            @Override public void permissionGranted() {
-              //mPresenter.start();
-            }
-
-            @Override public void permissionRefused() {
-              getActivity().finish();
-            }
-          });
-    }
-  }
-
-  @Override public void onRequestPermissionsResult(int requestCode, String[] permissions,
-      int[] grantResults) {
-    Nammu.onRequestPermissionsResult(requestCode, permissions, grantResults);
   }
 
   private void setupRecyclerView() {
@@ -124,12 +121,12 @@ public class ChatsFragment extends SupportFragment implements FuncLayout.OnFuncK
     mEmoticonsKeyBoard.addOnFuncKeyBoardListener(this);
     mEmoticonsKeyBoard.addFuncView(new SupportImFuncView(getContext()));
 
-    mEmoticonsKeyBoard.getEtChat().setOnSizeChangedListener(
-        new EmoticonsEditText.OnSizeChangedListener() {
-      @Override public void onSizeChanged(int w, int h, int oldw, int oldh) {
-        scrollToBottom();
-      }
-    });
+    mEmoticonsKeyBoard.getEtChat()
+        .setOnSizeChangedListener(new EmoticonsEditText.OnSizeChangedListener() {
+          @Override public void onSizeChanged(int w, int h, int oldw, int oldh) {
+            scrollToBottom();
+          }
+        });
     mEmoticonsKeyBoard.getBtnSend().setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         OnSendBtnClick(mEmoticonsKeyBoard.getEtChat().getText().toString());
@@ -138,7 +135,6 @@ public class ChatsFragment extends SupportFragment implements FuncLayout.OnFuncK
     });
     //mEmoticonsKeyBoard.getEmoticonsToolBarView().addFixedToolItemView();
   }
-
 
   private void OnSendBtnClick(String msg) {
     if (!TextUtils.isEmpty(msg)) {
@@ -163,7 +159,31 @@ public class ChatsFragment extends SupportFragment implements FuncLayout.OnFuncK
   }
 
   @Override public void OnFuncClose() {
+  }
+
+  ///////////////// ChatsContact View
+
+  @Override public void setLoadingIndicator(boolean active) {
 
   }
 
+  @Override public void showMessages(List<AVIMMessage> messages) {
+
+  }
+
+  @Override public void showNoMessages() {
+
+  }
+
+  @Override public boolean isActive() {
+    return isAdded();
+  }
+
+  @Override public void onDataNotAvailable(String error, AVException exception) {
+
+  }
+
+  @Override public void setPresenter(ChatsContract.Presenter presenter) {
+    mPresenter = checkNotNull(presenter);
+  }
 }
