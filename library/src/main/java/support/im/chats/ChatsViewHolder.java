@@ -40,6 +40,7 @@ public class ChatsViewHolder extends EasyViewHolder<AVIMMessage> {
 
   protected void setupView() {
     mContentContainer = ButterKnife.findById(itemView, R.id.container_support_im_chats_item_content);
+    mContentContainer.removeAllViews();
     mSentAtTextView = ButterKnife.findById(itemView, R.id.text_support_im_chats_item_sent_at);
     mAvatarView = ButterKnife.findById(itemView, R.id.image_support_im_contacts_avatar);
     mStatusContainer = ButterKnife.findById(itemView, R.id.container_support_im_chats_item_status);
