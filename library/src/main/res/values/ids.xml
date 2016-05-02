@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <item name="support_ui_recycler_view" type="id"/>
+
+  <item name="container_support_im_chats_item_status" type="id"/>
+  <item name="container_support_im_chats_item_content_display_name" type="id"/>
+  <item name="container_support_im_chats_item_content" type="id"/>
+  <item name="text_support_im_chats_item_sent_at" type="id"/>
+  <item name="text_support_im_chats_item_display_name" type="id"/>
+  <item name="text_support_im_chats_item_text" type="id"/>
+  <item name="text_support_im_chats_item_status" type="id"/>
+  <item name="image_support_im_chats_item_error" type="id"/>
+  <item name="image_support_im_chats_item_avatar" type="id"/>
+  <item name="progress_support_im_chats_item_status" type="id"/>
 </resources>

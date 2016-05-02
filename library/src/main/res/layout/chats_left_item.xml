@@ -1,7 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp"
+    >
+
+  <TextView
+      android:id="@id/text_support_im_chats_item_sent_at"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="3dp"
+      android:layout_marginTop="10dp"
+      android:gravity="center"
+      tools:text="10:00"
+      />
+
+  <RelativeLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="72dp"
+      android:layout_marginRight="72dp"
+      >
+
+    <LinearLayout
+        android:id="@id/container_support_im_chats_item_content_display_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/image_support_im_chats_item_avatar"
+        android:layout_toRightOf="@id/image_support_im_chats_item_avatar"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        >
+      <TextView
+          android:id="@+id/text_support_im_chats_item_display_name"
+          android:layout_width="45dp"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:gravity="start"
+          android:singleLine="true"
+          tools:text="Tom"
+          />
+      <FrameLayout
+          android:id="@id/container_support_im_chats_item_content"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          >
+        <include layout="@layout/chats_item_left_text"/>
+      </FrameLayout>
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@id/container_support_im_chats_item_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_toEndOf="@id/container_support_im_chats_item_content_display_name"
+        android:layout_toRightOf="@id/container_support_im_chats_item_content_display_name"
+        android:visibility="visible"
+        >
+
+      <ProgressBar
+          android:id="@id/progress_support_im_chats_item_status"
+          android:layout_width="30dp"
+          android:layout_height="30dp"
+          android:layout_gravity="center_vertical"
+          style="@android:style/Widget.ProgressBar.Large"
+          />
+
+      <TextView
+          android:id="@id/text_support_im_chats_item_status"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textSize="12sp"
+          android:visibility="visible"
+          tools:text="已发送"
+          />
+
+      <ImageView
+          android:id="@+id/image_support_im_chats_item_error"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:padding="5dp"
+          android:src="@drawable/support_im_selector_chats_btn_fail"
+          />
+    </FrameLayout>
+
+
+    <ImageView
+        android:id="@id/image_support_im_chats_item_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="end"
+        android:src="@drawable/support_im_placeholder_avatar"
+        />
+  </RelativeLayout>
 
 </LinearLayout>
