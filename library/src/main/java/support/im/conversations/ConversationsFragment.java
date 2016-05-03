@@ -59,6 +59,7 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
       }
     }
     mAdapter.add(conversation, 0);
+    contentPresenter.displayContentView();
   }
 
   @Override public void setLoadingIndicator(boolean active) {

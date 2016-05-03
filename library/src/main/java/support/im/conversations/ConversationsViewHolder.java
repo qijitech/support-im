@@ -41,7 +41,7 @@ public class ConversationsViewHolder extends EasyViewHolder<ConversationModel> {
     if (simpleUser != null) {
       mAvatarImageView.setImageURI(simpleUser.toAvatarUri());
     }
-    mNameTextView.setText(ConversationHelper.displayNameOfConversation(conversation));
+    mNameTextView.setText(ConversationHelper.titleOfConversation(conversation));
     if (value.mLastMessage != null) {
       mMessageTextView.setText(Utils.getMessageeShorthand(SupportApp.appContext(), value.mLastMessage));
     } else {

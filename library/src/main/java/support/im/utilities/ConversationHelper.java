@@ -116,6 +116,18 @@ public final class ConversationHelper {
           return user.getDisplayName();
         }
       }
+    } else if (object instanceof org.json.JSONArray) {
+      org.json.JSONArray jsonArray = (org.json.JSONArray) object;
+      String json = jsonArray.toString();
+      JSONArray jsonArray1 = JSON.parseArray(json);
+      final int size = jsonArray1.size();
+      for (int i = 0; i < size; i++) {
+        JSONObject jsonObject = (JSONObject) jsonArray1.get(i);
+        SimpleUser user = JSON.toJavaObject(jsonObject, SimpleUser.class);
+        if (otherId.equals(user.getObjectId())) {
+          return user.getDisplayName();
+        }
+      }
     }
     return "对话";
   }
@@ -136,6 +148,20 @@ public final class ConversationHelper {
       final int size = jsonArray.size();
       for (int i = 0; i < size; i++) {
         JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+        SimpleUser user = JSON.toJavaObject(jsonObject, SimpleUser.class);
+        if (otherId.equals(user.getObjectId())) {
+          return user;
+        }
+      }
+    }
+
+    if (object instanceof org.json.JSONArray) {
+      org.json.JSONArray jsonArray = (org.json.JSONArray) object;
+      String json = jsonArray.toString();
+      JSONArray jsonArray1 = JSON.parseArray(json);
+      final int size = jsonArray1.size();
+      for (int i = 0; i < size; i++) {
+        JSONObject jsonObject = (JSONObject) jsonArray1.get(i);
         SimpleUser user = JSON.toJavaObject(jsonObject, SimpleUser.class);
         if (otherId.equals(user.getObjectId())) {
           return user;
