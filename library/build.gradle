@@ -1,4 +1,15 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.neenbedankt.android-apt'
+
+buildscript {
+  repositories {
+    jcenter()
+  }
+
+  dependencies {
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+  }
+}
 
 android {
   compileSdkVersion 23
@@ -57,4 +68,7 @@ dependencies {
   compile 'com.github.w446108264:XhsEmoticonsKeyboard:2.0.2'
   compile 'com.github.w446108264:AndroidEmoji:1.0.0'
 
+  compile 'com.yahoo.squidb:squidb:2.0.2'
+  compile 'com.yahoo.squidb:squidb-annotations:2.0.2'
+  apt 'com.yahoo.squidb:squidb-processor:2.0.2'
 }

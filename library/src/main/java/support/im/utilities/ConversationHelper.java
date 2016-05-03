@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.avos.avoscloud.im.v2.AVIMConversation;
+import java.util.ArrayList;
 import java.util.List;
 import support.im.data.Conversation;
 import support.im.data.ConversationType;
@@ -122,6 +123,14 @@ public final class ConversationHelper {
   public static SimpleUser getSimpleUser(@NonNull AVIMConversation conversation) {
     String otherId = otherIdOfConversation(conversation);
     Object object = conversation.getAttribute(Conversation.ATTRS_MEMBERS);
+    if (object instanceof ArrayList) {
+      ArrayList<SimpleUser> simpleUsers = (ArrayList<SimpleUser>) object;
+      for (SimpleUser user : simpleUsers) {
+        if (otherId.equals(user.getObjectId())) {
+          return user;
+        }
+      }
+    }
     if (object instanceof JSONArray) {
       JSONArray jsonArray = (JSONArray) object;
       final int size = jsonArray.size();
