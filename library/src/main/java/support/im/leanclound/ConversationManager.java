@@ -30,14 +30,14 @@ public class ConversationManager {
   public void initialize(String clientId) {
     mClientId = checkNotNull(clientId, "clientId cannot be null");
     if (mConversationsDatabase == null) {
-      mConversationsDatabase = ConversationsDatabase.databaseWithUserId(mContext, clientId);
+      mConversationsDatabase = ConversationsDatabase.databaseWithClientId(mContext, clientId);
     }
   }
 
   public ConversationsDatabase getConversationsDatabase() {
     checkNotNull(mClientId, "please invoke initialize(String) ");
     if (mConversationsDatabase == null) {
-      mConversationsDatabase = ConversationsDatabase.databaseWithUserId(mContext, mClientId);
+      mConversationsDatabase = ConversationsDatabase.databaseWithClientId(mContext, mClientId);
     }
     return mConversationsDatabase;
   }

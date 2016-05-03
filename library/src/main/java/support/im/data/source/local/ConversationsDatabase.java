@@ -21,7 +21,7 @@ public class ConversationsDatabase {
     mDbHelper = dbHelper;
   }
 
-  public synchronized static ConversationsDatabase databaseWithUserId(Context context, String clientId) {
+  public synchronized static ConversationsDatabase databaseWithClientId(Context context, String clientId) {
     ConversationsDatabase database = sDatabases.get(clientId);
     if (database == null) {
       database = new ConversationsDatabase(new ConversationsDbHelper(context.getApplicationContext(), clientId));
@@ -63,12 +63,12 @@ public class ConversationsDatabase {
     }
   }
 
-  public void saveConversation(String conversationId) {
+  public long saveConversation(String conversationId) {
     SQLiteDatabase db = mDbHelper.getWritableDatabase();
     try {
       ContentValues cv = new ContentValues();
       cv.put(Conversations.COLUMN_NAME_CONVERSATION_ID, conversationId);
-      db.insertWithOnConflict(Conversations.TABLE_NAME, null, cv, SQLiteDatabase.CONFLICT_IGNORE);
+      return db.insertWithOnConflict(Conversations.TABLE_NAME, null, cv, SQLiteDatabase.CONFLICT_IGNORE);
     } finally {
       db.close();
     }

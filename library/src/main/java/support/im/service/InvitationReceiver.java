@@ -31,12 +31,13 @@ public class InvitationReceiver extends BroadcastReceiver {
             Intent notificationIntent = new Intent(context, NotificationBroadcastReceiver.class);
             notificationIntent.putExtra(Constants.NOTIFICATION_TAG, Constants.NOTIFICATION_SYSTEM);
             NotificationUtils.showNotification(context, "SupportIm", alertStr, notificationIntent);
+
+            EventBus.getDefault().post(new InvitationEvent());
           } catch (JSONException e) {
             SupportLog.logException(e);
           }
         }
       }
     }
-    EventBus.getDefault().post(new InvitationEvent());
   }
 }

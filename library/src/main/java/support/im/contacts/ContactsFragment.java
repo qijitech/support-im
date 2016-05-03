@@ -13,12 +13,15 @@ import android.widget.FrameLayout;
 import butterknife.ButterKnife;
 import com.avos.avoscloud.AVException;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
+import de.greenrobot.event.EventBus;
 import java.util.List;
 import support.im.Injection;
 import support.im.R;
 import support.im.addcontact.AddContactActivity;
 import support.im.data.SimpleUser;
 import support.im.detail.UserDetailActivity;
+import support.im.events.InvitationEvent;
+import support.im.leanclound.contacts.AddRequestManager;
 import support.im.newcontacts.NewContactsActivity;
 import support.ui.SupportRecyclerViewFragment;
 
@@ -69,6 +72,12 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     super.onResume();
     getActivity().setTitle(R.string.support_im_contacts_title);
     mPresenter.start();
+    EventBus.getDefault().register(this);
+  }
+
+  @Override public void onPause() {
+    super.onPause();
+    EventBus.getDefault().unregister(this);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -165,6 +174,12 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
 
   @Override public void setPresenter(ContactsContract.Presenter presenter) {
     mPresenter = checkNotNull(presenter);
+  }
+
+  public void onEvent(InvitationEvent event) {
+    AddRequestManager.getInstance().unreadRequestsIncrement();
+    // TODO
+    //updateNewRequestBadge();
   }
 
 }

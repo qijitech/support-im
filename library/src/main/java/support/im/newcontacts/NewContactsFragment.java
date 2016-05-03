@@ -5,8 +5,10 @@ import android.support.annotation.Nullable;
 import com.avos.avoscloud.AVException;
 import de.greenrobot.event.EventBus;
 import java.util.List;
+import support.im.events.InvitationEvent;
 import support.im.events.NewContactAgreeEvent;
 import support.im.leanclound.contacts.AddRequest;
+import support.im.leanclound.contacts.AddRequestManager;
 import support.ui.SupportRecyclerViewFragment;
 import support.ui.utilities.HudUtils;
 import support.ui.utilities.ToastUtils;
@@ -35,6 +37,11 @@ public class NewContactsFragment extends SupportRecyclerViewFragment implements 
   @Override public void onPause() {
     super.onPause();
     EventBus.getDefault().unregister(this);
+  }
+
+  @SuppressWarnings("unused") public void onEvent(InvitationEvent event) {
+    AddRequestManager.getInstance().unreadRequestsIncrement();
+    mPresenter.start();
   }
 
   @SuppressWarnings("unused") public void onEvent(NewContactAgreeEvent event) {

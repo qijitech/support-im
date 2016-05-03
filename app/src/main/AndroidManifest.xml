@@ -110,6 +110,15 @@
           android:value=".features.main.MainActivity"/>
     </activity>
 
+    <receiver android:name="support.im.service.InvitationReceiver">
+      <intent-filter>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="android.intent.action.USER_PRESENT" />
+        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+        <action android:name="@string/support_im_add_request_invitation_action" />
+      </intent-filter>
+    </receiver>
+
     <receiver
         android:name="support.im.service.NotificationBroadcastReceiver"
         android:exported="false">

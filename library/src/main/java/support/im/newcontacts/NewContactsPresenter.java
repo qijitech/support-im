@@ -6,7 +6,9 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import java.util.List;
+import java.util.Map;
 import support.im.R;
 import support.im.data.SupportUser;
 import support.im.data.source.AddRequestsDataSource;
@@ -79,6 +81,7 @@ public class NewContactsPresenter implements NewContactsContract.Presenter {
             public void done(AVIMConversation avimConversation, AVIMException e) {
               if (e == null) {
                 AVIMTextMessage message = new AVIMTextMessage();
+                Map<String, Object> attributes = Maps.newLinkedHashMap();
                 message.setText(SupportApp.getInstance().getString(R.string.support_im_when_agree_request));
                 avimConversation.sendMessage(message, null);
               }

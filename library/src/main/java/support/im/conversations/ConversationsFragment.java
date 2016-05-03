@@ -47,6 +47,8 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
   }
 
   public void onEvent(ImTypeMessageEvent event) {
+    Conversation conversation = event.mConversation;
+    mAdapter.add(conversation);
   }
 
   @Override public void setLoadingIndicator(boolean active) {

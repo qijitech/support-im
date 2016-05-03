@@ -1,5 +1,6 @@
 package support.im.demo;
 
+import android.support.multidex.MultiDex;
 import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
@@ -17,6 +18,8 @@ public class SupportImApp extends SupportApp {
 
   @Override public void onCreate() {
     super.onCreate();
+    MultiDex.install(this);
+
     AVOSCloud.initialize(appContext(), BuildConfig.LeanCloundAppId, BuildConfig.LeanCloundAppKey);
     Nammu.init(appContext());
 

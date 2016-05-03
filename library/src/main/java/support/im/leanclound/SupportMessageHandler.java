@@ -10,7 +10,10 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessageHandler;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import de.greenrobot.event.EventBus;
 import support.im.R;
+import support.im.data.Conversation;
 import support.im.data.ConversationType;
+import support.im.data.SimpleUser;
+import support.im.data.cache.CacheManager;
 import support.im.leanclound.event.ImTypeMessageEvent;
 import support.im.utilities.ConversationHelper;
 import support.im.utilities.NotificationUtils;
@@ -37,26 +40,35 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
       return;
     }
 
+    // 判断AVIMConversation是否合法
     if (!ConversationHelper.isValidConversation(conversation)) {
       SupportLog.d("receive msg from invalid conversation");
     }
 
-    if (ChatManager.getInstance().getClientId() == null) {
-      SupportLog.d("selfId is null, please call setupManagerWithUserId ");
+    // 判断是否已经打开
+    final String localClientId = ChatManager.getInstance().getClientId();
+    if (localClientId == null) {
+      SupportLog.d("clientId is null, please call ChatManager openClient");
       client.close(null);
-    } else {
-      if (!client.getClientId().equals(ChatManager.getInstance().getClientId())) {
-        client.close(null);
-      } else {
-        ConversationManager.getInstance().getConversationsDatabase().saveConversation(message.getConversationId());
-        if (!message.getFrom().equals(client.getClientId())) {
-          if (NotificationUtils.isShowNotification(conversation.getConversationId())) {
-            sendNotification(message, conversation);
-          }
-          ConversationManager.getInstance().getConversationsDatabase().increaseUnreadCount(message.getConversationId());
-          sendEvent(message, conversation);
-        }
+      return;
+    }
+    final String serverClientId = client.getClientId();
+    if (!localClientId.equals(serverClientId)) {
+      client.close(null);
+      return;
+    }
+
+    // process
+    // 保存一个 Conversation
+    Conversation conv = Conversation.createConversationOnlyConversationId(conversation);
+    ConversationManager.getInstance().getConversationsDatabase().saveConversation(message.getConversationId());
+    if (!message.getFrom().equals(client.getClientId())) {
+      if (NotificationUtils.isShowNotification(conversation.getConversationId())) {
+        sendNotification(message, conversation);
       }
+      ConversationManager.getInstance().getConversationsDatabase().increaseUnreadCount(message.getConversationId());
+      CacheManager.getInstance().cacheConversation(conversation);
+      sendEvent(message, conversation, conv);
     }
   }
 
@@ -69,12 +81,13 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
    * 因为没有 db，所以暂时先把消息广播出去，由接收方自己处理
    * 稍后应该加入 db
    * @param message
-   * @param conversation
+   * @param aVIMConversation
    */
-  private void sendEvent(AVIMTypedMessage message, AVIMConversation conversation) {
+  private void sendEvent(AVIMTypedMessage message, AVIMConversation aVIMConversation, Conversation conversation) {
     ImTypeMessageEvent event = new ImTypeMessageEvent();
     event.message = message;
-    event.conversation = conversation;
+    event.mAVIMConversation = aVIMConversation;
+    event.mConversation = conversation;
     EventBus.getDefault().post(event);
   }
 
@@ -83,9 +96,12 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
       String notificationContent = message instanceof AVIMTextMessage ?
           ((AVIMTextMessage) message).getText() : mContext.getString(R.string.support_im_un_support_message_type);
 
-      String userName = "SupportMessageHandler:86行"; //ThirdPartUserUtils.getInstance().getUserName(message.getFrom());
+      SimpleUser simpleUser = CacheManager.getInstance().getCacheSimpleUser(message.getFrom());
+      String userName = null;
+      if (simpleUser != null) {
+        userName = simpleUser.getDisplayName();
+      }
       String title = (TextUtils.isEmpty(userName) ? "" : userName);
-
       Intent intent = new Intent();
       intent.setAction(SupportApp.getInstance().getString(R.string.support_im_client_notification_action));
       intent.putExtra(Constants.EXTRA_CONVERSATION_ID, conversation.getConversationId());

@@ -49,4 +49,11 @@ public class Conversation {
     return conversation;
   }
 
+  public static Conversation createConversationOnlyConversationId(AVIMConversation avimConversation) {
+    Conversation conversation = new Conversation();
+    conversation.mConversationId = avimConversation.getConversationId();
+    conversation = ConversationManager.getInstance().getConversationsDatabase().saveConversation(conversation);
+    return conversation;
+  }
+
 }
