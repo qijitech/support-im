@@ -7,7 +7,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import java.util.ArrayList;
 import java.util.List;
-import support.im.data.Conversation;
+import support.im.data.ConversationModel;
 import support.im.data.ConversationType;
 import support.im.data.SimpleUser;
 import support.im.leanclound.ChatManager;
@@ -105,7 +105,7 @@ public final class ConversationHelper {
 
     // 单聊
     String otherId = otherIdOfConversation(conversation);
-    Object object = conversation.getAttribute(Conversation.ATTRS_MEMBERS);
+    Object object = conversation.getAttribute(ConversationModel.ATTRS_MEMBERS);
     if (object instanceof JSONArray) {
       JSONArray jsonArray = (JSONArray) object;
       final int size = jsonArray.size();
@@ -122,7 +122,7 @@ public final class ConversationHelper {
 
   public static SimpleUser getSimpleUser(@NonNull AVIMConversation conversation) {
     String otherId = otherIdOfConversation(conversation);
-    Object object = conversation.getAttribute(Conversation.ATTRS_MEMBERS);
+    Object object = conversation.getAttribute(ConversationModel.ATTRS_MEMBERS);
     if (object instanceof ArrayList) {
       ArrayList<SimpleUser> simpleUsers = (ArrayList<SimpleUser>) object;
       for (SimpleUser user : simpleUsers) {

@@ -7,7 +7,6 @@ import com.yahoo.squidb.sql.Query;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import support.im.data.Conversation2;
 
 public class SupportsDbHelper {
 
@@ -27,12 +26,12 @@ public class SupportsDbHelper {
     return database;
   }
 
-  public List<Conversation2> loadConversations() {
-    SquidCursor<Conversation2> squidCursor = mDbHelper.query(Conversation2.class, Query.select());
+  public List<Conversation> loadConversations() {
+    SquidCursor<Conversation> squidCursor = mDbHelper.query(Conversation.class, Query.select());
     try {
-      List<Conversation2> conversations = Lists.newArrayList();
+      List<Conversation> conversations = Lists.newArrayList();
       while (squidCursor.moveToNext()) {
-        Conversation2 conversation2 = new Conversation2();
+        Conversation conversation2 = new Conversation();
         conversation2.readPropertiesFromCursor(squidCursor);
         conversations.add(conversation2);
       }
@@ -42,31 +41,40 @@ public class SupportsDbHelper {
     }
   }
 
-  public Conversation2 saveOrUpdate(String conversationId) {
-    Conversation2 conversation = findByConversationId(conversationId);
+  public Conversation saveOrUpdate(String conversationId) {
+    Conversation conversation = findByConversationId(conversationId);
     if (conversation == null) { // save
-      conversation = new Conversation2();
+      conversation = new Conversation();
       conversation.setConversationId(conversationId);
-    } else {
-      conversation.setUnReadCount(conversation.getUnReadCount() + 1);
+    }
+    return  saveOrUpdate(conversation);
+  }
+
+  public Conversation saveOrUpdate(Conversation conversation) {
+    Conversation c = findByConversationId(conversation.getConversationId());
+    if (c != null) { // save
+      conversation.setId(c.getId());
     }
     mDbHelper.persist(conversation);
     return  conversation;
   }
 
-  public Conversation2 saveOrUpdate(Conversation2 conversation) {
-    mDbHelper.persist(conversation);
-    return  conversation;
+  private static final String UPDATE_CONVERSATIONS_INCREASE_UNREAD_COUNT =
+      "UPDATE " + Conversation.TABLE.getName() + " SET " + Conversation.UN_READ_COUNT.getName() + " = "
+          + Conversation.UN_READ_COUNT.getName() + " + 1 WHERE " + Conversation.CONVERSATION_ID.getName() + " =?";
+
+  public void increaseUnreadCount(String conversationId) {
+    mDbHelper.execSqlOrThrow(UPDATE_CONVERSATIONS_INCREASE_UNREAD_COUNT, new Object[]{conversationId});
   }
 
-  private Conversation2 findByConversationId(String conversationId) {
-    Query query = Query.select().where(Conversation2.CONVERSATION_ID.eq(conversationId));
-    SquidCursor<Conversation2> squidCursor = mDbHelper.query(Conversation2.class, query);
+  private Conversation findByConversationId(String conversationId) {
+    Query query = Query.select().where(Conversation.CONVERSATION_ID.eq(conversationId));
+    SquidCursor<Conversation> squidCursor = mDbHelper.query(Conversation.class, query);
     try {
       if (squidCursor.moveToNext()) {
-        Conversation2 conversation2 = new Conversation2();
-        conversation2.readPropertiesFromCursor(squidCursor);
-        return conversation2;
+        Conversation conversation = new Conversation();
+        conversation.readPropertiesFromCursor(squidCursor);
+        return conversation;
       }
     } finally {
       squidCursor.close();

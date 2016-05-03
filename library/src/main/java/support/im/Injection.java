@@ -26,8 +26,8 @@ public class Injection {
     return MobileContactsRepository.getInstance(MobileContactsLocalDataSource.getInstance(context));
   }
 
-  public static ConversationsRepository provideConversationsRepository() {
-    return ConversationsRepository.getInstance(ConversationsLocalDataSource.getInstance(),
+  public static ConversationsRepository provideConversationsRepository(String clientId) {
+    return ConversationsRepository.getInstance(ConversationsLocalDataSource.getInstance(clientId),
         ConversationsRemoteDataSource.getInstance());
   }
 

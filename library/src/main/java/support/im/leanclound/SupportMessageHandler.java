@@ -10,10 +10,12 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessageHandler;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import de.greenrobot.event.EventBus;
 import support.im.R;
-import support.im.data.Conversation;
+import support.im.data.ConversationModel;
 import support.im.data.ConversationType;
 import support.im.data.SimpleUser;
 import support.im.data.cache.CacheManager;
+import support.im.database.Conversation;
+import support.im.database.SupportsDbHelper;
 import support.im.leanclound.event.ImTypeMessageEvent;
 import support.im.utilities.ConversationHelper;
 import support.im.utilities.NotificationUtils;
@@ -57,18 +59,27 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
       client.close(null);
       return;
     }
+    processMessage(message, conversation);
+  }
 
-    // process
-    // 保存一个 Conversation
-    Conversation conv = Conversation.createConversationOnlyConversationId(conversation);
-    ConversationManager.getInstance().getConversationsDatabase().saveConversation(message.getConversationId());
-    if (!message.getFrom().equals(client.getClientId())) {
-      if (NotificationUtils.isShowNotification(conversation.getConversationId())) {
-        sendNotification(message, conversation);
+  private void processMessage(AVIMTypedMessage message, AVIMConversation avimConversation) {
+    CacheManager.getInstance().cacheConversation(avimConversation);
+    String clientId = ChatManager.getInstance().getClientId();
+    Conversation conversation = new Conversation();
+    conversation.setConversationId(avimConversation.getConversationId());
+    conversation.setTitle(ConversationHelper.titleOfConversation(avimConversation));
+    conversation.setLastMessageTime(message.getTimestamp());
+    SupportsDbHelper dbHelper = SupportsDbHelper.dbHelper(mContext, clientId);
+    dbHelper.saveOrUpdate(conversation);
+    if (!message.getFrom().equals(clientId)) {
+      if (NotificationUtils.isShowNotification(avimConversation.getConversationId())) {
+        sendNotification(message, avimConversation);
       }
-      ConversationManager.getInstance().getConversationsDatabase().increaseUnreadCount(message.getConversationId());
-      CacheManager.getInstance().cacheConversation(conversation);
-      sendEvent(message, conversation, conv);
+      dbHelper.increaseUnreadCount(avimConversation.getConversationId());
+      CacheManager.getInstance().cacheConversation(avimConversation);
+      ConversationModel conversationModel = new ConversationModel(conversation);
+      conversationModel.mLastMessage = message;
+      sendEvent(message, avimConversation, conversationModel);
     }
   }
 
@@ -83,7 +94,7 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
    * @param message
    * @param aVIMConversation
    */
-  private void sendEvent(AVIMTypedMessage message, AVIMConversation aVIMConversation, Conversation conversation) {
+  private void sendEvent(AVIMTypedMessage message, AVIMConversation aVIMConversation, ConversationModel conversation) {
     ImTypeMessageEvent event = new ImTypeMessageEvent();
     event.message = message;
     event.mAVIMConversation = aVIMConversation;

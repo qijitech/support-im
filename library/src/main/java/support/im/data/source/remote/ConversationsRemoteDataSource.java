@@ -10,13 +10,12 @@ import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMSingleMessageQueryCallback;
 import com.google.common.collect.Lists;
 import java.util.List;
-import support.im.data.Conversation;
-import support.im.data.cache.CacheManager;
-import support.im.data.source.ConversationsDataSource;
+import support.im.data.source.SimpleConversationsDataSource;
 import support.im.leanclound.ChatManager;
+import support.im.leanclound.Constants;
 import support.im.utilities.AVExceptionHandler;
 
-public class ConversationsRemoteDataSource implements ConversationsDataSource {
+public class ConversationsRemoteDataSource extends SimpleConversationsDataSource {
 
   private static ConversationsRemoteDataSource INSTANCE;
 
@@ -29,38 +28,6 @@ public class ConversationsRemoteDataSource implements ConversationsDataSource {
       INSTANCE = new ConversationsRemoteDataSource();
     }
     return INSTANCE;
-  }
-
-  @Override public void loadCachedConversations(@NonNull final LoadConversationsCallback callback) {
-    // ConversationsLocalDataSource
-  }
-
-  @Override public void loadServerConversations(@NonNull final LoadConversationsCallback callback) {
-    AVIMConversationQuery conversationQuery = ChatManager.getInstance().getConversationQuery();
-    conversationQuery.setLimit(1000);
-    conversationQuery.setQueryPolicy(AVQuery.CachePolicy.CACHE_THEN_NETWORK);
-    conversationQuery.findInBackground(new AVIMConversationQueryCallback() {
-      @Override public void done(List<AVIMConversation> aVIMConversations, AVIMException e) {
-        if (!AVExceptionHandler.handAVException(e, false)) {
-          callback.onDataNotAvailable(e);
-          return;
-        }
-        if (aVIMConversations == null || aVIMConversations.isEmpty()) {
-          callback.onConversationsNotFound();
-          return;
-        }
-        List<Conversation> conversations = Lists.newArrayListWithCapacity(aVIMConversations.size());
-        for (AVIMConversation aVIMConversation : aVIMConversations) {
-          refreshAVIMConversationCache(aVIMConversation);
-          conversations.add(Conversation.createConversation(aVIMConversation));
-        }
-        callback.onConversationsLoaded(conversations);
-      }
-    });
-  }
-
-  private void refreshAVIMConversationCache(AVIMConversation avimConversation) {
-    CacheManager.getInstance().cacheConversation(avimConversation);
   }
 
   @Override public void getLastMessage(@NonNull AVIMConversation conversation,
@@ -77,7 +44,16 @@ public class ConversationsRemoteDataSource implements ConversationsDataSource {
     });
   }
 
-  @Override public void refreshConversations() {
-
+  @Override public void findConversations(@NonNull List<String> ids,
+      @NonNull AVIMConversationQueryCallback callback) {
+    AVIMConversationQuery conversationQuery = ChatManager.getInstance().getConversationQuery();
+    if (ids.size() > 0 && null != conversationQuery) {
+      conversationQuery.setQueryPolicy(AVQuery.CachePolicy.CACHE_THEN_NETWORK);
+      conversationQuery.whereContainsIn(Constants.OBJECT_ID, ids);
+      conversationQuery.setLimit(1000);
+      conversationQuery.findInBackground(callback);
+      return;
+    }
+    callback.done(Lists.<AVIMConversation>newArrayList(), null);
   }
 }

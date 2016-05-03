@@ -12,7 +12,7 @@ import com.google.common.collect.Lists;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import support.im.data.Conversation;
+import support.im.data.ConversationModel;
 import support.im.data.ConversationType;
 import support.im.data.SimpleUser;
 import support.im.data.SupportUser;
@@ -60,7 +60,7 @@ public class ChatManager {
     // 与网络相关的 handler
     AVIMClient.setClientEventHandler(SupportClientEventHandler.getInstance());
 
-    // 和 Conversation 相关的事件的 handler
+    // 和 ConversationModel 相关的事件的 handler
     AVIMMessageManager.setConversationEventHandler(ConversationEventHandler.getInstance());
 
     // 签名
@@ -82,7 +82,7 @@ public class ChatManager {
    */
   public void openClient(String clientId, final AVIMClientCallback callback) {
     mClientId = checkNotNull(clientId, "clientId cannot be null");
-    ConversationManager.getInstance().initialize(clientId);
+    //ConversationManager.getInstance().initialize(clientId);
     mIMClient = AVIMClient.getInstance(clientId);
     mIMClient.open(new AVIMClientCallback() {
       @Override public void done(AVIMClient avimClient, AVIMException e) {
@@ -125,7 +125,7 @@ public class ChatManager {
     SupportUser supportUser = SupportUser.getCurrentUser();
     SimpleUser fromUser = supportUser.toSimpleUser();
     List<SimpleUser> members = Lists.newArrayList(simpleToUser, fromUser);
-    attrs.put(Conversation.ATTRS_MEMBERS, members);
+    attrs.put(ConversationModel.ATTRS_MEMBERS, members);
     final String memberId = simpleToUser.getObjectId();
     mIMClient.createConversation(Lists.newArrayList(memberId), "", attrs, false, true, callback);
   }
@@ -137,7 +137,7 @@ public class ChatManager {
     SupportUser supportUser = SupportUser.getCurrentUser();
     SimpleUser fromUser = supportUser.toSimpleUser();
     List<SimpleUser> members = Lists.newArrayList(simpleToUser, fromUser);
-    attrs.put(Conversation.ATTRS_MEMBERS, members);
+    attrs.put(ConversationModel.ATTRS_MEMBERS, members);
     final String memberId = toUser.getObjectId();
     mIMClient.createConversation(Lists.newArrayList(memberId), "", attrs, false, true, callback);
   }

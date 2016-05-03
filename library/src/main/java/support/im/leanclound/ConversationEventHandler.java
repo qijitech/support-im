@@ -9,7 +9,7 @@ import support.im.leanclound.event.ConversationChangeEvent;
 import support.im.utilities.SupportLog;
 
 /**
- * 和 Conversation 相关的事件的 handler
+ * 和 ConversationModel 相关的事件的 handler
  * 需要应用主动调用  AVIMMessageManager.setConversationEventHandler
  */
 public class ConversationEventHandler extends AVIMConversationEventHandler {

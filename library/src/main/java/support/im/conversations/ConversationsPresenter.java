@@ -3,11 +3,13 @@ package support.im.conversations;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
-import support.im.data.Conversation;
+import support.im.data.ConversationModel;
 import support.im.data.source.ConversationsDataSource;
 import support.im.data.source.ConversationsRepository;
+import support.im.database.Conversation;
 import support.im.utilities.AVExceptionHandler;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -33,12 +35,11 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
   }
 
   @Override public void loadConversations(boolean forceUpdate) {
-    loadCachedConversations(forceUpdate || mFirstLoad, true);
+    loadConversations(forceUpdate || mFirstLoad, true);
     mFirstLoad = false;
   }
 
-  private void loadServerConversations(boolean forceUpdate, final boolean showLoadingUI) {
-    // The view may not be able to handle UI updates anymore
+  private void loadConversations(boolean forceUpdate, final boolean showLoadingUI) {
     if (!mConversationsView.isActive()) {
       return;
     }
@@ -51,9 +52,14 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
       mConversationsRepository.refreshConversations();
     }
 
-    mConversationsRepository.loadServerConversations(new ConversationsDataSource.LoadConversationsCallback() {
+    mConversationsRepository.loadConversations(new ConversationsDataSource.LoadConversationsCallback() {
       @Override public void onConversationsLoaded(List<Conversation> conversations) {
-        processConversations(conversations);
+        List<ConversationModel> conversationsToShow = Lists.newArrayListWithCapacity(conversations.size());
+        for (Conversation conversation : conversations) {
+          ConversationModel conversationModel = new ConversationModel(conversation);
+          conversationsToShow.add(conversationModel);
+        }
+        processConversations(conversationsToShow);
       }
 
       @Override public void onConversationsNotFound() {
@@ -70,39 +76,7 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
     });
   }
 
-  private void loadCachedConversations(boolean forceUpdate, final boolean showLoadingUI) {
-    if (!mConversationsView.isActive()) {
-      return;
-    }
-
-    if (showLoadingUI) {
-      mConversationsView.setLoadingIndicator(false);
-    }
-
-    if (forceUpdate) {
-      mConversationsRepository.refreshConversations();
-    }
-
-    mConversationsRepository.loadCachedConversations(new ConversationsDataSource.LoadConversationsCallback() {
-      @Override public void onConversationsLoaded(List<Conversation> conversations) {
-        processConversations(conversations);
-      }
-
-      @Override public void onConversationsNotFound() {
-        if (mConversationsView.isActive()) {
-          mConversationsView.showNoConversations();
-        }
-      }
-
-      @Override public void onDataNotAvailable(AVIMException e) {
-        if (mConversationsView.isActive()) {
-          mConversationsView.showError(AVExceptionHandler.getLocalizedMessage(e), e);
-        }
-      }
-    });
-  }
-
-  private void processConversations(List<Conversation> conversations) {
+  private void processConversations(List<ConversationModel> conversations) {
     Collections.sort(conversations, mConversationsComparator);
 
     if (!mConversationsView.isActive()) {
@@ -111,7 +85,7 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
 
     mConversationsView.notifyDataSetChanged(conversations);
 
-    for (final Conversation conversation : conversations) {
+    for (final ConversationModel conversation : conversations) {
       AVIMConversation aVIMConversation = conversation.getConversation();
       if (aVIMConversation != null) {
         mConversationsRepository.getLastMessage(aVIMConversation, new ConversationsDataSource.GetLastMessageCallback() {
@@ -124,6 +98,9 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
           @Override public void onLastMessageNotFound() {
           }
           @Override public void onDataNotAvailable(AVIMException e) {
+            if (mConversationsView.isActive()) {
+              mConversationsView.showError(AVExceptionHandler.getLocalizedMessage(e), e);
+            }
           }
         });
       }

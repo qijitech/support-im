@@ -4,16 +4,16 @@ import com.avos.avoscloud.AVException;
 import java.util.List;
 import support.im.BasePresenter;
 import support.im.BaseView;
-import support.im.data.Conversation;
+import support.im.data.ConversationModel;
 
 public interface ConversationsContract {
 
   interface View extends BaseView<Presenter> {
     void setLoadingIndicator(boolean active);
 
-    void notifyDataSetChanged(List<Conversation> conversations);
+    void notifyDataSetChanged(List<ConversationModel> conversations);
 
-    void notifyItemChanged(Conversation conversation);
+    void notifyItemChanged(ConversationModel conversation);
 
     void showNoConversations();
 

@@ -11,14 +11,16 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import support.im.data.ConversationType;
 import support.im.data.SimpleUser;
+import support.im.data.SupportUser;
 import support.im.data.cache.CacheManager;
+import support.im.database.SupportsDbHelper;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.Constants;
-import support.im.leanclound.ConversationManager;
 import support.im.utilities.AVExceptionHandler;
 import support.im.utilities.ConversationHelper;
 import support.im.utilities.SupportLog;
 import support.ui.SupportSinglePaneActivity;
+import support.ui.app.SupportApp;
 
 public class ChatsActivity extends SupportSinglePaneActivity {
 
@@ -95,7 +97,7 @@ public class ChatsActivity extends SupportSinglePaneActivity {
       @Override
       public void done(AVIMConversation avimConversation, AVIMException e) {
         if (AVExceptionHandler.handAVException(e)) {
-          ConversationManager.getInstance().getConversationsDatabase().saveConversation(avimConversation.getConversationId());
+          SupportsDbHelper.dbHelper(SupportApp.appContext(), ChatManager.getInstance().getClientId()).saveOrUpdate(avimConversation.getConversationId());
           updateConversation(avimConversation);
         }
       }

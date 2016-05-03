@@ -3,12 +3,14 @@ package support.im.data.source;
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import support.im.data.Conversation;
+import support.im.data.cache.CacheManager;
+import support.im.database.Conversation;
+import support.im.utilities.AVExceptionHandler;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -55,18 +57,48 @@ public class ConversationsRepository implements ConversationsDataSource {
     INSTANCE = null;
   }
 
-  @Override public void loadCachedConversations(@NonNull final LoadConversationsCallback callback) {
+  @Override public void findConversations(@NonNull List<String> ids,
+      @NonNull AVIMConversationQueryCallback callback) {
+    mConversationsRemoteDataSource.findConversations(ids, callback);
+  }
+
+  @Override public void loadConversations(@NonNull final LoadConversationsCallback callback) {
     checkNotNull(callback);
 
     // Respond immediately with cache if available and not dirty
     if (mCachedConversations != null && !mCacheIsDirty) {
-      callback.onConversationsLoaded(new ArrayList<>(mCachedConversations.values()));
+      callback.onConversationsLoaded(Lists.newArrayList(mCachedConversations.values()));
       return;
     }
 
-    mConversationsLocalDataSource.loadCachedConversations(new LoadConversationsCallback() {
-      @Override public void onConversationsLoaded(List<Conversation> conversations) {
-        callback.onConversationsLoaded(conversations);
+    mConversationsLocalDataSource.loadConversations(new LoadConversationsCallback() {
+      @Override public void onConversationsLoaded(final List<Conversation> conversations) {
+        refreshConversationCache(conversations);
+        // 判断本地是否有AVIMConversation缓存
+        List<String> unCachedConversationIds = Lists.newArrayList();
+        for (Conversation conversation : conversations) {
+          final String conversationId = conversation.getConversationId();
+          if (!CacheManager.getInstance().hasCacheConversation(conversationId)) {
+            unCachedConversationIds.add(conversationId);
+          }
+        }
+
+        // 如果有就不用像服务器获取
+        if (unCachedConversationIds.isEmpty()) {
+          callback.onConversationsLoaded(conversations);
+          return;
+        }
+
+        findConversations(unCachedConversationIds, new AVIMConversationQueryCallback() {
+          @Override public void done(List<AVIMConversation> aVIMConversations, AVIMException e) {
+            if (AVExceptionHandler.handAVException(e, false)) {
+              for (AVIMConversation aVIMConversation : aVIMConversations) {
+                CacheManager.getInstance().cacheConversation(aVIMConversation);
+              }
+              callback.onConversationsLoaded(conversations);
+            }
+          }
+        });
       }
       @Override public void onConversationsNotFound() {
         callback.onConversationsNotFound();
@@ -75,54 +107,19 @@ public class ConversationsRepository implements ConversationsDataSource {
         callback.onDataNotAvailable(e);
       }
     });
-
   }
 
   @Override public void getLastMessage(@NonNull AVIMConversation conversation,
-      @NonNull final GetLastMessageCallback callback) {
-    mConversationsRemoteDataSource.getLastMessage(conversation, new GetLastMessageCallback() {
-      @Override public void onLastMessageLoaded(AVIMMessage avimMessage) {
-        callback.onLastMessageLoaded(avimMessage);
-      }
-      @Override public void onLastMessageNotFound() {
-        callback.onLastMessageNotFound();
-      }
-      @Override public void onDataNotAvailable(AVIMException e) {
-        callback.onDataNotAvailable(e);
-      }
-    });
+      @NonNull GetLastMessageCallback callback) {
+    mConversationsRemoteDataSource.getLastMessage(conversation, callback);
   }
 
-  @Override public void loadServerConversations(@NonNull final LoadConversationsCallback callback) {
-    checkNotNull(callback);
-
-    // Respond immediately with cache if available and not dirty
-    if (mCachedConversations != null && !mCacheIsDirty) {
-      callback.onConversationsLoaded(new ArrayList<>(mCachedConversations.values()));
-      return;
-    }
-
-    if (mCacheIsDirty) {
-      // If the cache is dirty we need to fetch new data from the network.
-      getAVIMConversationsFromRemoteDataSource(callback);
-    }
+  @Override public void saveConversation(@NonNull Conversation conversation) {
+    mConversationsLocalDataSource.saveConversation(conversation);
   }
 
-  private void getAVIMConversationsFromRemoteDataSource(final LoadConversationsCallback callback) {
-    mConversationsRemoteDataSource.loadServerConversations(new LoadConversationsCallback() {
-      @Override public void onConversationsLoaded(List<Conversation> conversations) {
-        refreshConversationCache(conversations);
-        callback.onConversationsLoaded(conversations);
-      }
-
-      @Override public void onConversationsNotFound() {
-        callback.onConversationsNotFound();
-      }
-
-      @Override public void onDataNotAvailable(AVIMException e) {
-        callback.onDataNotAvailable(e);
-      }
-    });
+  @Override public void refreshConversations() {
+    mCacheIsDirty = true;
   }
 
   private void refreshConversationCache(List<Conversation> conversations) {
@@ -131,12 +128,8 @@ public class ConversationsRepository implements ConversationsDataSource {
     }
     mCachedConversations.clear();
     for (Conversation conversation : conversations) {
-      mCachedConversations.put(conversation.mConversationId, conversation);
+      mCachedConversations.put(conversation.getConversationId(), conversation);
     }
     mCacheIsDirty = false;
-  }
-
-  @Override public void refreshConversations() {
-    mCacheIsDirty = true;
   }
 }
