@@ -3,11 +3,11 @@ package support.im.data.source.local;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
-public final class ConversationsPersistenceContract {
+public final class SupportImPersistenceContract {
 
   // To prevent someone from accidentally instantiating the contract class,
   // give it an empty constructor.
-  public ConversationsPersistenceContract() {
+  public SupportImPersistenceContract() {
   }
 
   /* Inner class that defines the table contents */
@@ -15,6 +15,8 @@ public final class ConversationsPersistenceContract {
     public static final String TABLE_NAME = "conversations";
     public static final String COLUMN_NAME_CONVERSATION_ID = "conversation_id";
     public static final String COLUMN_NAME_UNREAD_COUNT = "unread_count";
+    public static final String COLUMN_NAME_DISPLAY_NAME = "display_name";
+    public static final String COLUMN_NAME_LAST_MESSAGE_TIME = "last_message_time";
 
     public static final String CONVERSATION_ID_INDEX = "conversation_id_index";
 
@@ -23,7 +25,9 @@ public final class ConversationsPersistenceContract {
           "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
               _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
               COLUMN_NAME_CONVERSATION_ID + " VARCHAR(63) UNIQUE NOT NULL, " +
-              COLUMN_NAME_UNREAD_COUNT + " INTEGER DEFAULT 0" +
+              COLUMN_NAME_UNREAD_COUNT + " INTEGER DEFAULT 0, " +
+              COLUMN_NAME_DISPLAY_NAME + " VARCHAR NOT NULL, " +
+              COLUMN_NAME_LAST_MESSAGE_TIME + " INTEGER" +
               " )";
 
       static final String CREATE_CONVERSATION_ID_INDEX =

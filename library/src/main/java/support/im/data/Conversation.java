@@ -4,7 +4,7 @@ import android.database.Cursor;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import support.im.data.cache.CacheManager;
-import support.im.data.source.local.ConversationsPersistenceContract;
+import support.im.data.source.local.SupportImPersistenceContract;
 import support.im.leanclound.ConversationManager;
 
 public class Conversation {
@@ -35,9 +35,10 @@ public class Conversation {
 
   public static Conversation createConversationFromCursor(Cursor cursor) {
     Conversation conversation = new Conversation();
-    conversation.mId = cursor.getString(cursor.getColumnIndex(ConversationsPersistenceContract.Conversations._ID));
-    conversation.mConversationId = cursor.getString(cursor.getColumnIndex(ConversationsPersistenceContract.Conversations.COLUMN_NAME_CONVERSATION_ID));
-    conversation.mUnreadCount = cursor.getInt(cursor.getColumnIndex(ConversationsPersistenceContract.Conversations.COLUMN_NAME_UNREAD_COUNT));
+    conversation.mId = cursor.getString(cursor.getColumnIndex(SupportImPersistenceContract.Conversations._ID));
+    conversation.mConversationId = cursor.getString(cursor.getColumnIndex(
+        SupportImPersistenceContract.Conversations.COLUMN_NAME_CONVERSATION_ID));
+    conversation.mUnreadCount = cursor.getInt(cursor.getColumnIndex(SupportImPersistenceContract.Conversations.COLUMN_NAME_UNREAD_COUNT));
     return conversation;
   }
 

@@ -3,7 +3,7 @@ package support.im.leanclound;
 import android.content.Context;
 import java.util.List;
 import support.im.data.Conversation;
-import support.im.data.source.local.ConversationsDatabase;
+import support.im.data.source.local.SupportImDbHelper;
 import support.ui.app.SupportApp;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -12,7 +12,7 @@ public class ConversationManager {
 
   private static ConversationManager conversationManager;
 
-  private ConversationsDatabase mConversationsDatabase;
+  private SupportImDbHelper mSupportImDbHelper;
   private volatile String mClientId;
   private Context mContext;
 
@@ -29,17 +29,17 @@ public class ConversationManager {
 
   public void initialize(String clientId) {
     mClientId = checkNotNull(clientId, "clientId cannot be null");
-    if (mConversationsDatabase == null) {
-      mConversationsDatabase = ConversationsDatabase.databaseWithClientId(mContext, clientId);
+    if (mSupportImDbHelper == null) {
+      mSupportImDbHelper = SupportImDbHelper.databaseWithClientId(mContext, clientId);
     }
   }
 
-  public ConversationsDatabase getConversationsDatabase() {
+  public SupportImDbHelper getConversationsDatabase() {
     checkNotNull(mClientId, "please invoke initialize(String) ");
-    if (mConversationsDatabase == null) {
-      mConversationsDatabase = ConversationsDatabase.databaseWithClientId(mContext, mClientId);
+    if (mSupportImDbHelper == null) {
+      mSupportImDbHelper = SupportImDbHelper.databaseWithClientId(mContext, mClientId);
     }
-    return mConversationsDatabase;
+    return mSupportImDbHelper;
   }
 
   public List<Conversation> findRecentConversations() {

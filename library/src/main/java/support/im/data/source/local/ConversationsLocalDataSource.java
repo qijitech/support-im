@@ -12,12 +12,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ConversationsLocalDataSource extends SimpleConversationsDataSource {
 
-  private ConversationsDatabase mDbHelper;
+  private SupportImDbHelper mDbHelper;
   private static Map<String, ConversationsLocalDataSource> sDatabases = new ConcurrentHashMap<>();
 
   // Prevent direct instantiation.
   public ConversationsLocalDataSource(String clientId) {
-    mDbHelper = ConversationsDatabase.databaseWithClientId(SupportApp.appContext(), clientId);
+    mDbHelper = SupportImDbHelper.databaseWithClientId(SupportApp.appContext(), clientId);
   }
 
   public synchronized static ConversationsLocalDataSource getInstance(String clientId) {

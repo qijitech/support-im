@@ -10,21 +10,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import support.im.data.Conversation;
-import support.im.data.source.local.ConversationsPersistenceContract.Conversations;
+import support.im.data.source.local.SupportImPersistenceContract.Conversations;
 
-public class ConversationsDatabase {
+public class SupportImDbHelper {
 
-  private ConversationsDbHelper mDbHelper;
-  private static Map<String, ConversationsDatabase> sDatabases = new ConcurrentHashMap<>();
+  private SupportImDatabase mDbHelper;
+  private static Map<String, SupportImDbHelper> sDatabases = new ConcurrentHashMap<>();
 
-  private ConversationsDatabase(ConversationsDbHelper dbHelper) {
+  private SupportImDbHelper(SupportImDatabase dbHelper) {
     mDbHelper = dbHelper;
   }
 
-  public synchronized static ConversationsDatabase databaseWithClientId(Context context, String clientId) {
-    ConversationsDatabase database = sDatabases.get(clientId);
+  public synchronized static SupportImDbHelper databaseWithClientId(Context context, String clientId) {
+    SupportImDbHelper database = sDatabases.get(clientId);
     if (database == null) {
-      database = new ConversationsDatabase(new ConversationsDbHelper(context.getApplicationContext(), clientId));
+      database = new SupportImDbHelper(new SupportImDatabase(context.getApplicationContext(), clientId));
       sDatabases.put(clientId, database);
     }
     return database;
