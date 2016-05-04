@@ -3,13 +3,11 @@ package support.im.conversations;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
-import support.im.data.ConversationModel;
+import support.im.data.Conversation;
 import support.im.data.source.ConversationsDataSource;
 import support.im.data.source.ConversationsRepository;
-import support.im.database.Conversation;
 import support.im.utilities.AVExceptionHandler;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -54,12 +52,7 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
 
     mConversationsRepository.loadConversations(new ConversationsDataSource.LoadConversationsCallback() {
       @Override public void onConversationsLoaded(List<Conversation> conversations) {
-        List<ConversationModel> conversationsToShow = Lists.newArrayListWithCapacity(conversations.size());
-        for (Conversation conversation : conversations) {
-          ConversationModel conversationModel = new ConversationModel(conversation);
-          conversationsToShow.add(conversationModel);
-        }
-        processConversations(conversationsToShow);
+        processConversations(conversations);
       }
 
       @Override public void onConversationsNotFound() {
@@ -76,7 +69,7 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
     });
   }
 
-  private void processConversations(List<ConversationModel> conversations) {
+  private void processConversations(List<Conversation> conversations) {
     Collections.sort(conversations, mConversationsComparator);
 
     if (!mConversationsView.isActive()) {
@@ -85,7 +78,7 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
 
     mConversationsView.notifyDataSetChanged(conversations);
 
-    for (final ConversationModel conversation : conversations) {
+    for (final Conversation conversation : conversations) {
       AVIMConversation aVIMConversation = conversation.getConversation();
       if (aVIMConversation != null) {
         mConversationsRepository.getLastMessage(aVIMConversation, new ConversationsDataSource.GetLastMessageCallback() {

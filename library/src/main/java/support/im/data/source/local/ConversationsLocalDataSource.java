@@ -4,21 +4,20 @@ import android.support.annotation.NonNull;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import support.im.data.Conversation;
 import support.im.data.source.SimpleConversationsDataSource;
-import support.im.database.Conversation;
-import support.im.database.SupportsDbHelper;
 import support.ui.app.SupportApp;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ConversationsLocalDataSource extends SimpleConversationsDataSource {
 
-  private SupportsDbHelper mDbHelper;
+  private ConversationsDatabase mDbHelper;
   private static Map<String, ConversationsLocalDataSource> sDatabases = new ConcurrentHashMap<>();
 
   // Prevent direct instantiation.
   public ConversationsLocalDataSource(String clientId) {
-    mDbHelper = SupportsDbHelper.dbHelper(SupportApp.appContext(), clientId);
+    mDbHelper = ConversationsDatabase.databaseWithClientId(SupportApp.appContext(), clientId);
   }
 
   public synchronized static ConversationsLocalDataSource getInstance(String clientId) {
@@ -43,6 +42,6 @@ public class ConversationsLocalDataSource extends SimpleConversationsDataSource 
   }
 
   @Override public void saveConversation(@NonNull Conversation conversation) {
-    mDbHelper.saveOrUpdate(conversation);
+    mDbHelper.saveConversation(conversation);
   }
 }

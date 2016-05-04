@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import java.util.List;
-import support.im.database.Conversation;
+import support.im.data.Conversation;
 
 public class SimpleConversationsDataSource implements ConversationsDataSource {
 

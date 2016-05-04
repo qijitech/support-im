@@ -6,7 +6,7 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import java.util.List;
-import support.im.database.Conversation;
+import support.im.data.Conversation;
 
 public interface ConversationsDataSource {
 

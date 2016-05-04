@@ -8,8 +8,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.util.List;
 import java.util.Map;
+import support.im.data.Conversation;
 import support.im.data.cache.CacheManager;
-import support.im.database.Conversation;
 import support.im.utilities.AVExceptionHandler;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -77,7 +77,7 @@ public class ConversationsRepository implements ConversationsDataSource {
         // 判断本地是否有AVIMConversation缓存
         List<String> unCachedConversationIds = Lists.newArrayList();
         for (Conversation conversation : conversations) {
-          final String conversationId = conversation.getConversationId();
+          final String conversationId = conversation.mConversationId;
           if (!CacheManager.getInstance().hasCacheConversation(conversationId)) {
             unCachedConversationIds.add(conversationId);
           }
@@ -128,7 +128,7 @@ public class ConversationsRepository implements ConversationsDataSource {
     }
     mCachedConversations.clear();
     for (Conversation conversation : conversations) {
-      mCachedConversations.put(conversation.getConversationId(), conversation);
+      mCachedConversations.put(conversation.mConversationId, conversation);
     }
     mCacheIsDirty = false;
   }

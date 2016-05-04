@@ -12,7 +12,7 @@ import com.google.common.collect.Lists;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import support.im.data.ConversationModel;
+import support.im.data.Conversation;
 import support.im.data.ConversationType;
 import support.im.data.SimpleUser;
 import support.im.data.SupportUser;
@@ -125,7 +125,7 @@ public class ChatManager {
     SupportUser supportUser = SupportUser.getCurrentUser();
     SimpleUser fromUser = supportUser.toSimpleUser();
     List<SimpleUser> members = Lists.newArrayList(simpleToUser, fromUser);
-    attrs.put(ConversationModel.ATTRS_MEMBERS, members);
+    attrs.put(Conversation.ATTRS_MEMBERS, members);
     final String memberId = simpleToUser.getObjectId();
     mIMClient.createConversation(Lists.newArrayList(memberId), "", attrs, false, true, callback);
   }
@@ -137,7 +137,7 @@ public class ChatManager {
     SupportUser supportUser = SupportUser.getCurrentUser();
     SimpleUser fromUser = supportUser.toSimpleUser();
     List<SimpleUser> members = Lists.newArrayList(simpleToUser, fromUser);
-    attrs.put(ConversationModel.ATTRS_MEMBERS, members);
+    attrs.put(Conversation.ATTRS_MEMBERS, members);
     final String memberId = toUser.getObjectId();
     mIMClient.createConversation(Lists.newArrayList(memberId), "", attrs, false, true, callback);
   }
