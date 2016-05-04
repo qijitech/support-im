@@ -16,6 +16,7 @@ import support.im.data.SimpleUser;
 import support.im.data.cache.CacheManager;
 import support.im.leanclound.event.ImTypeMessageEvent;
 import support.im.utilities.ConversationHelper;
+import support.im.utilities.DatabaseUtils;
 import support.im.utilities.NotificationUtils;
 import support.im.utilities.SupportLog;
 import support.ui.app.SupportApp;
@@ -59,18 +60,19 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
     }
 
     CacheManager.getInstance().cacheConversation(conversation);
+    DatabaseUtils.saveConversation(mContext, conversation, message, localClientId);
     // process
     // 保存一个 Conversation
-    Conversation conv = Conversation.createConversationOnlyConversationId(conversation);
-    ConversationManager.getInstance().getConversationsDatabase().saveConversation(message.getConversationId());
-    if (!message.getFrom().equals(client.getClientId())) {
-      if (NotificationUtils.isShowNotification(conversation.getConversationId())) {
-        sendNotification(message, conversation);
-      }
-      ConversationManager.getInstance().getConversationsDatabase().increaseUnreadCount(message.getConversationId());
-      CacheManager.getInstance().cacheConversation(conversation);
-      sendEvent(message, conversation, conv);
-    }
+    //Conversation conv = Conversation.createConversationOnlyConversationId(conversation);
+    //ConversationManager.getInstance().getConversationsDatabase().saveConversation(message.getConversationId());
+    //if (!message.getFrom().equals(client.getClientId())) {
+    //  if (NotificationUtils.isShowNotification(conversation.getConversationId())) {
+    //    sendNotification(message, conversation);
+    //  }
+    //  ConversationManager.getInstance().getConversationsDatabase().increaseUnreadCount(message.getConversationId());
+    //  CacheManager.getInstance().cacheConversation(conversation);
+    //  sendEvent(message, conversation, conv);
+    //}
   }
 
   @Override public void onMessageReceipt(AVIMTypedMessage message, AVIMConversation conversation,

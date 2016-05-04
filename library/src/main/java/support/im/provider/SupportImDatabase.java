@@ -30,6 +30,7 @@ public class SupportImDatabase extends SQLiteOpenHelper {
         + ConversationsColumns.CONVERSATION_ID + " TEXT NOT NULL,"
         + ConversationsColumns.UNREAD_COUNT + " INTEGER DEFAULT 0,"
         + ConversationsColumns.DISPLAY_NAME + " TEXT NOT NULL,"
+        + ConversationsColumns.MESSAGE + " TEXT,"
         + ConversationsColumns.LAST_MESSAGE_TIME + " INTEGER DEFAULT 0,"
         + "UNIQUE (" + ConversationsColumns.CONVERSATION_ID + ") ON CONFLICT REPLACE)");
 

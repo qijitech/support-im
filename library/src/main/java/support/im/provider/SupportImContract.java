@@ -15,6 +15,7 @@ public class SupportImContract {
     String CONVERSATION_ID = "conversation_id";
     String UNREAD_COUNT = "unread_count";
     String DISPLAY_NAME = "display_name";
+    String MESSAGE = "message";
     String LAST_MESSAGE_TIME = "last_message_time";
   }
 
