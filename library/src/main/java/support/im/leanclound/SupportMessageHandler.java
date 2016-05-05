@@ -3,6 +3,7 @@ package support.im.leanclound;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
@@ -15,6 +16,7 @@ import support.im.data.Conv;
 import support.im.data.ConversationType;
 import support.im.data.User;
 import support.im.data.cache.CacheManager;
+import support.im.data.source.UsersDataSource;
 import support.im.data.source.UsersRepository;
 import support.im.leanclound.event.ImTypeMessageEvent;
 import support.im.utilities.ConversationHelper;
@@ -66,15 +68,25 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
     CacheManager.cacheConversation(conversation);
     Conv conv = DatabaseUtils.saveConversation(conversation, message, localClientId);
     if (!message.getFrom().equals(client.getClientId())) {
-      DatabaseUtils.updateConversationUnreadCount(conversation);
-      if (NotificationUtils.isShowNotification(conversation.getConversationId())) {
-        sendNotification(message, conversation);
-      }
-
-      DatabaseUtils.updateConversationUnreadCount(conversation);
-      CacheManager.cacheConversation(conversation);
-      sendEvent(message, conversation, conv);
+      fetchUser(conversation, message, conv);
     }
+  }
+
+  private void fetchUser(final AVIMConversation avimConversation, final AVIMTypedMessage avimTypedMessage, final Conv conv) {
+    final String fromObjectId = avimTypedMessage.getFrom();
+    mUsersRepository.fetchUser(fromObjectId, new UsersDataSource.GetUserCallback() {
+      @Override public void onUserLoaded(User user) {
+        if (NotificationUtils.isShowNotification(avimConversation.getConversationId())) {
+          sendNotification(avimTypedMessage, avimConversation, user);
+        }
+        DatabaseUtils.updateConversationUnreadCount(avimConversation);
+        sendEvent(avimTypedMessage, avimConversation, conv);
+      }
+      @Override public void onUserNotFound() {
+      }
+      @Override public void onDataNotAvailable(AVException exception) {
+      }
+    });
   }
 
   @Override public void onMessageReceipt(AVIMTypedMessage message, AVIMConversation conversation,
@@ -96,15 +108,14 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
     EventBus.getDefault().post(event);
   }
 
-  private void sendNotification(AVIMTypedMessage message, AVIMConversation conversation) {
+  private void sendNotification(AVIMTypedMessage message, AVIMConversation conversation, final User user) {
     if (null != conversation && null != message) {
       String notificationContent = message instanceof AVIMTextMessage ?
           ((AVIMTextMessage) message).getText() : mContext.getString(R.string.support_im_un_support_message_type);
 
-      User simpleUser = null;
       String userName = null;
-      if (simpleUser != null) {
-        userName = simpleUser.getDisplayName();
+      if (user != null) {
+        userName = user.getDisplayName();
       }
       String title = (TextUtils.isEmpty(userName) ? "" : userName);
       Intent intent = new Intent();

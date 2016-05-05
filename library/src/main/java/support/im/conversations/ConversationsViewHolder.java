@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.ButterKnife;
-import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.facebook.drawee.view.SimpleDraweeView;
 import support.im.Injection;
@@ -12,7 +11,7 @@ import support.im.R;
 import support.im.data.Conv;
 import support.im.data.ConversationType;
 import support.im.data.User;
-import support.im.data.source.UsersDataSource;
+import support.im.data.cache.CacheManager;
 import support.im.data.source.UsersRepository;
 import support.im.utilities.ConversationHelper;
 import support.im.utilities.Utils;
@@ -45,25 +44,18 @@ public class ConversationsViewHolder extends EasyViewHolder<Conv> {
     if (conversation == null) {
       return;
     }
-    //SimpleUser simpleUser = ConversationHelper.getSimpleUser(conversation);
-    //if (simpleUser != null) {
-    //  mAvatarImageView.setImageURI(simpleUser.toAvatarUri());
-    //}
-    //mNameTextView.setText(ConversationHelper.titleOfConversation(conversation));
 
     if (ConversationHelper.typeOfConversation(conversation) == ConversationType.Single) {
       String userId = ConversationHelper.otherIdOfConversation(conversation);
-      mUsersRepository.fetchUser(userId, new UsersDataSource.GetUserCallback() {
-        @Override public void onUserLoaded(User user) {
-          mAvatarImageView.setImageURI(user.toAvatarUri());
-          mNameTextView.setText(user.getDisplayName());
-        }
-        @Override public void onUserNotFound() {
-        }
-        @Override public void onDataNotAvailable(AVException exception) {
-        }
-      });
-    } else {
+      if (CacheManager.hasCacheUser(userId)) {
+        final User user = CacheManager.getCacheUser(userId);
+        mAvatarImageView.setImageURI(user.toAvatarUri());
+        mNameTextView.setText(user.getDisplayName());
+      } else {
+        mAvatarImageView.setImageURI(null);
+        mNameTextView.setText("对话");
+      }
+    } else { // group
     }
 
     if (value.getMessage() != null) {

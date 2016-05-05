@@ -49,11 +49,20 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
     EventBus.getDefault().unregister(this);
   }
 
-  public void onEvent(ImTypeMessageEvent event) {
+  @SuppressWarnings("unused") public void onEvent(ImTypeMessageEvent event) {
     Conv conversation = event.mConversation;
+    final List<Object> objects = mAdapter.getItems();
+    for (Object object : objects) {
+      Conv conv = (Conv) object;
+      if (conv.getConversationId().equals(conversation.getConversationId())) {
+        mAdapter.remove(conv);
+        break;
+      }
+    }
     mAdapter.add(conversation, 0);
     contentPresenter.displayContentView();
   }
+
 
   @Override public void setLoadingIndicator(boolean active) {
     contentPresenter.displayLoadView();
