@@ -6,6 +6,7 @@ import com.avos.avoscloud.AVException;
 import com.google.common.collect.Lists;
 import java.util.List;
 import support.im.data.SimpleUser;
+import support.im.data.User;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -26,7 +27,7 @@ public class ContactsRepository implements ContactsDataSource {
   /**
    * This variable has package local visibility so it can be accessed from tests.
    */
-  ArrayMap<String, SimpleUser> mCachedContacts;
+  ArrayMap<String, User> mCachedContacts;
 
   // Prevent direct instantiation.
   private ContactsRepository(@NonNull ContactsDataSource contactsRemoteDataSource,
@@ -59,15 +60,19 @@ public class ContactsRepository implements ContactsDataSource {
 
   private void getContactsFromRemoteDataSource(final LoadContactsCallback callback) {
     mContactsRemoteDataSource.getContacts(new LoadContactsCallback() {
-      @Override public void onContactsLoaded(List<SimpleUser> users) {
+      @Override public void onContactsLoaded(List<User> users) {
         final List<String> objectIds = Lists.newArrayList();
-        for (SimpleUser user : users) {
+        for (User user : users) {
           objectIds.add(user.getObjectId());
         }
         mUsersRepository.fetchUsers(objectIds, new UsersDataSource.LoadUsersCallback() {
-          @Override public void onUserLoaded(List<SimpleUser> users) {
+          @Override public void onUserLoaded(List<User> users) {
             refreshContactsCache(users);
             callback.onContactsLoaded(users);
+          }
+
+          @Override public void onUserNotFound() {
+
           }
 
           @Override public void onDataNotAvailable(AVException exception) {
@@ -89,12 +94,12 @@ public class ContactsRepository implements ContactsDataSource {
     mCacheIsDirty = true;
   }
 
-  private void refreshContactsCache(List<SimpleUser> contacts) {
+  private void refreshContactsCache(List<User> contacts) {
     if (mCachedContacts == null) {
       mCachedContacts = new ArrayMap<>();
     }
     mCachedContacts.clear();
-    for (SimpleUser contact : contacts) {
+    for (User contact : contacts) {
       mCachedContacts.put(contact.getUserId(), contact);
     }
     mCacheIsDirty = false;

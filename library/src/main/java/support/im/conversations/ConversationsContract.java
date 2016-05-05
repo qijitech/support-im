@@ -11,6 +11,8 @@ public interface ConversationsContract {
   interface View extends BaseView<Presenter> {
     void setLoadingIndicator(boolean active);
 
+    void notifyDataSetChanged();
+
     void notifyDataSetChanged(List<Conv> conversations);
 
     void notifyItemChanged(Conv conversation);

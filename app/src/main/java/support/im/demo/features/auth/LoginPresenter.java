@@ -9,8 +9,6 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import support.im.data.SupportUser;
 import support.im.demo.data.source.AuthDataSource;
 import support.im.leanclound.ChatManager;
-import support.im.utilities.AVExceptionHandler;
-import support.ui.utilities.HudUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -36,15 +34,13 @@ public class LoginPresenter implements LoginContract.Presenter {
     if (supportUser != null) {
       ChatManager.getInstance().openClient(supportUser.getObjectId(), new AVIMClientCallback() {
         @Override public void done(AVIMClient avimClient, AVIMException e) {
-          if (AVExceptionHandler.handAVException(e)) {
-            SupportUser.getCurrentUser().updateUserInstallation(new SaveCallback() {
-              @Override public void done(AVException e) {
-                if (mLoginView.isActive()) {
-                  mLoginView.showMainUi();
-                }
+          SupportUser.getCurrentUser().updateUserInstallation(new SaveCallback() {
+            @Override public void done(AVException e) {
+              if (mLoginView.isActive()) {
+                mLoginView.showMainUi();
               }
-            });
-          }
+            }
+          });
         }
       });
     }

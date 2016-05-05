@@ -6,6 +6,7 @@ import com.google.common.base.Strings;
 import java.util.Collections;
 import java.util.List;
 import support.im.data.SimpleUser;
+import support.im.data.User;
 import support.im.data.source.ContactsDataSource;
 import support.im.data.source.ContactsRepository;
 import support.im.mobilecontact.pinyin.CharacterParser;
@@ -46,7 +47,7 @@ public class ContactsPresenter implements ContactsContract.Presenter {
     }
 
     mContactsRepository.getContacts(new ContactsDataSource.LoadContactsCallback() {
-      @Override public void onContactsLoaded(List<SimpleUser> contacts) {
+      @Override public void onContactsLoaded(List<User> contacts) {
         processUsers(contacts);
         if (!mContactsView.isActive()) {
           return;
@@ -63,8 +64,8 @@ public class ContactsPresenter implements ContactsContract.Presenter {
     });
   }
 
-  private void processUsers(List<SimpleUser> contacts) {
-    for (SimpleUser u : contacts) {
+  private void processUsers(List<User> contacts) {
+    for (User u : contacts) {
       final String nickname = u.getDisplayName();
       if (!Strings.isNullOrEmpty(nickname)) {
         String pinyin = characterParser.getSelling(u.getDisplayName());

@@ -19,6 +19,7 @@ import support.im.Injection;
 import support.im.R;
 import support.im.addcontact.AddContactActivity;
 import support.im.data.SimpleUser;
+import support.im.data.User;
 import support.im.detail.UserDetailActivity;
 import support.im.events.InvitationEvent;
 import support.im.leanclound.contacts.AddRequestManager;
@@ -53,7 +54,7 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     mAdapter.setOnClickListener(this);
     mAdapter.bind(ContactsDummy.class, ContactsDummyViewHolder.class);
     mAdapter.bind(ContactsTotal.class, ContactsTotalViewHolder.class);
-    mAdapter.bind(SimpleUser.class, ContactsViewHolder.class);
+    mAdapter.bind(User.class, ContactsViewHolder.class);
 
     new ContactsPresenter(Injection.provideContactsRepository(getContext()), this);
 
@@ -147,7 +148,7 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     contentPresenter.displayLoadView();
   }
 
-  @Override public void showContacts(List<SimpleUser> contacts) {
+  @Override public void showContacts(List<User> contacts) {
     mAdapter.addAll(contacts);
     final int size = contacts.size();
     mAdapter.add(mNewContacts, 0);

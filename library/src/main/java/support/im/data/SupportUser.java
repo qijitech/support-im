@@ -102,4 +102,25 @@ import java.util.UUID;
   public SimpleUser toSimpleUser() {
     return new SimpleUser(getObjectId(), getUserId(), getDisplayName(), getAvatar());
   }
+
+  public User toUser() {
+    User user = new User();
+    user.setUserId(getUserId());
+    user.setObjectId(getObjectId());
+    user.setDisplayName(getDisplayName());
+    user.setAvatar(getAvatar());
+    return user;
+  }
+
+  public static List<User> toUsers(List<SupportUser> supportUsers) {
+    if (supportUsers == null) {
+      return Lists.newArrayList();
+    }
+    List<User> users = Lists.newArrayListWithCapacity(supportUsers.size());
+    for (SupportUser supportUser : supportUsers) {
+      users.add(supportUser.toUser());
+    }
+    return users;
+  }
+
 }

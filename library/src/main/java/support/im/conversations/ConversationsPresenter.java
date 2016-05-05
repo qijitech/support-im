@@ -1,11 +1,20 @@
 package support.im.conversations;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.google.common.collect.Lists;
 import java.util.List;
 import support.im.data.Conv;
+import support.im.data.ConversationType;
+import support.im.data.User;
 import support.im.data.source.ConversationsDataSource;
 import support.im.data.source.ConversationsRepository;
+import support.im.data.source.UsersDataSource;
+import support.im.data.source.UsersRepository;
 import support.im.utilities.AVExceptionHandler;
+import support.im.utilities.ConversationHelper;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -13,15 +22,16 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
 
   private final ConversationsContract.View mConversationsView;
   private final ConversationsRepository mConversationsRepository;
-  private final ConversationsComparator mConversationsComparator;
+  private final UsersRepository mUsersRepository;
   private boolean mFirstLoad = true;
 
   public ConversationsPresenter(ConversationsRepository conversationsRepository,
+      UsersRepository usersRepository,
       ConversationsContract.View conversationsView) {
     mConversationsView = checkNotNull(conversationsView);
     mConversationsRepository = checkNotNull(conversationsRepository);
+    mUsersRepository = checkNotNull(usersRepository);
 
-    mConversationsComparator = new ConversationsComparator();
     mConversationsView.setPresenter(this);
   }
 
@@ -49,7 +59,11 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
 
     mConversationsRepository.loadConversations(new ConversationsDataSource.LoadConversationsCallback() {
       @Override public void onConversationsLoaded(List<Conv> conversations) {
-        processConversations(conversations);
+        if (mConversationsView.isActive()) {
+          mConversationsView.notifyDataSetChanged(conversations);
+        }
+        updateLastMessage(conversations);
+        cacheRelatedUsers(conversations);
       }
 
       @Override public void onConversationsNotFound() {
@@ -66,11 +80,48 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
     });
   }
 
-  private void processConversations(List<Conv> conversations) {
-    if (!mConversationsView.isActive()) {
-      return;
+  private void updateLastMessage(List<Conv> convs) {
+    if (convs != null) {
+      for (final Conv conv : convs) {
+        AVIMConversation conversation = conv.getConversation();
+        mConversationsRepository.getLastMessage(conversation, new ConversationsDataSource.GetLastMessageCallback() {
+          @Override public void onLastMessageLoaded(AVIMMessage avimMessage) {
+            conv.setLastMessage(avimMessage);
+            if (mConversationsView.isActive()) {
+              mConversationsView.notifyItemChanged(conv);
+            }
+          }
+          @Override public void onLastMessageNotFound() {
+          }
+          @Override public void onDataNotAvailable(AVIMException e) {
+          }
+        });
+      }
+
     }
-    mConversationsView.notifyDataSetChanged(conversations);
+  }
+
+  private void cacheRelatedUsers(List<Conv> convs) {
+    List<String> needCacheUsers = Lists.newArrayList();
+    if (convs != null) {
+      for (Conv conv : convs) {
+        AVIMConversation conversation = conv.getConversation();
+        if (ConversationHelper.typeOfConversation(conversation) == ConversationType.Single) {
+          needCacheUsers.add(ConversationHelper.otherIdOfConversation(conversation));
+        }
+      }
+    }
+    mUsersRepository.fetchUsers(needCacheUsers, new UsersDataSource.LoadUsersCallback() {
+      @Override public void onUserLoaded(List<User> users) {
+        if (mConversationsView.isActive()) {
+          mConversationsView.notifyDataSetChanged();
+        }
+      }
+      @Override public void onUserNotFound() {
+      }
+      @Override public void onDataNotAvailable(AVException exception) {
+      }
+    });
   }
 
 }

@@ -29,7 +29,9 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
     super.onCreate(savedInstanceState);
     mAdapter.bind(Conv.class, ConversationsViewHolder.class);
     mAdapter.setOnClickListener(this);
-    new ConversationsPresenter(Injection.provideConversationsRepository(ChatManager.getInstance().getClientId()), this);
+    new ConversationsPresenter(Injection.provideConversationsRepository(ChatManager.getInstance().getClientId()),
+        Injection.provideUsersRepository(getContext()),
+        this);
   }
 
   @Override public void onResume() {
@@ -49,7 +51,7 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
   }
 
   public void onEvent(ImTypeMessageEvent event) {
-    Conversation conversation = event.mConversation;
+    Conv conversation = event.mConversation;
     mAdapter.add(conversation, 0);
     contentPresenter.displayContentView();
   }
@@ -61,6 +63,10 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
   @Override public void notifyDataSetChanged(List<Conv> conversations) {
     mAdapter.addAll(conversations);
     contentPresenter.displayContentView();
+  }
+
+  @Override public void notifyDataSetChanged() {
+    mAdapter.notifyDataSetChanged();
   }
 
   @Override public void notifyItemChanged(Conv conversation) {

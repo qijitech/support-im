@@ -1,13 +1,15 @@
 package support.im.data;
 
+import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import support.im.data.cache.CacheManager;
 
-@Table(database = AppDatabase.class)
+@Table(database = AppDatabase.class, name = "conversations")
 public class Conv extends BaseModel {
 
   @PrimaryKey @Column(name = "conv_id") private String conversationId;
@@ -19,7 +21,11 @@ public class Conv extends BaseModel {
   @Column(name = "first_msg_time") private long firstMsgTime;
   @Column(name = "latest_msg_time") private long latestMsgTime;
 
-  @ColumnIgnore public AVIMMessage lastMessage;
+  @ColumnIgnore private AVIMMessage lastMessage;
+
+  public AVIMConversation getConversation() {
+    return CacheManager.getInstance().getCacheConversation(getConversationId());
+  }
 
   public String getClientId() {
     return clientId;
