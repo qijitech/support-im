@@ -3,10 +3,9 @@ package support.im.data.source;
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.AVException;
 import com.google.common.collect.Lists;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import support.im.data.User;
+import support.im.data.cache.CacheManager;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -15,11 +14,6 @@ public class UsersRepository extends SimpleUsersDataSource {
   private static UsersRepository INSTANCE = null;
   private final UsersDataSource mUsersRemoteDataSource;
   private final UsersDataSource mUsersLocalDataSource;
-
-  /**
-   * This variable has package local visibility so it can be accessed from tests.
-   */
-  Map<String, User> mCachedUsers;
 
   /**
    * Marks the cache as invalid, to force an update the next time data is requested. This variable
@@ -49,10 +43,7 @@ public class UsersRepository extends SimpleUsersDataSource {
     mUsersRemoteDataSource.searchUser(username, new GetUserCallback() {
       @Override public void onUserLoaded(User user) {
         saveUser(user);
-        if (mCachedUsers == null) {
-          mCachedUsers = new LinkedHashMap<>();
-        }
-        mCachedUsers.put(user.getObjectId(), user);
+        CacheManager.cacheUser(user);
         callback.onUserLoaded(user);
       }
 
@@ -70,17 +61,30 @@ public class UsersRepository extends SimpleUsersDataSource {
     mUsersLocalDataSource.saveUsers(users);
   }
 
-  @Override public void fetchUser(String objectId, final GetUserCallback callback) {
-    if (mCachedUsers != null && mCachedUsers.containsKey(objectId)) {
-      callback.onUserLoaded(mCachedUsers.get(objectId));
+  @Override public void fetchUser(final String objectId, final GetUserCallback callback) {
+    if (CacheManager.hasCacheUser(objectId)) {
+      callback.onUserLoaded(CacheManager.getCacheUser(objectId));
       return;
     }
     mUsersLocalDataSource.fetchUser(objectId, new GetUserCallback() {
       @Override public void onUserLoaded(User user) {
-        if (mCachedUsers == null) {
-          mCachedUsers = new LinkedHashMap<>();
-        }
-        mCachedUsers.put(user.getObjectId(), user);
+        CacheManager.cacheUser(user);
+        callback.onUserLoaded(user);
+      }
+      @Override public void onUserNotFound() {
+        getRemoteUser(objectId, callback);
+      }
+      @Override public void onDataNotAvailable(AVException exception) {
+        getRemoteUser(objectId, callback);
+      }
+    });
+  }
+
+  private void getRemoteUser(String objectId, final GetUserCallback callback) {
+    mUsersRemoteDataSource.fetchUser(objectId, new GetUserCallback() {
+      @Override public void onUserLoaded(User user) {
+        saveUser(user);
+        CacheManager.cacheUser(user);
         callback.onUserLoaded(user);
       }
       @Override public void onUserNotFound() {
@@ -95,18 +99,21 @@ public class UsersRepository extends SimpleUsersDataSource {
   @Override public void fetchUsers(final List<String> objectIds, final LoadUsersCallback callback) {
     checkNotNull(callback);
 
-    if (mCachedUsers != null && !mCacheIsDirty) {
+    if (CacheManager.hasCacheUsers() && !mCacheIsDirty) {
       List<String> unCachedIds = Lists.newArrayList();
+      List<User> cachedUser = Lists.newArrayListWithCapacity(objectIds.size());
       for (String objectId : objectIds) {
-        if (!mCachedUsers.containsKey(objectId)) {
+        if (!CacheManager.hasCacheUser(objectId)) {
           unCachedIds.add(objectId);
+        } else {
+          cachedUser.add(CacheManager.getCacheUser(objectId));
         }
       }
       if (unCachedIds.isEmpty()) {
-        callback.onUserLoaded(Lists.newArrayList(mCachedUsers.values()));
+        callback.onUserLoaded(cachedUser);
         return;
       }
-      getUsersFromCache(unCachedIds, callback);
+      getUsersFromCache(cachedUser, unCachedIds, callback);
       return;
     }
 
@@ -118,12 +125,14 @@ public class UsersRepository extends SimpleUsersDataSource {
     getUsersFromCache(objectIds, callback);
   }
 
-  private void getUsersFromRemoteDataSource(List<String> objectIds, @NonNull final LoadUsersCallback callback) {
+  private void getUsersFromRemoteDataSource(
+      final List<User> cachedUsers, List<String> objectIds, @NonNull final LoadUsersCallback callback) {
     mUsersRemoteDataSource.fetchUsers(objectIds, new LoadUsersCallback() {
       @Override public void onUserLoaded(List<User> users) {
         refreshCache(users);
         refreshLocalDataSource(users);
-        callback.onUserLoaded(Lists.newArrayList(mCachedUsers.values()));
+        users.addAll(cachedUsers);
+        callback.onUserLoaded(users);
       }
       @Override public void onUserNotFound() {
         callback.onUserNotFound();
@@ -134,11 +143,43 @@ public class UsersRepository extends SimpleUsersDataSource {
     });
   }
 
+  private void getUsersFromRemoteDataSource(List<String> objectIds, @NonNull final LoadUsersCallback callback) {
+    mUsersRemoteDataSource.fetchUsers(objectIds, new LoadUsersCallback() {
+      @Override public void onUserLoaded(List<User> users) {
+        refreshCache(users);
+        refreshLocalDataSource(users);
+        callback.onUserLoaded(users);
+      }
+      @Override public void onUserNotFound() {
+        callback.onUserNotFound();
+      }
+      @Override public void onDataNotAvailable(AVException exception) {
+        callback.onDataNotAvailable(exception);
+      }
+    });
+  }
+
+  private void getUsersFromCache(final List<User> cachedUsers, final List<String> objectIds, final LoadUsersCallback callback) {
+    mUsersLocalDataSource.fetchUsers(objectIds, new LoadUsersCallback() {
+      @Override public void onUserLoaded(List<User> users) {
+        refreshCache(users);
+        users.addAll(cachedUsers);
+        callback.onUserLoaded(users);
+      }
+      @Override public void onUserNotFound() {
+        getUsersFromRemoteDataSource(cachedUsers, objectIds, callback);
+      }
+      @Override public void onDataNotAvailable(AVException exception) {
+        getUsersFromRemoteDataSource(cachedUsers, objectIds, callback);
+      }
+    });
+  }
+
   private void getUsersFromCache(final List<String> objectIds, final LoadUsersCallback callback) {
     mUsersLocalDataSource.fetchUsers(objectIds, new LoadUsersCallback() {
       @Override public void onUserLoaded(List<User> users) {
         refreshCache(users);
-        callback.onUserLoaded(Lists.newArrayList(mCachedUsers.values()));
+        callback.onUserLoaded(Lists.newArrayList(users));
       }
       @Override public void onUserNotFound() {
         getUsersFromRemoteDataSource(objectIds, callback);
@@ -158,12 +199,7 @@ public class UsersRepository extends SimpleUsersDataSource {
   }
 
   private void refreshCache(List<User> users) {
-    if (mCachedUsers == null) {
-      mCachedUsers = new LinkedHashMap<>();
-    }
-    for (User user : users) {
-      mCachedUsers.put(user.getObjectId(), user);
-    }
+    CacheManager.cacheUsers(users);
     mCacheIsDirty = false;
   }
 

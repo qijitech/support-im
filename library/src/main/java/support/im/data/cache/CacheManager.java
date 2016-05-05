@@ -60,8 +60,8 @@ public class CacheManager {
     }
   }
 
-  public static User getCacheUser(String userId) {
-    return sUsersCache.get(userId);
+  public static User getCacheUser(String objectId) {
+    return sUsersCache.get(objectId);
   }
 
   public static List<User> getCacheUsers() {
@@ -76,8 +76,8 @@ public class CacheManager {
     return hasCacheUser(user.getObjectId());
   }
 
-  public static boolean hasCacheUser(String userId) {
-    return sUsersCache.containsKey(userId);
+  public static boolean hasCacheUser(String objectId) {
+    return sUsersCache.containsKey(objectId);
   }
 
   public static void clearUsers() {
