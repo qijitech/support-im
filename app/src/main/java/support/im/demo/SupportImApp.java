@@ -12,9 +12,8 @@ import support.im.demo.features.main.MainActivity;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.contacts.AddRequest;
 import support.im.service.PushManager;
-import support.ui.app.SupportApp;
 
-public class SupportImApp extends SupportApp {
+public class SupportImApp extends support.im.SupportImApp {
 
   @Override public void onCreate() {
     super.onCreate();

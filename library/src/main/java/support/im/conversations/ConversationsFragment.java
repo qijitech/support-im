@@ -12,6 +12,7 @@ import support.im.chats.ChatsActivity;
 import support.im.data.Conversation;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.event.ImTypeMessageEvent;
+import support.im.utilities.DatabaseUtils;
 import support.ui.SupportRecyclerViewFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -40,6 +41,8 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     EventBus.getDefault().register(this);
+
+    DatabaseUtils.findRecentConv();
   }
 
   @Override public void onDestroyView() {

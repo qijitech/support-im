@@ -60,7 +60,14 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
     }
 
     CacheManager.getInstance().cacheConversation(conversation);
-    DatabaseUtils.saveConversation(mContext, conversation, message, localClientId);
+    //DatabaseUtils.saveConversation(mContext, conversation, message, localClientId);
+    DatabaseUtils.saveConversation(conversation, message, localClientId);
+    if (!message.getFrom().equals(client.getClientId())) {
+      DatabaseUtils.updateConversationUnreadCount(conversation);
+        if (NotificationUtils.isShowNotification(conversation.getConversationId())) {
+          sendNotification(message, conversation);
+        }
+    }
     // process
     // 保存一个 Conversation
     //Conversation conv = Conversation.createConversationOnlyConversationId(conversation);
