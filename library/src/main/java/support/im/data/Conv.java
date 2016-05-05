@@ -24,7 +24,7 @@ public class Conv extends BaseModel {
   @ColumnIgnore private AVIMMessage lastMessage;
 
   public AVIMConversation getConversation() {
-    return CacheManager.getInstance().getCacheConversation(getConversationId());
+    return CacheManager.getCacheConversation(getConversationId());
   }
 
   public String getClientId() {

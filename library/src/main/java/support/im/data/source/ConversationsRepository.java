@@ -78,7 +78,7 @@ public class ConversationsRepository implements ConversationsDataSource {
         List<String> unCachedConversationIds = Lists.newArrayList();
         for (Conv conversation : conversations) {
           final String conversationId = conversation.getConversationId();
-          if (!CacheManager.getInstance().hasCacheConversation(conversationId)) {
+          if (!CacheManager.hasCacheConversation(conversationId)) {
             unCachedConversationIds.add(conversationId);
           }
         }
@@ -93,7 +93,7 @@ public class ConversationsRepository implements ConversationsDataSource {
           @Override public void done(List<AVIMConversation> aVIMConversations, AVIMException e) {
             if (AVExceptionHandler.handAVException(e, false)) {
               for (AVIMConversation aVIMConversation : aVIMConversations) {
-                CacheManager.getInstance().cacheConversation(aVIMConversation);
+                CacheManager.cacheConversation(aVIMConversation);
               }
               callback.onConversationsLoaded(conversations);
             }

@@ -63,7 +63,7 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
       return;
     }
 
-    CacheManager.getInstance().cacheConversation(conversation);
+    CacheManager.cacheConversation(conversation);
     Conv conv = DatabaseUtils.saveConversation(conversation, message, localClientId);
     if (!message.getFrom().equals(client.getClientId())) {
       DatabaseUtils.updateConversationUnreadCount(conversation);
@@ -72,7 +72,7 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
       }
 
       DatabaseUtils.updateConversationUnreadCount(conversation);
-      CacheManager.getInstance().cacheConversation(conversation);
+      CacheManager.cacheConversation(conversation);
       sendEvent(message, conversation, conv);
     }
   }

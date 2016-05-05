@@ -4,30 +4,21 @@ import android.support.v4.util.ArrayMap;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.google.common.collect.Lists;
 import java.util.List;
+import support.im.data.User;
 
 public class CacheManager {
 
-  private ArrayMap<String, AVIMConversation> mAVIMConversationsCache = new ArrayMap<>();
+  private final static ArrayMap<String, AVIMConversation> sAVIMConversationsCache =
+      new ArrayMap<>();
+  private final static ArrayMap<String, User> sUsersCache = new ArrayMap<>();
 
-  private static CacheManager INSTANCE = null;
-
-  public static CacheManager getInstance() {
-    if (INSTANCE == null) {
-      INSTANCE = new CacheManager();
-    }
-    return INSTANCE;
-  }
-
-  @SuppressWarnings("unchecked") private CacheManager() {
-  }
-
-  public void cacheConversation(AVIMConversation conversation) {
+  public static void cacheConversation(AVIMConversation conversation) {
     if (conversation != null) {
-      mAVIMConversationsCache.put(conversation.getConversationId(), conversation);
+      sAVIMConversationsCache.put(conversation.getConversationId(), conversation);
     }
   }
 
-  public void cacheConversations(List<AVIMConversation> conversations) {
+  public static void cacheConversations(List<AVIMConversation> conversations) {
     if (conversations != null) {
       for (AVIMConversation c : conversations) {
         cacheConversation(c);
@@ -35,24 +26,65 @@ public class CacheManager {
     }
   }
 
-  public AVIMConversation getCacheConversation(String conversationId) {
-    return mAVIMConversationsCache.get(conversationId);
+  public static AVIMConversation getCacheConversation(String conversationId) {
+    return sAVIMConversationsCache.get(conversationId);
   }
 
-  public List<AVIMConversation> getCacheConversations() {
-    return Lists.newArrayList(mAVIMConversationsCache.values());
+  public static List<AVIMConversation> getCacheConversations() {
+    return Lists.newArrayList(sAVIMConversationsCache.values());
   }
 
-  public boolean hasCacheConversations() {
-    return mAVIMConversationsCache.size() > 0;
+  public static boolean hasCacheConversations() {
+    return sAVIMConversationsCache.size() > 0;
   }
 
-  public boolean hasCacheConversation(AVIMConversation conversation) {
+  public static boolean hasCacheConversation(AVIMConversation conversation) {
     return hasCacheConversation(conversation.getConversationId());
   }
 
-  public boolean hasCacheConversation(String conversationId) {
-    return mAVIMConversationsCache.containsKey(conversationId);
+  public static boolean hasCacheConversation(String conversationId) {
+    return sAVIMConversationsCache.containsKey(conversationId);
   }
 
+  public static void cacheUser(User user) {
+    if (user != null) {
+      sUsersCache.put(user.getObjectId(), user);
+    }
+  }
+
+  public static void cacheUsers(List<User> users) {
+    if (users != null) {
+      for (User user : users) {
+        cacheUser(user);
+      }
+    }
+  }
+
+  public static User getCacheUser(String userId) {
+    return sUsersCache.get(userId);
+  }
+
+  public static List<User> getCacheUsers() {
+    return Lists.newArrayList(sUsersCache.values());
+  }
+
+  public static boolean hasCacheUsers() {
+    return sUsersCache.size() > 0;
+  }
+
+  public static boolean hasCacheUser(User user) {
+    return hasCacheUser(user.getObjectId());
+  }
+
+  public static boolean hasCacheUser(String userId) {
+    return sUsersCache.containsKey(userId);
+  }
+
+  public static void clearUsers() {
+    sUsersCache.clear();
+  }
+
+  public static void clearConversations() {
+    sAVIMConversationsCache.clear();
+  }
 }
