@@ -25,11 +25,11 @@
     <activity
         android:name=".features.auth.LoginActivity"
         android:launchMode="singleTask">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
+      <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN"/>-->
 
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
+        <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+      <!--</intent-filter>-->
     </activity>
 
     <!--手机号登录-->
@@ -110,12 +110,26 @@
           android:value=".features.main.MainActivity"/>
     </activity>
 
+    <!--用户操作页面-->
+    <activity
+        android:name=".features.profile.UserProfileActivity"
+        android:launchMode="standard">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value=".features.main.MainActivity"/>
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+
     <receiver android:name="support.im.service.InvitationReceiver">
       <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED" />
-        <action android:name="android.intent.action.USER_PRESENT" />
-        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-        <action android:name="@string/support_im_add_request_invitation_action" />
+        <action android:name="android.intent.action.BOOT_COMPLETED"/>
+        <action android:name="android.intent.action.USER_PRESENT"/>
+        <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+        <action android:name="@string/support_im_add_request_invitation_action"/>
       </intent-filter>
     </receiver>
 
@@ -129,8 +143,8 @@
 
     <!-- Support im END -->
     <provider
-        android:authorities="support.im.demo"
         android:name="support.im.provider.SupportImProvider"
+        android:authorities="support.im.demo"
         android:exported="false"/>
 
     <!-- 实时通信模块、推送（若使用该功能，需添加以下声明）START -->
