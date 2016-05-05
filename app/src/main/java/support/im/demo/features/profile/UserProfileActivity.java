@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import java.util.ArrayList;
 import support.im.demo.data.User;
+import support.im.demo.features.profile.data.IconItem;
 import support.ui.adapters.EasyViewHolder;
 import support.ui.app.SupportCellsActivity;
 import support.ui.cells.CellModel;
@@ -25,7 +26,9 @@ public class UserProfileActivity extends SupportCellsActivity
     super.onCreate(savedInstanceState);
 
     getAdapter().bind(User.class, UserHeadCell.class);
+    getAdapter().bind(IconItem.class, IconItemCell.class);
     addItem(new User());
+    addItem(new IconItem());
     appendAll(buildData());
   }
 
@@ -47,13 +50,13 @@ public class UserProfileActivity extends SupportCellsActivity
       }
     } else if (object instanceof User) {
       Log.d(TAG, "头像点击");
-      
     }
   }
 
   private ArrayList<CellModel> buildData() {
     ArrayList<CellModel> items = new ArrayList<>();
     //Resources res = SupportApp.appResources();
+    items.add(CellModel.settingCell("添加成员").build());
     items.add(CellModel.emptyCell().build());
     items.add(
         CellModel.checkCell("置顶聊天").tag(TOP_CONVERSATION).needDivider(true).checked(false).build());
