@@ -43,7 +43,8 @@ public class MainActivity extends BaseActivity {
   }
 
   private void setupFragmentNavigator() {
-    mNavigator = new FragmentNavigator(getSupportFragmentManager(), new FragmentAdapter(), R.id.container);
+    mNavigator =
+        new FragmentNavigator(getSupportFragmentManager(), new FragmentAdapter(), R.id.container);
     // set default tab position
     mNavigator.setDefaultPosition(DEFAULT_POSITION);
   }
@@ -69,7 +70,7 @@ public class MainActivity extends BaseActivity {
       }
 
       @Override public void onMenuTabReSelected(@IdRes int menuItemId) {
-        mNavigator.removeAllFragment(true);
+        //do nothing
       }
     });
 
