@@ -19,10 +19,10 @@ import java.util.UUID;
   public static final String AVATAR = "avatar";
   public static final String INSTALLATION = "installation";
 
-  public static void register(String username, String password, String nickname,
+  public static void register(String username, String password, String nickname, String avatar,
       SignUpCallback callback) {
     SupportUser user = new SupportUser();
-    user.setAvatar("http://img1.imgtn.bdimg.com/it/u=1248462995,728310824&fm=21&gp=0.jpg");
+    user.setAvatar(avatar);
     user.setUserId(UUID.randomUUID().toString());
     user.setUsername(username);
     user.setPassword(password);
