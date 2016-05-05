@@ -4,11 +4,9 @@ import android.support.v4.util.ArrayMap;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.google.common.collect.Lists;
 import java.util.List;
-import support.im.data.SimpleUser;
 
 public class CacheManager {
 
-  private ArrayMap<String, SimpleUser> mSimpleUserCache = new ArrayMap<>();
   private ArrayMap<String, AVIMConversation> mAVIMConversationsCache = new ArrayMap<>();
 
   private static CacheManager INSTANCE = null;
@@ -21,36 +19,6 @@ public class CacheManager {
   }
 
   @SuppressWarnings("unchecked") private CacheManager() {
-  }
-
-  public void cacheSimpleUser(SimpleUser simpleUser) {
-    if (simpleUser != null) {
-      mSimpleUserCache.put(simpleUser.getObjectId(), simpleUser);
-    }
-  }
-
-  public void cacheSimpleUsers(List<SimpleUser> simpleUsers) {
-    if (simpleUsers != null) {
-      for (SimpleUser simpleUser : simpleUsers) {
-        cacheSimpleUser(simpleUser);
-      }
-    }
-  }
-
-  public SimpleUser getCacheSimpleUser(String objectId) {
-    return mSimpleUserCache.get(objectId);
-  }
-
-  public List<SimpleUser> getCacheSimpleUsers() {
-    return Lists.newArrayList(mSimpleUserCache.values());
-  }
-
-  public boolean hasCacheSimpleUser(String objectId) {
-    return mSimpleUserCache.containsKey(objectId);
-  }
-
-  public boolean hasCacheSimpleUser(SimpleUser simpleUser) {
-    return hasCacheSimpleUser(simpleUser.getObjectId());
   }
 
   public void cacheConversation(AVIMConversation conversation) {

@@ -1,8 +1,6 @@
 package support.im.addcontact;
 
 import com.avos.avoscloud.AVException;
-import support.im.data.SimpleUser;
-import support.im.data.SupportUser;
 import support.im.data.User;
 import support.im.data.source.UsersDataSource;
 import support.im.data.source.UsersRepository;

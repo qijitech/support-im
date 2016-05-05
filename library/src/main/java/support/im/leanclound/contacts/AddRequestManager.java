@@ -11,8 +11,8 @@ import com.avos.avoscloud.FollowCallback;
 import com.avos.avoscloud.SaveCallback;
 import java.util.List;
 import support.im.R;
-import support.im.data.SimpleUser;
 import support.im.data.SupportUser;
+import support.im.data.User;
 import support.im.service.PushManager;
 import support.im.utilities.SimpleNetworkTask;
 import support.im.utilities.SupportLog;
@@ -159,7 +159,7 @@ public class AddRequestManager {
     }
   }
 
-  public void createAddRequestInBackground(final Context context, final SimpleUser user) {
+  public void createAddRequestInBackground(final Context context, final User user) {
     AsyncTaskCompat.executeParallel(new SimpleNetworkTask(context) {
       @Override protected void doInBackground() throws Exception {
         SupportUser supportUser = new SupportUser();

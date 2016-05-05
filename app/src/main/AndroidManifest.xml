@@ -128,10 +128,6 @@
     </receiver>
 
     <!-- Support im END -->
-    <provider
-        android:authorities="support.im.demo"
-        android:name="support.im.provider.SupportImProvider"
-        android:exported="false"/>
 
     <!-- 实时通信模块、推送（若使用该功能，需添加以下声明）START -->
     <service android:name="com.avos.avoscloud.PushService"/>

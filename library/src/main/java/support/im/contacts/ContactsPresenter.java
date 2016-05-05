@@ -5,7 +5,6 @@ import com.avos.avoscloud.AVException;
 import com.google.common.base.Strings;
 import java.util.Collections;
 import java.util.List;
-import support.im.data.SimpleUser;
 import support.im.data.User;
 import support.im.data.source.ContactsDataSource;
 import support.im.data.source.ContactsRepository;

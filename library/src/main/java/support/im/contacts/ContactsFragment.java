@@ -18,7 +18,6 @@ import java.util.List;
 import support.im.Injection;
 import support.im.R;
 import support.im.addcontact.AddContactActivity;
-import support.im.data.SimpleUser;
 import support.im.data.User;
 import support.im.detail.UserDetailActivity;
 import support.im.events.InvitationEvent;
@@ -127,8 +126,8 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
 
   @Override public void onItemClick(int position, View view) {
     Object object = mAdapter.get(position);
-    if (object instanceof SimpleUser) {
-      SimpleUser user = (SimpleUser) object;
+    if (object instanceof User) {
+      User user = (User) object;
       UserDetailActivity.startUserDetail(getContext(), user.getObjectId());
       return;
     }

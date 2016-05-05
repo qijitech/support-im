@@ -10,7 +10,6 @@ import support.im.Injection;
 import support.im.R;
 import support.im.chats.ChatsActivity;
 import support.im.data.Conv;
-import support.im.data.Conversation;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.event.ImTypeMessageEvent;
 import support.ui.SupportRecyclerViewFragment;
@@ -91,7 +90,7 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
   }
 
   @Override public void onItemClick(int position, View view) {
-    Conversation conversation = (Conversation) mAdapter.get(position);
-    ChatsActivity.startChatsWithConversationId(getContext(), conversation.mConversationId);
+    Conv conversation = (Conv) mAdapter.get(position);
+    ChatsActivity.startChatsWithConversationId(getContext(), conversation.getConversationId());
   }
 }

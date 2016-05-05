@@ -1,15 +1,8 @@
 package support.im.utilities;
 
-import android.support.annotation.NonNull;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.avos.avoscloud.im.v2.AVIMConversation;
-import java.util.ArrayList;
 import java.util.List;
-import support.im.data.Conversation;
 import support.im.data.ConversationType;
-import support.im.data.SimpleUser;
 import support.im.leanclound.ChatManager;
 
 public final class ConversationHelper {
@@ -104,70 +97,7 @@ public final class ConversationHelper {
     }
 
     // 单聊
-    String otherId = otherIdOfConversation(conversation);
-    Object object = conversation.getAttribute(Conversation.ATTRS_MEMBERS);
-    if (object instanceof JSONArray) {
-      JSONArray jsonArray = (JSONArray) object;
-      final int size = jsonArray.size();
-      for (int i = 0; i < size; i++) {
-        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-        SimpleUser user = JSON.toJavaObject(jsonObject, SimpleUser.class);
-        if (otherId.equals(user.getObjectId())) {
-          return user.getDisplayName();
-        }
-      }
-    } else if (object instanceof org.json.JSONArray) {
-      org.json.JSONArray jsonArray = (org.json.JSONArray) object;
-      String json = jsonArray.toString();
-      JSONArray jsonArray1 = JSON.parseArray(json);
-      final int size = jsonArray1.size();
-      for (int i = 0; i < size; i++) {
-        JSONObject jsonObject = (JSONObject) jsonArray1.get(i);
-        SimpleUser user = JSON.toJavaObject(jsonObject, SimpleUser.class);
-        if (otherId.equals(user.getObjectId())) {
-          return user.getDisplayName();
-        }
-      }
-    }
     return "对话";
   }
 
-  public static SimpleUser getSimpleUser(@NonNull AVIMConversation conversation) {
-    String otherId = otherIdOfConversation(conversation);
-    Object object = conversation.getAttribute(Conversation.ATTRS_MEMBERS);
-    if (object instanceof ArrayList) {
-      ArrayList<SimpleUser> simpleUsers = (ArrayList<SimpleUser>) object;
-      for (SimpleUser user : simpleUsers) {
-        if (otherId.equals(user.getObjectId())) {
-          return user;
-        }
-      }
-    }
-    if (object instanceof JSONArray) {
-      JSONArray jsonArray = (JSONArray) object;
-      final int size = jsonArray.size();
-      for (int i = 0; i < size; i++) {
-        JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-        SimpleUser user = JSON.toJavaObject(jsonObject, SimpleUser.class);
-        if (otherId.equals(user.getObjectId())) {
-          return user;
-        }
-      }
-    }
-
-    if (object instanceof org.json.JSONArray) {
-      org.json.JSONArray jsonArray = (org.json.JSONArray) object;
-      String json = jsonArray.toString();
-      JSONArray jsonArray1 = JSON.parseArray(json);
-      final int size = jsonArray1.size();
-      for (int i = 0; i < size; i++) {
-        JSONObject jsonObject = (JSONObject) jsonArray1.get(i);
-        SimpleUser user = JSON.toJavaObject(jsonObject, SimpleUser.class);
-        if (otherId.equals(user.getObjectId())) {
-          return user;
-        }
-      }
-    }
-    return null;
-  }
 }

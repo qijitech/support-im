@@ -88,21 +88,6 @@ import java.util.UUID;
     }
   }
 
-  public static List<SimpleUser> toSimpleUsers(List<SupportUser> supportUsers) {
-    if (supportUsers == null) {
-      return Lists.newArrayList();
-    }
-    List<SimpleUser> simpleUsers = Lists.newArrayListWithCapacity(supportUsers.size());
-    for (SupportUser supportUser : supportUsers) {
-      simpleUsers.add(supportUser.toSimpleUser());
-    }
-    return simpleUsers;
-  }
-
-  public SimpleUser toSimpleUser() {
-    return new SimpleUser(getObjectId(), getUserId(), getDisplayName(), getAvatar());
-  }
-
   public User toUser() {
     User user = new User();
     user.setUserId(getUserId());

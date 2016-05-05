@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
 import support.im.R;
-import support.im.data.SimpleUser;
+import support.im.data.User;
 import support.ui.adapters.EasyRecyclerAdapter;
 import support.ui.adapters.EasyViewHolder;
 
@@ -20,8 +20,8 @@ public class ContactsAdapter extends EasyRecyclerAdapter implements
   public int getPositionForSection(char section) {
     for (int index = 0; index < getItemCount(); index++) {
       final Object object = get(index);
-      if (object instanceof SimpleUser) {
-        SimpleUser supportUser = (SimpleUser) object;
+      if (object instanceof User) {
+        User supportUser = (User) object;
         String sortStr = supportUser.getSortLetters();
         char firstChar = sortStr.toUpperCase().charAt(0);
         if (firstChar == section) {
@@ -34,8 +34,8 @@ public class ContactsAdapter extends EasyRecyclerAdapter implements
 
   @Override public long getHeaderId(int position) {
     final Object object = get(position);
-    if (object instanceof SimpleUser) {
-      SimpleUser simpleUser = (SimpleUser) object;
+    if (object instanceof User) {
+      User simpleUser = (User) object;
       return simpleUser.getSortLetters().charAt(0);
     }
     return RecyclerView.NO_POSITION;
@@ -51,8 +51,8 @@ public class ContactsAdapter extends EasyRecyclerAdapter implements
   @Override public void onBindHeaderViewHolder(EasyViewHolder holder, int position) {
     TextView textView = (TextView) holder.itemView;
     final Object object = get(position);
-    if (object instanceof SimpleUser) {
-      SimpleUser simpleUser = (SimpleUser) object;
+    if (object instanceof User) {
+      User simpleUser = (User) object;
       String showValue = String.valueOf(simpleUser.getSortLetters().charAt(0));
       textView.setText(showValue);
     }

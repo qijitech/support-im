@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import butterknife.ButterKnife;
+import com.avos.avoscloud.AVException;
+import support.im.Injection;
 import support.im.R;
 import support.im.chats.ChatsActivity;
-import support.im.data.SimpleUser;
+import support.im.data.User;
 import support.im.data.cache.CacheManager;
+import support.im.data.source.UsersDataSource;
 import support.im.leanclound.Constants;
 import support.im.leanclound.contacts.AddRequestManager;
 import support.ui.SupportActivity;
@@ -17,7 +20,7 @@ import support.ui.components.SupportButton;
 
 public class UserDetailActivity extends SupportActivity implements View.OnClickListener {
 
-  SimpleUser mUser;
+  User mUser;
   String mObjectId;
 
   private SupportButton mAddContactsBtn;
@@ -49,7 +52,15 @@ public class UserDetailActivity extends SupportActivity implements View.OnClickL
 
   private void initialize() {
     mObjectId = getIntent().getStringExtra(Constants.EXTRA_OBJECT_ID);
-    mUser = CacheManager.getInstance().getCacheSimpleUser(mObjectId);
+    Injection.provideUsersRepository(this).fetchUser(mObjectId, new UsersDataSource.GetUserCallback() {
+      @Override public void onUserLoaded(User user) {
+        mUser = user;
+      }
+      @Override public void onUserNotFound() {
+      }
+      @Override public void onDataNotAvailable(AVException exception) {
+      }
+    });
   }
 
   @Override public void onClick(View v) {

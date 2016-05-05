@@ -21,6 +21,21 @@ import support.im.data.User_Table;
 
 public final class DatabaseUtils {
 
+  public static Conv saveConversation(AVIMConversation avimConversation, String clientId) {
+    final String conversationId = avimConversation.getConversationId();
+    Conv conv = findByConvId(conversationId);
+    if (conv != null) {
+      conv.update();
+    } else {
+      conv = new Conv.Builder()
+          .conversationId(conversationId)
+          .clientId(clientId)
+          .build();
+      conv.insert();
+    }
+    return conv;
+  }
+
   public static Conv saveConversation(AVIMConversation avimConversation, AVIMMessage message, String clientId) {
     final String conversationId = avimConversation.getConversationId();
     Conv conv = findByConvId(conversationId);

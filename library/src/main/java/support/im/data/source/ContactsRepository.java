@@ -5,7 +5,6 @@ import android.support.v4.util.ArrayMap;
 import com.avos.avoscloud.AVException;
 import com.google.common.collect.Lists;
 import java.util.List;
-import support.im.data.SimpleUser;
 import support.im.data.User;
 
 import static com.google.common.base.Preconditions.checkNotNull;

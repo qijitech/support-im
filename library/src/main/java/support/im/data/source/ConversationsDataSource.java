@@ -7,7 +7,6 @@ import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import java.util.List;
 import support.im.data.Conv;
-import support.im.data.Conversation;
 
 public interface ConversationsDataSource {
 
@@ -29,7 +28,7 @@ public interface ConversationsDataSource {
   void getLastMessage(@NonNull AVIMConversation conversation,
       @NonNull GetLastMessageCallback callback);
 
-  void saveConversation(@NonNull Conversation conversation);
+  void saveConversation(@NonNull Conv conversation);
 
   void loadConversations(@NonNull LoadConversationsCallback callback);
 

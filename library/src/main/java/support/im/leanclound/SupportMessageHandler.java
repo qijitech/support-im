@@ -13,7 +13,7 @@ import support.im.Injection;
 import support.im.R;
 import support.im.data.Conv;
 import support.im.data.ConversationType;
-import support.im.data.SimpleUser;
+import support.im.data.User;
 import support.im.data.cache.CacheManager;
 import support.im.data.source.UsersRepository;
 import support.im.leanclound.event.ImTypeMessageEvent;
@@ -101,7 +101,7 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
       String notificationContent = message instanceof AVIMTextMessage ?
           ((AVIMTextMessage) message).getText() : mContext.getString(R.string.support_im_un_support_message_type);
 
-      SimpleUser simpleUser = CacheManager.getInstance().getCacheSimpleUser(message.getFrom());
+      User simpleUser = null;
       String userName = null;
       if (simpleUser != null) {
         userName = simpleUser.getDisplayName();

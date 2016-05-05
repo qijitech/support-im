@@ -5,22 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
+import support.im.Injection;
 import support.im.data.ConversationType;
-import support.im.data.SimpleUser;
-import support.im.data.SupportUser;
-import support.im.data.cache.CacheManager;
+import support.im.data.User;
+import support.im.data.source.UsersDataSource;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.Constants;
-import support.im.leanclound.ConversationManager;
 import support.im.utilities.AVExceptionHandler;
 import support.im.utilities.ConversationHelper;
+import support.im.utilities.DatabaseUtils;
 import support.im.utilities.SupportLog;
 import support.ui.SupportSinglePaneActivity;
-import support.ui.app.SupportApp;
 
 public class ChatsActivity extends SupportSinglePaneActivity {
 
@@ -92,14 +92,21 @@ public class ChatsActivity extends SupportSinglePaneActivity {
    * 如果存在，则直接赋值给 ChatFragment，否者创建后再赋值
    */
   private void getConversation(final String memberId) {
-    SimpleUser simpleUser = CacheManager.getInstance().getCacheSimpleUser(memberId);
-    ChatManager.getInstance().createSingleConversation(simpleUser, new AVIMConversationCreatedCallback() {
-      @Override
-      public void done(AVIMConversation avimConversation, AVIMException e) {
-        if (AVExceptionHandler.handAVException(e)) {
-          ConversationManager.getInstance().getConversationsDatabase().saveConversation(avimConversation.getConversationId());
-          updateConversation(avimConversation);
-        }
+    Injection.provideUsersRepository(this).fetchUser(memberId, new UsersDataSource.GetUserCallback() {
+      @Override public void onUserLoaded(User user) {
+        ChatManager.getInstance().createSingleConversation(user, new AVIMConversationCreatedCallback() {
+          @Override
+          public void done(AVIMConversation avimConversation, AVIMException e) {
+            if (AVExceptionHandler.handAVException(e)) {
+              DatabaseUtils.saveConversation(avimConversation, ChatManager.getInstance().getClientId());
+              updateConversation(avimConversation);
+            }
+          }
+        });
+      }
+      @Override public void onUserNotFound() {
+      }
+      @Override public void onDataNotAvailable(AVException exception) {
       }
     });
   }

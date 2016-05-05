@@ -9,7 +9,6 @@ import com.google.common.collect.Maps;
 import java.util.List;
 import java.util.Map;
 import support.im.data.Conv;
-import support.im.data.Conversation;
 import support.im.data.cache.CacheManager;
 import support.im.utilities.AVExceptionHandler;
 
@@ -115,7 +114,7 @@ public class ConversationsRepository implements ConversationsDataSource {
     mConversationsRemoteDataSource.getLastMessage(conversation, callback);
   }
 
-  @Override public void saveConversation(@NonNull Conversation conversation) {
+  @Override public void saveConversation(@NonNull Conv conversation) {
     mConversationsLocalDataSource.saveConversation(conversation);
   }
 

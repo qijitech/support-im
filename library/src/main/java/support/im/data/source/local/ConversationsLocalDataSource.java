@@ -3,7 +3,6 @@ package support.im.data.source.local;
 import android.support.annotation.NonNull;
 import java.util.List;
 import support.im.data.Conv;
-import support.im.data.Conversation;
 import support.im.data.source.SimpleConversationsDataSource;
 import support.im.utilities.DatabaseUtils;
 
@@ -41,6 +40,6 @@ public class ConversationsLocalDataSource extends SimpleConversationsDataSource 
     });
   }
 
-  @Override public void saveConversation(@NonNull Conversation conversation) {
+  @Override public void saveConversation(@NonNull Conv conversation) {
   }
 }
