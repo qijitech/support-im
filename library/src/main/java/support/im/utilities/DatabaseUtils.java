@@ -3,6 +3,7 @@ package support.im.utilities;
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.google.common.collect.Lists;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.runtime.DBBatchSaveQueue;
@@ -36,21 +37,25 @@ public final class DatabaseUtils {
     return conv;
   }
 
-  public static Conv saveConversation(AVIMConversation avimConversation, AVIMMessage message, String clientId) {
+  public static Conv saveConversation(AVIMConversation avimConversation, AVIMMessage avimMessage, String clientId) {
     final String conversationId = avimConversation.getConversationId();
     Conv conv = findByConvId(conversationId);
+    String message = avimMessage.getContent();
+    if (avimMessage instanceof AVIMTextMessage) {
+      message = ((AVIMTextMessage)avimMessage).getText();
+    }
     if (conv != null) {
-      conv.setLatestMsgTime(message.getTimestamp());
-      conv.setMessage(message.getContent());
+      conv.setLatestMsgTime(avimMessage.getTimestamp());
+      conv.setMessage(message);
       conv.update();
     } else {
       conv = new Conv.Builder()
           .conversationId(conversationId)
           .clientId(clientId)
-          .message(message.getContent())
-          .firstMsgId(message.getMessageId())
-          .firstMsgTime(message.getTimestamp())
-          .latestMsgTime(message.getTimestamp())
+          .message(message)
+          .firstMsgId(avimMessage.getMessageId())
+          .firstMsgTime(avimMessage.getTimestamp())
+          .latestMsgTime(avimMessage.getTimestamp())
           .build();
       conv.insert();
     }
