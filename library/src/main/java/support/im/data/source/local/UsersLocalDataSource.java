@@ -22,7 +22,7 @@ public class UsersLocalDataSource extends SimpleUsersDataSource {
   }
 
   @Override public void saveUsers(List<User> users) {
-    DatabaseUtils.saveUsers(users, new DatabaseUtils.SaveUserCallback() {
+    DatabaseUtils.saveUsers(users, new DatabaseUtils.SaveUsersCallback() {
       @Override public void onSuccess(List<User> users) {
       }
     });
@@ -45,7 +45,10 @@ public class UsersLocalDataSource extends SimpleUsersDataSource {
   }
 
   @Override public void saveUser(User user) {
-    DatabaseUtils.saveUser(user);
+    DatabaseUtils.saveUser(user, new DatabaseUtils.SaveUserCallback() {
+      @Override public void onSuccess(User user) {
+      }
+    });
   }
 
   @Override public void fetchUsers(List<String> objectIds, final LoadUsersCallback callback) {

@@ -91,7 +91,24 @@ public final class DatabaseUtils {
     }
   }
 
-  public static void saveUsers(final List<User> users, final SaveUserCallback saveCallback) {
+  public static void saveUser(final User user, final SaveUserCallback saveUserCallback) {
+    if (user == null) {
+      return;
+    }
+
+    DBBatchSaveQueue saveQueue = FlowManager.getDatabase(AppDatabase.class)
+        .getTransactionManager().getSaveQueue();
+    saveQueue.setSuccessListener(new Transaction.Success() {
+      @Override public void onSuccess(Transaction transaction) {
+        if (saveUserCallback != null) {
+          saveUserCallback.onSuccess(user);
+        }
+      }
+    });
+    saveQueue.add(user);
+  }
+
+  public static void saveUsers(final List<User> users, final SaveUsersCallback saveCallback) {
     if (users == null || users.isEmpty()) {
       if (saveCallback != null) {
         saveCallback.onSuccess(Lists.<User>newArrayList());
@@ -162,8 +179,12 @@ public final class DatabaseUtils {
     void onSuccess(List<User> users);
   }
 
-  public static interface SaveUserCallback {
+  public static interface SaveUsersCallback {
     void onSuccess(List<User> users);
+  }
+
+  public static interface SaveUserCallback {
+    void onSuccess(User user);
   }
 
   public static interface FindConvCallback {

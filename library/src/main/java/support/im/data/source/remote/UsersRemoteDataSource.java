@@ -6,9 +6,7 @@ import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.FindCallback;
 import java.util.List;
 import support.im.data.SupportUser;
-import support.im.data.User;
 import support.im.data.source.SimpleUsersDataSource;
-import support.im.data.source.UsersDataSource;
 import support.im.leanclound.Constants;
 import support.im.utilities.AVExceptionHandler;
 
@@ -44,8 +42,24 @@ public class UsersRemoteDataSource extends SimpleUsersDataSource {
     });
   }
 
-  @Override public void saveUsers(List<User> users) {
-
+  @Override public void fetchUser(String objectId, final GetUserCallback callback) {
+    AVQuery<SupportUser> q = SupportUser.getQuery(SupportUser.class);
+    q.whereEqualTo(Constants.OBJECT_ID, objectId);
+    q.setLimit(1);
+    q.setCachePolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
+    q.findInBackground(new FindCallback<SupportUser>() {
+      @Override public void done(List<SupportUser> users, AVException e) {
+        if (AVExceptionHandler.handAVException(e, false)) {
+          if (users == null || users.isEmpty()) {
+            callback.onUserNotFound();
+            return;
+          }
+          callback.onUserLoaded(users.get(0).toUser());
+          return;
+        }
+        callback.onDataNotAvailable(e);
+      }
+    });
   }
 
   @Override public void fetchUsers(final List<String> objectIds, final LoadUsersCallback callback) {
