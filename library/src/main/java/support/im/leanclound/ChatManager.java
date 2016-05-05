@@ -10,12 +10,10 @@ import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.google.common.collect.Lists;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import support.im.data.Conversation;
 import support.im.data.ConversationType;
-import support.im.data.SimpleUser;
 import support.im.data.SupportUser;
+import support.im.data.User;
 import support.im.utilities.SupportLog;
 import support.ui.app.SupportApp;
 
@@ -119,25 +117,16 @@ public class ChatManager {
     mClientId = null;
   }
 
-  public void createSingleConversation(SimpleUser simpleToUser, AVIMConversationCreatedCallback callback) {
+  public void createSingleConversation(User toUser, AVIMConversationCreatedCallback callback) {
     Map<String, Object> attrs = new HashMap<>();
     attrs.put(ConversationType.TYPE_KEY, ConversationType.Single.getValue());
-    SupportUser supportUser = SupportUser.getCurrentUser();
-    SimpleUser fromUser = supportUser.toSimpleUser();
-    List<SimpleUser> members = Lists.newArrayList(simpleToUser, fromUser);
-    attrs.put(Conversation.ATTRS_MEMBERS, members);
-    final String memberId = simpleToUser.getObjectId();
+    final String memberId = toUser.getObjectId();
     mIMClient.createConversation(Lists.newArrayList(memberId), "", attrs, false, true, callback);
   }
 
   public void createSingleConversation(SupportUser toUser, AVIMConversationCreatedCallback callback) {
     Map<String, Object> attrs = new HashMap<>();
     attrs.put(ConversationType.TYPE_KEY, ConversationType.Single.getValue());
-    SimpleUser simpleToUser = toUser.toSimpleUser();
-    SupportUser supportUser = SupportUser.getCurrentUser();
-    SimpleUser fromUser = supportUser.toSimpleUser();
-    List<SimpleUser> members = Lists.newArrayList(simpleToUser, fromUser);
-    attrs.put(Conversation.ATTRS_MEMBERS, members);
     final String memberId = toUser.getObjectId();
     mIMClient.createConversation(Lists.newArrayList(memberId), "", attrs, false, true, callback);
   }

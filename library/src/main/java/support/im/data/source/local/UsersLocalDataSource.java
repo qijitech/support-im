@@ -1,14 +1,12 @@
 package support.im.data.source.local;
 
 import android.support.annotation.NonNull;
-import com.google.common.collect.Lists;
 import java.util.List;
-import support.im.data.SimpleUser;
-import support.im.data.SupportUser;
-import support.im.data.cache.CacheManager;
-import support.im.data.source.UsersDataSource;
+import support.im.data.User;
+import support.im.data.source.SimpleUsersDataSource;
+import support.im.utilities.DatabaseUtils;
 
-public class UsersLocalDataSource implements UsersDataSource {
+public class UsersLocalDataSource extends SimpleUsersDataSource {
 
   private static UsersLocalDataSource INSTANCE = null;
 
@@ -23,13 +21,50 @@ public class UsersLocalDataSource implements UsersDataSource {
 
   }
 
-  @Override public void fetchUsers(List<String> userIds, LoadUsersCallback callback) {
-    List<SimpleUser> users = Lists.newArrayList();
-    for (String userId : userIds) {
-      if (CacheManager.getInstance().hasCacheSimpleUser(userId)) {
-        users.add(CacheManager.getInstance().getCacheSimpleUser(userId));
+  @Override public void saveUsers(List<User> users) {
+    DatabaseUtils.saveUsers(users, new DatabaseUtils.SaveUserCallback() {
+      @Override public void onSuccess(List<User> users) {
       }
+    });
+  }
+
+  @Override public void fetchUser(String objectId, final GetUserCallback callback) {
+    if (objectId == null ) {
+      callback.onUserNotFound();
+      return;
     }
-    callback.onUserLoaded(users);
+    DatabaseUtils.findUserByObjectId(objectId, new DatabaseUtils.FindUserCallback() {
+      @Override public void onSuccess(User user) {
+        if (user == null) {
+          callback.onUserNotFound();
+        } else {
+          callback.onUserLoaded(user);
+        }
+      }
+    });
+  }
+
+  @Override public void saveUser(User user) {
+    DatabaseUtils.saveUser(user);
+  }
+
+  @Override public void fetchUsers(List<String> objectIds, final LoadUsersCallback callback) {
+    if (objectIds == null || objectIds.isEmpty()) {
+      callback.onUserNotFound();
+      return;
+    }
+    DatabaseUtils.findUserByObjectIds(objectIds, new DatabaseUtils.FindUsersCallback() {
+      @Override public void onSuccess(List<User> users) {
+        if (users.isEmpty()) {
+          callback.onUserNotFound();
+          return;
+        }
+        callback.onUserLoaded(users);
+      }
+    });
+  }
+
+  @Override public void refreshUsers() {
+
   }
 }

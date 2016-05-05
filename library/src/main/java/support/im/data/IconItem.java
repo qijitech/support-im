@@ -1,4 +1,4 @@
-package support.im.demo.features.profile.data;
+package support.im.data;
 
 /**
  * Created by wangh on 2016-5-5-0005.

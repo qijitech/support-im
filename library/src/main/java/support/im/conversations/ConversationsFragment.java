@@ -9,7 +9,7 @@ import java.util.List;
 import support.im.Injection;
 import support.im.R;
 import support.im.chats.ChatsActivity;
-import support.im.data.Conversation;
+import support.im.data.Conv;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.event.ImTypeMessageEvent;
 import support.ui.SupportRecyclerViewFragment;
@@ -26,9 +26,11 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mAdapter.bind(Conversation.class, ConversationsViewHolder.class);
+    mAdapter.bind(Conv.class, ConversationsViewHolder.class);
     mAdapter.setOnClickListener(this);
-    new ConversationsPresenter(Injection.provideConversationsRepository(ChatManager.getInstance().getClientId()), this);
+    new ConversationsPresenter(Injection.provideConversationsRepository(ChatManager.getInstance().getClientId()),
+        Injection.provideUsersRepository(getContext()),
+        this);
   }
 
   @Override public void onResume() {
@@ -48,7 +50,7 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
   }
 
   public void onEvent(ImTypeMessageEvent event) {
-    Conversation conversation = event.mConversation;
+    Conv conversation = event.mConversation;
     mAdapter.add(conversation, 0);
     contentPresenter.displayContentView();
   }
@@ -57,12 +59,16 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
     contentPresenter.displayLoadView();
   }
 
-  @Override public void notifyDataSetChanged(List<Conversation> conversations) {
+  @Override public void notifyDataSetChanged(List<Conv> conversations) {
     mAdapter.addAll(conversations);
     contentPresenter.displayContentView();
   }
 
-  @Override public void notifyItemChanged(Conversation conversation) {
+  @Override public void notifyDataSetChanged() {
+    mAdapter.notifyDataSetChanged();
+  }
+
+  @Override public void notifyItemChanged(Conv conversation) {
     final int position = mAdapter.getIndex(conversation);
     mAdapter.update(conversation, position);
   }
@@ -84,7 +90,7 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
   }
 
   @Override public void onItemClick(int position, View view) {
-    Conversation conversation = (Conversation) mAdapter.get(position);
-    ChatsActivity.startChatsWithConversationId(getContext(), conversation.mConversationId);
+    Conv conversation = (Conv) mAdapter.get(position);
+    ChatsActivity.startChatsWithConversationId(getContext(), conversation.getConversationId());
   }
 }

@@ -3,8 +3,8 @@ package support.im.chats;
 import android.content.Context;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
-import support.im.demo.R;
-import support.im.demo.features.profile.data.IconItem;
+import support.im.R;
+import support.im.data.IconItem;
 import support.ui.adapters.EasyViewHolder;
 
 /**

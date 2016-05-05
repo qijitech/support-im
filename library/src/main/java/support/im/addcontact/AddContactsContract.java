@@ -3,8 +3,7 @@ package support.im.addcontact;
 import com.avos.avoscloud.AVException;
 import support.im.BasePresenter;
 import support.im.BaseView;
-import support.im.data.SimpleUser;
-import support.im.data.SupportUser;
+import support.im.data.User;
 
 public interface AddContactsContract {
 
@@ -13,7 +12,7 @@ public interface AddContactsContract {
 
     void dismissHud();
 
-    void showUser(SimpleUser user);
+    void showUser(User user);
 
     void showNoUser();
 

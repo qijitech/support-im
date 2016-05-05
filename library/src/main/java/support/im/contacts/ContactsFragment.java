@@ -18,7 +18,7 @@ import java.util.List;
 import support.im.Injection;
 import support.im.R;
 import support.im.addcontact.AddContactActivity;
-import support.im.data.SimpleUser;
+import support.im.data.User;
 import support.im.detail.UserDetailActivity;
 import support.im.events.InvitationEvent;
 import support.im.leanclound.contacts.AddRequestManager;
@@ -53,7 +53,7 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     mAdapter.setOnClickListener(this);
     mAdapter.bind(ContactsDummy.class, ContactsDummyViewHolder.class);
     mAdapter.bind(ContactsTotal.class, ContactsTotalViewHolder.class);
-    mAdapter.bind(SimpleUser.class, ContactsViewHolder.class);
+    mAdapter.bind(User.class, ContactsViewHolder.class);
 
     new ContactsPresenter(Injection.provideContactsRepository(getContext()), this);
 
@@ -126,8 +126,8 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
 
   @Override public void onItemClick(int position, View view) {
     Object object = mAdapter.get(position);
-    if (object instanceof SimpleUser) {
-      SimpleUser user = (SimpleUser) object;
+    if (object instanceof User) {
+      User user = (User) object;
       UserDetailActivity.startUserDetail(getContext(), user.getObjectId());
       return;
     }
@@ -147,7 +147,7 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     contentPresenter.displayLoadView();
   }
 
-  @Override public void showContacts(List<SimpleUser> contacts) {
+  @Override public void showContacts(List<User> contacts) {
     mAdapter.addAll(contacts);
     final int size = contacts.size();
     mAdapter.add(mNewContacts, 0);
@@ -157,15 +157,27 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
   }
 
   @Override public void showNotLoggedIn() {
-
+    mAdapter.clear();
+    mAdapter.add(mNewContacts, 0);
+    mAdapter.add(mGroup, 1);
+    mAdapter.add(new ContactsTotal(0));
+    contentPresenter.displayContentView();
   }
 
   @Override public void onDataNotAvailable(AVException exception) {
-
+    mAdapter.clear();
+    mAdapter.add(mNewContacts, 0);
+    mAdapter.add(mGroup, 1);
+    mAdapter.add(new ContactsTotal(0));
+    contentPresenter.displayContentView();
   }
 
   @Override public void showNoContacts() {
-    contentPresenter.displayEmptyView();
+    mAdapter.clear();
+    mAdapter.add(mNewContacts, 0);
+    mAdapter.add(mGroup, 1);
+    mAdapter.add(new ContactsTotal(0));
+    contentPresenter.displayContentView();
   }
 
   @Override public boolean isActive() {

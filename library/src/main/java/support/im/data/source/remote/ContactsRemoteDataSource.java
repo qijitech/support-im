@@ -34,7 +34,7 @@ public class ContactsRemoteDataSource implements ContactsDataSource {
             callback.onDataNotAvailable(e);
             return;
           }
-          callback.onContactsLoaded(SupportUser.toSimpleUsers(supportUsers));
+          callback.onContactsLoaded(SupportUser.toUsers(supportUsers));
         }
       });
     } catch (Exception e) {

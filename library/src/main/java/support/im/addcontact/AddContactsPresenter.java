@@ -1,8 +1,7 @@
 package support.im.addcontact;
 
 import com.avos.avoscloud.AVException;
-import support.im.data.SimpleUser;
-import support.im.data.SupportUser;
+import support.im.data.User;
 import support.im.data.source.UsersDataSource;
 import support.im.data.source.UsersRepository;
 import support.im.utilities.AVExceptionHandler;
@@ -25,7 +24,7 @@ public class AddContactsPresenter implements AddContactsContract.Presenter {
   @Override public void searchContact(String searchKey) {
     mAddContactView.showHud(true);
     mUsersRepository.searchUser(searchKey, new UsersDataSource.GetUserCallback() {
-      @Override public void onUserLoaded(SimpleUser user) {
+      @Override public void onUserLoaded(User user) {
         // The view may not be able to handle UI updates anymore
         if (!mAddContactView.isActive()) {
           return;
