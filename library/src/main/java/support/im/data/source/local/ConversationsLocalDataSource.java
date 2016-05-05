@@ -2,46 +2,45 @@ package support.im.data.source.local;
 
 import android.support.annotation.NonNull;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import support.im.data.Conv;
 import support.im.data.Conversation;
 import support.im.data.source.SimpleConversationsDataSource;
-import support.ui.app.SupportApp;
+import support.im.utilities.DatabaseUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ConversationsLocalDataSource extends SimpleConversationsDataSource {
 
-  private SupportImDbHelper mDbHelper;
-  private static Map<String, ConversationsLocalDataSource> sDatabases = new ConcurrentHashMap<>();
+  private String mClientId;
 
   // Prevent direct instantiation.
   public ConversationsLocalDataSource(String clientId) {
-    mDbHelper = SupportImDbHelper.databaseWithClientId(SupportApp.appContext(), clientId);
+    mClientId = clientId;
   }
 
-  public synchronized static ConversationsLocalDataSource getInstance(String clientId) {
-    ConversationsLocalDataSource database = sDatabases.get(clientId);
-    if (database == null) {
-      database = new ConversationsLocalDataSource(clientId);
-      sDatabases.put(clientId, database);
+  private static ConversationsLocalDataSource INSTANCE = null;
+
+  public static ConversationsLocalDataSource getInstance(String clientId) {
+    if (INSTANCE == null) {
+      INSTANCE = new ConversationsLocalDataSource(clientId);
     }
-    return database;
+    return INSTANCE;
   }
 
   @Override public void loadConversations(@NonNull final LoadConversationsCallback callback) {
     checkNotNull(callback);
 
-    // 获取本地conversations
-    final List<Conversation> conversations = mDbHelper.loadConversations();
-    if (conversations.isEmpty()) {
-      callback.onConversationsNotFound();
-      return;
-    }
-    callback.onConversationsLoaded(conversations);
+    DatabaseUtils.findRecentConv(mClientId, new DatabaseUtils.FindConvCallback() {
+      @Override public void onSuccess(List<Conv> convs) {
+        if (convs.isEmpty()) {
+          callback.onConversationsNotFound();
+          return;
+        }
+        callback.onConversationsLoaded(convs);
+      }
+    });
   }
 
   @Override public void saveConversation(@NonNull Conversation conversation) {
-    mDbHelper.saveConversation(conversation);
   }
 }

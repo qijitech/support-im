@@ -6,12 +6,13 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import java.util.List;
+import support.im.data.Conv;
 import support.im.data.Conversation;
 
 public interface ConversationsDataSource {
 
   interface LoadConversationsCallback {
-    void onConversationsLoaded(List<Conversation> conversations);
+    void onConversationsLoaded(List<Conv> conversations);
     void onConversationsNotFound();
     void onDataNotAvailable(AVIMException e);
   }

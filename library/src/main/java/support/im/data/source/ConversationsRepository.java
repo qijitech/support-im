@@ -8,6 +8,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.util.List;
 import java.util.Map;
+import support.im.data.Conv;
 import support.im.data.Conversation;
 import support.im.data.cache.CacheManager;
 import support.im.utilities.AVExceptionHandler;
@@ -24,7 +25,7 @@ public class ConversationsRepository implements ConversationsDataSource {
   /**
    * This variable has package local visibility so it can be accessed from tests.
    */
-  Map<String, Conversation> mCachedConversations;
+  Map<String, Conv> mCachedConversations;
 
   /**
    * Marks the cache as invalid, to force an update the next time data is requested. This variable
@@ -72,12 +73,12 @@ public class ConversationsRepository implements ConversationsDataSource {
     }
 
     mConversationsLocalDataSource.loadConversations(new LoadConversationsCallback() {
-      @Override public void onConversationsLoaded(final List<Conversation> conversations) {
+      @Override public void onConversationsLoaded(final List<Conv> conversations) {
         refreshConversationCache(conversations);
         // 判断本地是否有AVIMConversation缓存
         List<String> unCachedConversationIds = Lists.newArrayList();
-        for (Conversation conversation : conversations) {
-          final String conversationId = conversation.mConversationId;
+        for (Conv conversation : conversations) {
+          final String conversationId = conversation.getConversationId();
           if (!CacheManager.getInstance().hasCacheConversation(conversationId)) {
             unCachedConversationIds.add(conversationId);
           }
@@ -122,13 +123,13 @@ public class ConversationsRepository implements ConversationsDataSource {
     mCacheIsDirty = true;
   }
 
-  private void refreshConversationCache(List<Conversation> conversations) {
+  private void refreshConversationCache(List<Conv> conversations) {
     if (mCachedConversations == null) {
       mCachedConversations = Maps.newLinkedHashMap();
     }
     mCachedConversations.clear();
-    for (Conversation conversation : conversations) {
-      mCachedConversations.put(conversation.mConversationId, conversation);
+    for (Conv conversation : conversations) {
+      mCachedConversations.put(conversation.getConversationId(), conversation);
     }
     mCacheIsDirty = false;
   }

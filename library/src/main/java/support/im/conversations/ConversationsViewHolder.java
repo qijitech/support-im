@@ -4,17 +4,13 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.ButterKnife;
-import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.facebook.drawee.view.SimpleDraweeView;
 import support.im.R;
-import support.im.data.Conversation;
-import support.im.data.SimpleUser;
-import support.im.utilities.ConversationHelper;
+import support.im.data.Conv;
 import support.im.utilities.Utils;
 import support.ui.adapters.EasyViewHolder;
-import support.ui.app.SupportApp;
 
-public class ConversationsViewHolder extends EasyViewHolder<Conversation> {
+public class ConversationsViewHolder extends EasyViewHolder<Conv> {
 
   SimpleDraweeView mAvatarImageView;
   //TextView mUnreadTextView;
@@ -31,22 +27,22 @@ public class ConversationsViewHolder extends EasyViewHolder<Conversation> {
     mMessageTextView = ButterKnife.findById(itemView, R.id.text_support_im_conversations_message);
   }
 
-  @Override public void bindTo(int position, Conversation value) {
+  @Override public void bindTo(int position, Conv value) {
     //mUnreadTextView.setText(String.valueOf(value.mUnreadCount));
-    AVIMConversation conversation = value.getConversation();
-    if (conversation == null) {
-      return;
-    }
-    SimpleUser simpleUser = ConversationHelper.getSimpleUser(conversation);
-    if (simpleUser != null) {
-      mAvatarImageView.setImageURI(simpleUser.toAvatarUri());
-    }
-    mNameTextView.setText(ConversationHelper.titleOfConversation(conversation));
-    if (value.mLastMessage != null) {
-      mMessageTextView.setText(Utils.getMessageeShorthand(SupportApp.appContext(), value.mLastMessage));
+    //AVIMConversation conversation = value.getConversation();
+    //if (conversation == null) {
+    //  return;
+    //}
+    //SimpleUser simpleUser = ConversationHelper.getSimpleUser(conversation);
+    //if (simpleUser != null) {
+    //  mAvatarImageView.setImageURI(simpleUser.toAvatarUri());
+    //}
+    //mNameTextView.setText(ConversationHelper.titleOfConversation(conversation));
+    if (value.getMessage() != null) {
+      mMessageTextView.setText(value.getMessage());
     } else {
       mMessageTextView.setText("");
     }
-    mLatestTimeTextView.setText(Utils.millisecsToDateString(value.getLastModifyTime()));
+    mLatestTimeTextView.setText(Utils.millisecsToDateString(value.getLatestMsgTime()));
   }
 }

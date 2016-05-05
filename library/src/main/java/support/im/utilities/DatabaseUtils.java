@@ -3,8 +3,10 @@ package support.im.utilities;
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.google.common.collect.Lists;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.CursorResult;
+import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Where;
 import com.raizlabs.android.dbflow.structure.database.transaction.QueryTransaction;
@@ -47,16 +49,24 @@ public final class DatabaseUtils {
         .where(Conv_Table.conv_id.eq(avimConversation.getConversationId()));
   }
 
-  public static void findRecentConv() {
+  public static void findRecentConv(String clientId, @NonNull final FindConvCallback convCallback) {
     FlowManager.getDatabase(AppDatabase.class)
-        .beginTransactionAsync(new QueryTransaction.Builder<>(SQLite.select().from(Conv.class))
+        .beginTransactionAsync(new QueryTransaction.Builder<>(SQLite.select().from(Conv.class)
+            .where(Conv_Table.client_id.eq(clientId)).orderBy(OrderBy.fromProperty(Conv_Table.latest_msg_time).descending()))
         .queryResult(new QueryTransaction.QueryResultCallback<Conv>() {
           @Override public void onQueryResult(QueryTransaction transaction,
               @NonNull CursorResult<Conv> tResult) {
             List<Conv> models = tResult.toListClose();
-            System.out.println(models);
+            if (models == null) {
+              models = Lists.newArrayList();
+            }
+            convCallback.onSuccess(models);
           }}).build())
         .build().execute();
   }
 
+
+  public static interface FindConvCallback {
+    void onSuccess(List<Conv> convs);
+  }
 }

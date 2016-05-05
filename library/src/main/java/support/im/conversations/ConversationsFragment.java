@@ -9,10 +9,10 @@ import java.util.List;
 import support.im.Injection;
 import support.im.R;
 import support.im.chats.ChatsActivity;
+import support.im.data.Conv;
 import support.im.data.Conversation;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.event.ImTypeMessageEvent;
-import support.im.utilities.DatabaseUtils;
 import support.ui.SupportRecyclerViewFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -27,7 +27,7 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mAdapter.bind(Conversation.class, ConversationsViewHolder.class);
+    mAdapter.bind(Conv.class, ConversationsViewHolder.class);
     mAdapter.setOnClickListener(this);
     new ConversationsPresenter(Injection.provideConversationsRepository(ChatManager.getInstance().getClientId()), this);
   }
@@ -41,8 +41,6 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     EventBus.getDefault().register(this);
-
-    DatabaseUtils.findRecentConv();
   }
 
   @Override public void onDestroyView() {
@@ -60,12 +58,12 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
     contentPresenter.displayLoadView();
   }
 
-  @Override public void notifyDataSetChanged(List<Conversation> conversations) {
+  @Override public void notifyDataSetChanged(List<Conv> conversations) {
     mAdapter.addAll(conversations);
     contentPresenter.displayContentView();
   }
 
-  @Override public void notifyItemChanged(Conversation conversation) {
+  @Override public void notifyItemChanged(Conv conversation) {
     final int position = mAdapter.getIndex(conversation);
     mAdapter.update(conversation, position);
   }

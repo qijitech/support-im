@@ -1,11 +1,8 @@
 package support.im.conversations;
 
-import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
-import com.avos.avoscloud.im.v2.AVIMMessage;
-import java.util.Collections;
 import java.util.List;
-import support.im.data.Conversation;
+import support.im.data.Conv;
 import support.im.data.source.ConversationsDataSource;
 import support.im.data.source.ConversationsRepository;
 import support.im.utilities.AVExceptionHandler;
@@ -51,7 +48,7 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
     }
 
     mConversationsRepository.loadConversations(new ConversationsDataSource.LoadConversationsCallback() {
-      @Override public void onConversationsLoaded(List<Conversation> conversations) {
+      @Override public void onConversationsLoaded(List<Conv> conversations) {
         processConversations(conversations);
       }
 
@@ -69,35 +66,11 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
     });
   }
 
-  private void processConversations(List<Conversation> conversations) {
-    Collections.sort(conversations, mConversationsComparator);
-
+  private void processConversations(List<Conv> conversations) {
     if (!mConversationsView.isActive()) {
       return;
     }
-
     mConversationsView.notifyDataSetChanged(conversations);
-
-    for (final Conversation conversation : conversations) {
-      AVIMConversation aVIMConversation = conversation.getConversation();
-      if (aVIMConversation != null) {
-        mConversationsRepository.getLastMessage(aVIMConversation, new ConversationsDataSource.GetLastMessageCallback() {
-          @Override public void onLastMessageLoaded(AVIMMessage avimMessage) {
-            conversation.mLastMessage = avimMessage;
-            if (mConversationsView.isActive()) {
-              mConversationsView.notifyItemChanged(conversation);
-            }
-          }
-          @Override public void onLastMessageNotFound() {
-          }
-          @Override public void onDataNotAvailable(AVIMException e) {
-            if (mConversationsView.isActive()) {
-              mConversationsView.showError(AVExceptionHandler.getLocalizedMessage(e), e);
-            }
-          }
-        });
-      }
-    }
   }
 
 }
