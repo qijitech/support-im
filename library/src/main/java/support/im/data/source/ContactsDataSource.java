@@ -10,6 +10,8 @@ public interface ContactsDataSource {
   interface LoadContactsCallback {
     void onContactsLoaded(List<User> contacts);
 
+    void onContactsNotFound();
+
     void notLoggedIn();
 
     void onDataNotAvailable(AVException exception);

@@ -44,6 +44,10 @@ public class UsersLocalDataSource extends SimpleUsersDataSource {
     });
   }
 
+  @Override public void saveUser(User user) {
+    DatabaseUtils.saveUser(user);
+  }
+
   @Override public void fetchUsers(List<String> objectIds, final LoadUsersCallback callback) {
     if (objectIds == null || objectIds.isEmpty()) {
       callback.onUserNotFound();

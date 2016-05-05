@@ -49,6 +49,10 @@ public class UsersRepository extends SimpleUsersDataSource {
     mUsersRemoteDataSource.searchUser(username, new GetUserCallback() {
       @Override public void onUserLoaded(User user) {
         saveUser(user);
+        if (mCachedUsers == null) {
+          mCachedUsers = new LinkedHashMap<>();
+        }
+        mCachedUsers.put(user.getObjectId(), user);
         callback.onUserLoaded(user);
       }
 
@@ -66,20 +70,24 @@ public class UsersRepository extends SimpleUsersDataSource {
     mUsersLocalDataSource.saveUsers(users);
   }
 
-  @Override public void fetchUser(String objectId, GetUserCallback callback) {
+  @Override public void fetchUser(String objectId, final GetUserCallback callback) {
     if (mCachedUsers != null && mCachedUsers.containsKey(objectId)) {
       callback.onUserLoaded(mCachedUsers.get(objectId));
       return;
     }
     mUsersLocalDataSource.fetchUser(objectId, new GetUserCallback() {
       @Override public void onUserLoaded(User user) {
-        if (mCachedUsers != null) {
-          mCachedUsers.put(user.getObjectId(), user);
+        if (mCachedUsers == null) {
+          mCachedUsers = new LinkedHashMap<>();
         }
+        mCachedUsers.put(user.getObjectId(), user);
+        callback.onUserLoaded(user);
       }
       @Override public void onUserNotFound() {
+        callback.onUserNotFound();
       }
       @Override public void onDataNotAvailable(AVException exception) {
+        callback.onDataNotAvailable(exception);
       }
     });
   }

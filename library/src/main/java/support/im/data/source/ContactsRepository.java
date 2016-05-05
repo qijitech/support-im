@@ -71,7 +71,7 @@ public class ContactsRepository implements ContactsDataSource {
           }
 
           @Override public void onUserNotFound() {
-
+            callback.onContactsNotFound();
           }
 
           @Override public void onDataNotAvailable(AVException exception) {
@@ -85,6 +85,11 @@ public class ContactsRepository implements ContactsDataSource {
       }
 
       @Override public void onDataNotAvailable(AVException exception) {
+        callback.onDataNotAvailable(exception);
+      }
+
+      @Override public void onContactsNotFound() {
+        callback.onContactsNotFound();
       }
     });
   }

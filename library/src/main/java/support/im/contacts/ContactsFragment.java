@@ -157,15 +157,27 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
   }
 
   @Override public void showNotLoggedIn() {
-
+    mAdapter.clear();
+    mAdapter.add(mNewContacts, 0);
+    mAdapter.add(mGroup, 1);
+    mAdapter.add(new ContactsTotal(0));
+    contentPresenter.displayContentView();
   }
 
   @Override public void onDataNotAvailable(AVException exception) {
-
+    mAdapter.clear();
+    mAdapter.add(mNewContacts, 0);
+    mAdapter.add(mGroup, 1);
+    mAdapter.add(new ContactsTotal(0));
+    contentPresenter.displayContentView();
   }
 
   @Override public void showNoContacts() {
-    contentPresenter.displayEmptyView();
+    mAdapter.clear();
+    mAdapter.add(mNewContacts, 0);
+    mAdapter.add(mGroup, 1);
+    mAdapter.add(new ContactsTotal(0));
+    contentPresenter.displayContentView();
   }
 
   @Override public boolean isActive() {

@@ -54,11 +54,16 @@ public class ContactsPresenter implements ContactsContract.Presenter {
         mContactsView.showContacts(contacts);
       }
 
+      @Override public void onContactsNotFound() {
+        mContactsView.showNoContacts();
+      }
+
       @Override public void notLoggedIn() {
         mContactsView.showNotLoggedIn();
       }
 
       @Override public void onDataNotAvailable(AVException exception) {
+        mContactsView.onDataNotAvailable(exception);
       }
     });
   }
