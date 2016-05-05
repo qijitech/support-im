@@ -4,6 +4,7 @@
   <string name="support_im_label_new_contacts">新的朋友</string>
   <string name="support_im_label_mobile_contact">手机联系人</string>
   <string name="support_im_label_chats">聊天详情</string>
+  <string name="support_im_label_chats_single_settings">聊天信息</string>
 
   <string name="support_im_add_request_invitation_action">support.im.chat.INVITATION_ACTION</string>
   <string name="support_im_client_notification_action">support.im.chat.CLIENT_NOTIFICATION</string>
@@ -12,6 +13,7 @@
   <string name="support_im_contacts_total">%1$d位联系人</string>
 
   <string name="menu_title_contacts_add">添加联系人</string>
+  <string name="menu_title_chats_single">详情</string>
   <string name="support_im_conversations_title">消息</string>
   <string name="support_im_contacts_title">航城科技</string>
   <string name="support_im_add_contact">添加好友</string>

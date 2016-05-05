@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import support.im.Injection;
+import support.im.R;
 import support.im.data.ConversationType;
 import support.im.data.User;
 import support.im.data.source.UsersDataSource;
@@ -62,7 +65,8 @@ public class ChatsActivity extends SupportSinglePaneActivity {
       }
       if (extras.containsKey(Constants.EXTRA_CONVERSATION_ID)) {
         String conversationId = extras.getString(Constants.EXTRA_CONVERSATION_ID);
-        updateConversation(AVIMClient.getInstance(ChatManager.getInstance().getClientId()).getConversation(conversationId));
+        updateConversation(AVIMClient.getInstance(ChatManager.getInstance().getClientId())
+            .getConversation(conversationId));
       }
     }
   }
@@ -82,7 +86,8 @@ public class ChatsActivity extends SupportSinglePaneActivity {
     if (null != conversation) {
       mAVIMConversation = conversation;
       mChatsFragment.setConversation(conversation);
-      mChatsFragment.shouldShowDisplayName(ConversationHelper.typeOfConversation(conversation) != ConversationType.Single);
+      mChatsFragment.shouldShowDisplayName(
+          ConversationHelper.typeOfConversation(conversation) != ConversationType.Single);
       setupActionBar(ConversationHelper.titleOfConversation(conversation));
     }
   }
@@ -92,22 +97,40 @@ public class ChatsActivity extends SupportSinglePaneActivity {
    * 如果存在，则直接赋值给 ChatFragment，否者创建后再赋值
    */
   private void getConversation(final String memberId) {
-    Injection.provideUsersRepository(this).fetchUser(memberId, new UsersDataSource.GetUserCallback() {
-      @Override public void onUserLoaded(User user) {
-        ChatManager.getInstance().createSingleConversation(user, new AVIMConversationCreatedCallback() {
-          @Override
-          public void done(AVIMConversation avimConversation, AVIMException e) {
-            if (AVExceptionHandler.handAVException(e)) {
-              DatabaseUtils.saveConversation(avimConversation, ChatManager.getInstance().getClientId());
-              updateConversation(avimConversation);
-            }
+    Injection.provideUsersRepository(this)
+        .fetchUser(memberId, new UsersDataSource.GetUserCallback() {
+          @Override public void onUserLoaded(User user) {
+            ChatManager.getInstance()
+                .createSingleConversation(user, new AVIMConversationCreatedCallback() {
+                  @Override public void done(AVIMConversation avimConversation, AVIMException e) {
+                    if (AVExceptionHandler.handAVException(e)) {
+                      DatabaseUtils.saveConversation(avimConversation,
+                          ChatManager.getInstance().getClientId());
+                      updateConversation(avimConversation);
+                    }
+                  }
+                });
+          }
+
+          @Override public void onUserNotFound() {
+          }
+
+          @Override public void onDataNotAvailable(AVException exception) {
           }
         });
-      }
-      @Override public void onUserNotFound() {
-      }
-      @Override public void onDataNotAvailable(AVException exception) {
-      }
-    });
+  }
+
+  @Override public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.chats_menu, menu);
+    return true;
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    final int itemId = item.getItemId();
+    if (itemId == R.id.menu_support_im_chats_single) {
+      startActivity(new Intent(this, UserProfileActivity.class));
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 }
