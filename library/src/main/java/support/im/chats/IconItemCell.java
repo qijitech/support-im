@@ -12,7 +12,7 @@ import support.ui.adapters.EasyViewHolder;
  */
 public class IconItemCell extends EasyViewHolder<IconItem> {
   public IconItemCell(Context context, ViewGroup parent) {
-    super(context, parent, R.layout.list_item_add_member);
+    super(context, parent, R.layout.item_add_member);
     ButterKnife.bind(this, itemView);
   }
 

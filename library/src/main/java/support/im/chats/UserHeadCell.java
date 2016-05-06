@@ -18,7 +18,7 @@ public class UserHeadCell extends EasyViewHolder<User> {
   TextView mUserName;
 
   public UserHeadCell(Context context, ViewGroup parent) {
-    super(context, parent, R.layout.list_item_account_header);
+    super(context, parent, R.layout.item_account_header);
     ButterKnife.bind(this, itemView);
     mUserAvatar = ButterKnife.findById(itemView, R.id.sv_user_avatar);
     mUserName = ButterKnife.findById(itemView, R.id.tv_user_name);

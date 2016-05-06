@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#F0F0F0"
-    
+    android:foreground="?attr/selectableItemBackground"
     android:padding="16dp"
     >
 
   <com.facebook.drawee.view.SimpleDraweeView
-      android:id="@+id/sv_user_avatar"
+      android:id="@+id/support_ui_sv_user_avatar"
       android:layout_width="64dp"
       android:layout_height="64dp"
       android:layout_centerVertical="true"
@@ -20,12 +20,12 @@
       />
 
   <TextView
-      android:id="@+id/tv_user_name"
+      android:id="@+id/support_ui_tv_user_name"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_centerVertical="true"
       android:layout_marginRight="20dp"
-      android:layout_toRightOf="@id/sv_user_avatar"
+      android:layout_toRightOf="@id/support_ui_sv_user_avatar"
       android:gravity="center"
       android:maxLines="1"
       android:padding="8dp"
@@ -40,7 +40,7 @@
       android:layout_centerVertical="true"
       android:layout_marginRight="6dp"
       android:scaleType="centerCrop"
-      android:src="@drawable/ic_arrow_back_white"
+      android:src="@drawable/icon_arrow_back_white"
       />
 
 
