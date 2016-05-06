@@ -10,6 +10,11 @@ import support.im.data.Conv;
 
 public interface ConversationsDataSource {
 
+  interface LoadConversationCallback {
+    void onConversationLoaded(Conv conv);
+    void onConversationNotFound();
+  }
+
   interface LoadConversationsCallback {
     void onConversationsLoaded(List<Conv> conversations);
     void onConversationsNotFound();
@@ -31,6 +36,8 @@ public interface ConversationsDataSource {
   void saveConversation(@NonNull Conv conversation);
 
   void loadConversations(@NonNull LoadConversationsCallback callback);
+
+  void loadConversation(@NonNull String userObjectId, LoadConversationCallback callback);
 
   void refreshConversations();
 

@@ -71,10 +71,10 @@ public class ChatsRemoteDataSource implements ChatsDataSource {
     aVIMConversation.sendMessage(message, new AVIMConversationCallback() {
       @Override public void done(AVIMException e) {
         if (AVExceptionHandler.handAVException(e, false)) {
-          callback.onDataNotAvailable(e);
+          callback.onMessageLoaded(message);
           return;
         }
-        callback.onMessageLoaded(message);
+        callback.onDataNotAvailable(e);
       }
     });
   }

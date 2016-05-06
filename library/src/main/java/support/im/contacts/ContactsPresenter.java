@@ -6,9 +6,11 @@ import com.google.common.base.Strings;
 import java.util.Collections;
 import java.util.List;
 import support.im.data.User;
+import support.im.data.cache.CacheManager;
 import support.im.data.source.ContactsDataSource;
 import support.im.data.source.ContactsRepository;
 import support.im.mobilecontact.pinyin.CharacterParser;
+import support.im.utilities.DatabaseUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -47,6 +49,8 @@ public class ContactsPresenter implements ContactsContract.Presenter {
 
     mContactsRepository.getContacts(new ContactsDataSource.LoadContactsCallback() {
       @Override public void onContactsLoaded(List<User> contacts) {
+        CacheManager.cacheUsers(contacts);
+        DatabaseUtils.saveUsers(contacts, null);
         processUsers(contacts);
         if (!mContactsView.isActive()) {
           return;

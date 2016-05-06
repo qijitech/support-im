@@ -44,11 +44,16 @@ public class ConversationsRemoteDataSource extends SimpleConversationsDataSource
     });
   }
 
+  @Override
+  public void loadConversation(@NonNull String userObjectId, LoadConversationCallback callback) {
+    // do nothing
+  }
+
   @Override public void findConversations(@NonNull List<String> ids,
       @NonNull AVIMConversationQueryCallback callback) {
     AVIMConversationQuery conversationQuery = ChatManager.getInstance().getConversationQuery();
     if (ids.size() > 0 && null != conversationQuery) {
-      conversationQuery.setQueryPolicy(AVQuery.CachePolicy.CACHE_THEN_NETWORK);
+      conversationQuery.setQueryPolicy(AVQuery.CachePolicy.CACHE_ELSE_NETWORK);
       conversationQuery.whereContainsIn(Constants.OBJECT_ID, ids);
       conversationQuery.setLimit(1000);
       conversationQuery.findInBackground(callback);

@@ -16,6 +16,8 @@ public class Conv extends BaseModel {
   @Column(name = "client_id") private String clientId;
   @Column(name = "unread_count") private int unreadCount;
   @Column(name = "display_name") private String displayName;
+  @Column(name = "from_object_id") private String fromObjectId;
+  @Column(name = "type", defaultValue = "0") private int type;
   @Column(name = "message") private String message;
   @Column(name = "first_msg_id") private String firstMsgId;
   @Column(name = "first_msg_time") private long firstMsgTime;
@@ -57,6 +59,22 @@ public class Conv extends BaseModel {
 
   public void setDisplayName(String displayName) {
     this.displayName = displayName;
+  }
+
+  public String getFromObjectId() {
+    return fromObjectId;
+  }
+
+  public void setFromObjectId(String fromObjectId) {
+    this.fromObjectId = fromObjectId;
+  }
+
+  public int getType() {
+    return type;
+  }
+
+  public void setType(int type) {
+    this.type = type;
   }
 
   public String getMessage() {
@@ -105,7 +123,9 @@ public class Conv extends BaseModel {
     private String clientId;
     private int unreadCount;
     private String displayName;
+    private String fromObjectId;
     private String message;
+    private int type;
     private String firstMsgId;
     private long firstMsgTime;
     private long latestMsgTime;
@@ -140,8 +160,18 @@ public class Conv extends BaseModel {
       return this;
     }
 
+    public Builder fromObjectId(String fromObjectId) {
+      this.fromObjectId = fromObjectId;
+      return this;
+    }
+
     public Builder message(String message) {
       this.message = message;
+      return this;
+    }
+
+    public Builder type(int type) {
+      this.type = type;
       return this;
     }
 
@@ -156,7 +186,9 @@ public class Conv extends BaseModel {
       conv.clientId = clientId;
       conv.unreadCount = unreadCount;
       conv.displayName = displayName;
+      conv.fromObjectId = fromObjectId;
       conv.message = message;
+      conv.type = type;
       conv.firstMsgId = firstMsgId;
       conv.firstMsgTime = firstMsgTime;
       conv.latestMsgTime = latestMsgTime;

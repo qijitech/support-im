@@ -26,10 +26,23 @@ public class ConversationsLocalDataSource extends SimpleConversationsDataSource 
     return INSTANCE;
   }
 
+  @Override public void loadConversation(@NonNull String userObjectId,
+      final LoadConversationCallback callback) {
+    DatabaseUtils.findRecentConv(mClientId, userObjectId, new DatabaseUtils.FindConvCallback() {
+      @Override public void onSuccess(Conv conv) {
+        if (conv == null) {
+          callback.onConversationNotFound();
+          return;
+        }
+        callback.onConversationLoaded(conv);
+      }
+    });
+  }
+
   @Override public void loadConversations(@NonNull final LoadConversationsCallback callback) {
     checkNotNull(callback);
 
-    DatabaseUtils.findRecentConv(mClientId, new DatabaseUtils.FindConvCallback() {
+    DatabaseUtils.findRecentConv(mClientId, new DatabaseUtils.FindConvsCallback() {
       @Override public void onSuccess(List<Conv> convs) {
         if (convs.isEmpty()) {
           callback.onConversationsNotFound();

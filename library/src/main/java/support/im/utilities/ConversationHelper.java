@@ -3,6 +3,8 @@ package support.im.utilities;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import java.util.List;
 import support.im.data.ConversationType;
+import support.im.data.User;
+import support.im.data.cache.CacheManager;
 import support.im.leanclound.ChatManager;
 
 public final class ConversationHelper {
@@ -94,6 +96,12 @@ public final class ConversationHelper {
 
     if (typeOfConversation(conversation) == ConversationType.Group) {
       return conversation.getName();
+    }
+
+    final String otherId = otherIdOfConversation(conversation);
+    User user = CacheManager.getCacheUser(otherId);
+    if (user != null) {
+      return user.getDisplayName();
     }
 
     // 单聊

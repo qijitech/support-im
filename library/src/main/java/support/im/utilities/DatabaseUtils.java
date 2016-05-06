@@ -17,6 +17,7 @@ import java.util.List;
 import support.im.data.AppDatabase;
 import support.im.data.Conv;
 import support.im.data.Conv_Table;
+import support.im.data.ConversationType;
 import support.im.data.User;
 import support.im.data.User_Table;
 
@@ -31,6 +32,7 @@ public final class DatabaseUtils {
       conv = new Conv.Builder()
           .conversationId(conversationId)
           .clientId(clientId)
+          .fromObjectId(avimConversation.getCreator())
           .build();
       conv.insert();
     }
@@ -53,6 +55,8 @@ public final class DatabaseUtils {
           .conversationId(conversationId)
           .clientId(clientId)
           .message(message)
+          .type((Integer) avimConversation.getAttribute(ConversationType.TYPE_KEY))
+          .fromObjectId(avimConversation.getCreator())
           .firstMsgId(avimMessage.getMessageId())
           .firstMsgTime(avimMessage.getTimestamp())
           .latestMsgTime(avimMessage.getTimestamp())
@@ -74,7 +78,7 @@ public final class DatabaseUtils {
         .where(Conv_Table.conv_id.eq(avimConversation.getConversationId()));
   }
 
-  public static void findRecentConv(String clientId, @NonNull final FindConvCallback convCallback) {
+  public static void findRecentConv(String clientId, @NonNull final FindConvsCallback convCallback) {
     FlowManager.getDatabase(AppDatabase.class)
         .beginTransactionAsync(new QueryTransaction.Builder<>(SQLite.select().from(Conv.class)
             .where(Conv_Table.client_id.eq(clientId)).orderBy(OrderBy.fromProperty(Conv_Table.latest_msg_time).descending()))
@@ -87,6 +91,26 @@ public final class DatabaseUtils {
             }
             convCallback.onSuccess(models);
           }}).build())
+        .build().execute();
+  }
+
+  public static void findRecentConv(String clientId, String fromUser, @NonNull final FindConvCallback convCallback) {
+    FlowManager.getDatabase(AppDatabase.class)
+        .beginTransactionAsync(new QueryTransaction.Builder<>(SQLite.select().from(Conv.class)
+            .where(Conv_Table.client_id.eq(clientId))
+            .and(Conv_Table.conv_id.eq(fromUser)) // TODO
+            .limit(1))
+            .queryResult(new QueryTransaction.QueryResultCallback<Conv>() {
+              @Override public void onQueryResult(QueryTransaction transaction,
+                  @NonNull CursorResult<Conv> tResult) {
+                List<Conv> models = tResult.toListClose();
+                if (models == null || models.isEmpty()) {
+                  models = Lists.newArrayList();
+                  convCallback.onSuccess(null);
+                  return;
+                }
+                convCallback.onSuccess(models.get(0));
+              }}).build())
         .build().execute();
   }
 
@@ -192,7 +216,12 @@ public final class DatabaseUtils {
     void onSuccess(User user);
   }
 
-  public static interface FindConvCallback {
+  public static interface FindConvsCallback {
     void onSuccess(List<Conv> convs);
   }
+
+  public static interface FindConvCallback {
+    void onSuccess(Conv conv);
+  }
+
 }

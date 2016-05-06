@@ -10,6 +10,8 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import java.util.List;
 import support.im.Injection;
 import support.im.data.ConversationType;
+import support.im.data.SupportUser;
+import support.im.data.User;
 import support.im.data.cache.CacheManager;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.Constants;
@@ -20,8 +22,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class ChatsFragment extends BaseChatsFragment implements ChatsContract.View {
 
   ChatsContract.Presenter mPresenter;
-  protected AVIMConversation mAVIMConversation;
   protected String mCurrentClientId;
+  protected String mUserObjectId;
+  protected String mConversationId;
 
   public static ChatsFragment create() {
     return new ChatsFragment();
@@ -30,6 +33,10 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     initialize();
+    new ChatsPresenter(mUserObjectId, mConversationId,
+        Injection.provideChatsRepository(),
+        Injection.provideConversationsRepository(mCurrentClientId),
+        this);
   }
 
   private void initialize() {
@@ -39,16 +46,16 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
       return;
     }
     if (extras.containsKey(Constants.EXTRA_MEMBER_ID)) {
+      mUserObjectId = extras.getString(Constants.EXTRA_MEMBER_ID);
+      final User user = CacheManager.getCacheUser(mUserObjectId);
+      if (user != null) {
+        getActivity().setTitle(user.getDisplayName());
+      }
       return;
     }
-
     // 来源conversations列表,直接读取Conversation
     if (extras.containsKey(Constants.EXTRA_CONVERSATION_ID)) {
-      String conversationId = extras.getString(Constants.EXTRA_CONVERSATION_ID);
-      mAVIMConversation = CacheManager.getCacheConversation(conversationId);
-      shouldShowDisplayName(ConversationHelper.typeOfConversation(mAVIMConversation) != ConversationType.Single);
-      getActivity().setTitle(ConversationHelper.titleOfConversation(mAVIMConversation));
-      new ChatsPresenter(Injection.provideChatsRepository(), this, mAVIMConversation);
+      mConversationId = extras.getString(Constants.EXTRA_CONVERSATION_ID);
     }
   }
 
@@ -74,11 +81,21 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
   }
 
   ///////////////// ChatsContact View
+
+  @Override public void updateAVIMConversation(AVIMConversation avimConversation) {
+    final String title = ConversationHelper.titleOfConversation(avimConversation);
+    if (!TextUtils.isEmpty(title)) {
+      getActivity().setTitle(title);
+    }
+    shouldShowDisplayName(ConversationHelper.typeOfConversation(avimConversation) == ConversationType.Group);
+  }
+
   @Override public void setLoadingIndicator(boolean active) {
     mContentPresenter.displayLoadView();
   }
 
   @Override public void notifyItemInserted(AVIMTypedMessage message) {
+    message.setFrom(SupportUser.getCurrentUser().getObjectId());
     mAdapter.add(message);
     scrollToBottom();
     mContentPresenter.displayContentView();
@@ -96,7 +113,9 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
   }
 
   @Override public void showNoMessages() {
-    mContentPresenter.displayEmptyView();
+    if (mAdapter.isEmpty()) {
+      mContentPresenter.displayEmptyView();
+    }
   }
 
   @Override public boolean isActive() {
@@ -104,7 +123,9 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
   }
 
   @Override public void onDataNotAvailable(String error, AVException exception) {
-    mContentPresenter.displayEmptyView();
+    if (mAdapter.isEmpty()) {
+      mContentPresenter.displayEmptyView();
+    }
   }
 
   @Override public void setPresenter(ChatsContract.Presenter presenter) {

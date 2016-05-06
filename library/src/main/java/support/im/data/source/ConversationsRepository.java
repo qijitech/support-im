@@ -62,6 +62,37 @@ public class ConversationsRepository implements ConversationsDataSource {
     mConversationsRemoteDataSource.findConversations(ids, callback);
   }
 
+  @Override public void loadConversation(@NonNull String userObjectId,
+      final LoadConversationCallback callback) {
+    checkNotNull(userObjectId);
+    checkNotNull(callback);
+
+    mConversationsLocalDataSource.loadConversation(userObjectId, new LoadConversationCallback() {
+      @Override public void onConversationLoaded(final Conv conv) {
+        if (!CacheManager.hasCacheConversation(conv.getConversationId())) {
+          findConversations(Lists.newArrayList(conv.getConversationId()), new AVIMConversationQueryCallback() {
+            @Override public void done(List<AVIMConversation> list, AVIMException e) {
+              if (AVExceptionHandler.handAVException(e, false)) {
+                if (list == null || list.isEmpty()) {
+                  callback.onConversationNotFound();
+                  return;
+                }
+                CacheManager.cacheConversations(list);
+                callback.onConversationLoaded(conv);
+              } else {
+                callback.onConversationNotFound();
+              }
+            }
+          });
+        }
+      }
+
+      @Override public void onConversationNotFound() {
+        callback.onConversationNotFound();
+      }
+    });
+  }
+
   @Override public void loadConversations(@NonNull final LoadConversationsCallback callback) {
     checkNotNull(callback);
 

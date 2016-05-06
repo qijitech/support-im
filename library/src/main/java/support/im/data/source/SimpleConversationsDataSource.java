@@ -26,6 +26,11 @@ public class SimpleConversationsDataSource implements ConversationsDataSource {
 
   }
 
+  @Override
+  public void loadConversation(@NonNull String userObjectId, LoadConversationCallback callback) {
+
+  }
+
   @Override public void refreshConversations() {
 
   }

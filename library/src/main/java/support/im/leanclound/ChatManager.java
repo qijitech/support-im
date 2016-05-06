@@ -117,18 +117,19 @@ public class ChatManager {
     mClientId = null;
   }
 
+
   public void createSingleConversation(User toUser, AVIMConversationCreatedCallback callback) {
     Map<String, Object> attrs = new HashMap<>();
     attrs.put(ConversationType.TYPE_KEY, ConversationType.Single.getValue());
     final String memberId = toUser.getObjectId();
-    mIMClient.createConversation(Lists.newArrayList(memberId), "", attrs, false, true, callback);
+    mIMClient.createConversation(Lists.newArrayList(memberId), toUser.getDisplayName(), attrs, false, true, callback);
   }
 
   public void createSingleConversation(SupportUser toUser, AVIMConversationCreatedCallback callback) {
     Map<String, Object> attrs = new HashMap<>();
     attrs.put(ConversationType.TYPE_KEY, ConversationType.Single.getValue());
     final String memberId = toUser.getObjectId();
-    mIMClient.createConversation(Lists.newArrayList(memberId), "", attrs, false, true, callback);
+    mIMClient.createConversation(Lists.newArrayList(memberId), toUser.getDisplayName(), attrs, false, true, callback);
   }
 
   /**
