@@ -56,7 +56,6 @@ public class UserProfileActivity extends SupportCellsActivity
   private ArrayList<CellModel> buildData() {
     ArrayList<CellModel> items = new ArrayList<>();
     //Resources res = SupportApp.appResources();
-    items.add(CellModel.settingCell("添加成员").build());
     items.add(CellModel.emptyCell().build());
     items.add(
         CellModel.checkCell("置顶聊天").tag(TOP_CONVERSATION).needDivider(true).checked(false).build());
