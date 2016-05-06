@@ -19,6 +19,18 @@
       android:layout_marginRight="72dp"
       >
 
+    <com.facebook.drawee.view.SimpleDraweeView
+        xmlns:fresco="http://schemas.android.com/apk/res-auto"
+        android:id="@id/image_support_im_chats_item_avatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        fresco:placeholderImage="@drawable/support_im_placeholder_avatar"
+        fresco:placeholderImageScaleType="centerCrop"
+        fresco:roundAsCircle="true"
+        />
+
     <LinearLayout
         android:id="@id/container_support_im_chats_item_content_display_name"
         android:layout_width="wrap_content"
@@ -31,11 +43,13 @@
         >
       <TextView
           android:id="@+id/text_support_im_chats_item_display_name"
-          android:layout_width="45dp"
+          android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:lines="1"
           android:ellipsize="end"
           android:gravity="start"
-          android:singleLine="true"
+          android:layout_marginLeft="16dp"
+          android:layout_marginStart="16dp"
           tools:text="Tom"
           />
       <FrameLayout
@@ -48,55 +62,6 @@
       </FrameLayout>
     </LinearLayout>
 
-
-    <FrameLayout
-        android:id="@id/container_support_im_chats_item_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_toEndOf="@id/container_support_im_chats_item_content_display_name"
-        android:layout_toRightOf="@id/container_support_im_chats_item_content_display_name"
-        android:visibility="visible"
-        >
-
-      <ProgressBar
-          android:id="@id/progress_support_im_chats_item_status"
-          android:layout_width="30dp"
-          android:layout_height="30dp"
-          android:layout_gravity="center_vertical"
-          style="@android:style/Widget.ProgressBar.Large"
-          />
-
-      <TextView
-          android:id="@id/text_support_im_chats_item_status"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:textSize="12sp"
-          android:visibility="visible"
-          tools:text="已发送"
-          />
-
-      <ImageView
-          android:id="@+id/image_support_im_chats_item_error"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:padding="5dp"
-          android:src="@drawable/support_im_selector_chats_btn_fail"
-          />
-    </FrameLayout>
-
-
-    <ImageView
-        android:id="@id/image_support_im_chats_item_avatar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_gravity="end"
-        android:src="@drawable/support_im_placeholder_avatar"
-        />
   </RelativeLayout>
 
 </LinearLayout>

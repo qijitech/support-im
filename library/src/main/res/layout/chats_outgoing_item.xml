@@ -26,6 +26,7 @@
         android:layout_toLeftOf="@id/image_support_im_chats_item_avatar"
         android:layout_toStartOf="@id/image_support_im_chats_item_avatar"
         android:orientation="horizontal"
+        android:paddingRight="8dp"
         >
       <include layout="@layout/chats_outgoing_item_text"/>
     </FrameLayout>
@@ -44,10 +45,11 @@
 
       <ProgressBar
           android:id="@id/progress_support_im_chats_item_status"
-          android:layout_width="30dp"
-          android:layout_height="30dp"
-          android:layout_gravity="center_vertical"
-          style="@android:style/Widget.ProgressBar.Large"
+          android:layout_width="32dp"
+          android:layout_height="32dp"
+          android:layout_gravity="center"
+          android:indeterminateDrawable="@drawable/loading_animation"
+          android:indeterminateDuration="1500"
           />
 
       <TextView
@@ -68,15 +70,16 @@
           />
     </FrameLayout>
 
-
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
+        xmlns:fresco="http://schemas.android.com/apk/res-auto"
         android:id="@id/image_support_im_chats_item_avatar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_gravity="end"
-        android:src="@drawable/support_im_placeholder_avatar"
+        fresco:placeholderImage="@drawable/support_im_placeholder_avatar"
+        fresco:placeholderImageScaleType="centerCrop"
+        fresco:roundAsCircle="true"
         />
   </RelativeLayout>
 
