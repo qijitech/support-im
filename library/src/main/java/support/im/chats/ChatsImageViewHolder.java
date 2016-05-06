@@ -22,9 +22,9 @@ public class ChatsImageViewHolder extends ChatsViewHolder {
     mContentContainer.addView(View.inflate(mContext, R.layout.chats_item_image, null));
     mContentImageView = ButterKnife.findById(itemView, R.id.image_support_im_chats_item_content);
     if (mIsLeft) {
-      mContentImageView.setBackgroundResource(R.drawable.support_im_chats_left_content_bg);
+      mContentContainer.setBackgroundResource(R.drawable.si_selector_incoming_photo);
     } else {
-      mContentImageView.setBackgroundResource(R.drawable.support_im_chats_right_content_bg);
+      mContentContainer.setBackgroundResource(R.drawable.si_selector_outgoing_photo);
     }
   }
 

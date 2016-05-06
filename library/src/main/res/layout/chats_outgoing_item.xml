@@ -26,7 +26,6 @@
         android:layout_toLeftOf="@id/image_support_im_chats_item_avatar"
         android:layout_toStartOf="@id/image_support_im_chats_item_avatar"
         android:orientation="horizontal"
-        android:background="@drawable/support_im_chats_outgoing"
         >
       <include layout="@layout/chats_outgoing_item_text"/>
     </FrameLayout>

@@ -21,7 +21,7 @@
       android:id="@id/btn_support_im_chats_item_audio_play"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:background="@drawable/support_im_chats_right_content_bg"
+      android:background="@drawable/si_selector_incoming_photo"
       android:orientation="vertical"
       custom:left="false"
       />

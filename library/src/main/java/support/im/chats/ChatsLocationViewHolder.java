@@ -21,8 +21,8 @@ public class ChatsLocationViewHolder extends ChatsViewHolder {
     super.setupView();
     mContentContainer.addView(View.inflate(mContext, R.layout.chats_item_location, null));
     mLocationTextView = ButterKnife.findById(itemView, R.id.text_support_im_chats_item_location);
-    mContentContainer.setBackgroundResource(mIsLeft ? R.drawable.support_im_chats_left_content_bg
-        : R.drawable.support_im_chats_right_content_bg);
+    mContentContainer.setBackgroundResource(mIsLeft ? R.drawable.si_selector_incoming_photo
+        : R.drawable.si_selector_outgoing_photo);
   }
 
   @Override public void bindTo(int position, AVIMMessage value) {
