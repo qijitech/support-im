@@ -10,52 +10,26 @@
     android:paddingTop="8dp"
     >
 
-  <TextView
-      android:id="@id/text_support_im_chats_item_sent_at"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="3dp"
-      android:layout_marginTop="10dp"
-      android:gravity="center"
-      tools:text="10:00"
-      />
+  <include layout="@layout/chats_item_time"/>
 
   <RelativeLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginEnd="72dp"
-      android:layout_marginRight="72dp"
+      android:layout_marginLeft="72dp"
+      android:layout_marginStart="72dp"
       >
 
-    <LinearLayout
-        android:id="@id/container_support_im_chats_item_content_display_name"
+    <FrameLayout
+        android:id="@id/container_support_im_chats_item_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/image_support_im_chats_item_avatar"
-        android:layout_toRightOf="@id/image_support_im_chats_item_avatar"
-        android:orientation="vertical"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
+        android:layout_toLeftOf="@id/image_support_im_chats_item_avatar"
+        android:layout_toStartOf="@id/image_support_im_chats_item_avatar"
+        android:orientation="horizontal"
+        android:background="@drawable/support_im_chats_outgoing"
         >
-      <TextView
-          android:id="@+id/text_support_im_chats_item_display_name"
-          android:layout_width="45dp"
-          android:layout_height="wrap_content"
-          android:ellipsize="end"
-          android:gravity="start"
-          android:singleLine="true"
-          tools:text="Tom"
-          />
-      <FrameLayout
-          android:id="@id/container_support_im_chats_item_content"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal"
-          >
-        <include layout="@layout/chats_left_item_text"/>
-      </FrameLayout>
-    </LinearLayout>
-
+      <include layout="@layout/chats_outgoing_item_text"/>
+    </FrameLayout>
 
     <FrameLayout
         android:id="@id/container_support_im_chats_item_status"
@@ -64,8 +38,8 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_toEndOf="@id/container_support_im_chats_item_content_display_name"
-        android:layout_toRightOf="@id/container_support_im_chats_item_content_display_name"
+        android:layout_toLeftOf="@id/container_support_im_chats_item_content"
+        android:layout_toStartOf="@id/container_support_im_chats_item_content"
         android:visibility="visible"
         >
 
@@ -100,8 +74,8 @@
         android:id="@id/image_support_im_chats_item_avatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_gravity="end"
         android:src="@drawable/support_im_placeholder_avatar"
         />

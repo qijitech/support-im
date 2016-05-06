@@ -23,9 +23,9 @@ public class ChatsAudioViewHolder extends ChatsViewHolder {
   @Override protected void setupView() {
     super.setupView();
     if (mIsLeft) {
-      mContentContainer.addView(View.inflate(mContext, R.layout.chats_left_item_audio, null));
+      mContentContainer.addView(View.inflate(mContext, R.layout.chats_incoming_item_audio, null));
     } else {
-      mContentContainer.addView(View.inflate(mContext, R.layout.chats_right_item_audio, null));
+      mContentContainer.addView(View.inflate(mContext, R.layout.chats_outgoing_item_audio, null));
     }
     mPlayButton = ButterKnife.findById(itemView, R.id.btn_support_im_chats_item_audio_play);
     mDurationTextView = ButterKnife.findById(itemView, R.id.text_support_im_chats_item_audio_duration);

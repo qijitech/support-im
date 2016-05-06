@@ -32,7 +32,7 @@ public class ChatsViewHolder extends EasyViewHolder<AVIMMessage> {
   protected Context mContext;
 
   public ChatsViewHolder(Context context, ViewGroup parent, boolean isLeft) {
-    super(context, parent, isLeft ? R.layout.chats_left_item : R.layout.chats_right_item);
+    super(context, parent, isLeft ? R.layout.chats_incoming_item : R.layout.chats_outgoing_item);
     mIsLeft = isLeft;
     mContext = context;
     setupView();
