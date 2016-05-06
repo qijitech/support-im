@@ -11,6 +11,7 @@ import support.im.data.SupportUser;
 import support.im.demo.features.main.MainActivity;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.contacts.AddRequest;
+import support.im.leanclound.contacts.Friend;
 import support.im.service.PushManager;
 
 public class SupportImApp extends support.im.SupportImApp {
@@ -24,6 +25,7 @@ public class SupportImApp extends support.im.SupportImApp {
 
     SupportUser.alwaysUseSubUserClass(SupportUser.class);
     AVObject.registerSubclass(AddRequest.class);
+    AVObject.registerSubclass(Friend.class);
 
     // 节省流量
     AVOSCloud.setLastModifyEnabled(true);
