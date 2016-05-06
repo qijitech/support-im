@@ -7,7 +7,6 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.CountCallback;
 import com.avos.avoscloud.FindCallback;
-import com.avos.avoscloud.FollowCallback;
 import com.avos.avoscloud.SaveCallback;
 import java.util.List;
 import support.im.R;
@@ -101,7 +100,7 @@ public class AddRequestManager {
   }
 
   public void agreeAddRequest(final AddRequest addRequest, final SaveCallback saveCallback) {
-    addFriend(addRequest.getFromUser().getObjectId(), new SaveCallback() {
+    FriendManager.addFriend(addRequest.getFromUser(), new SaveCallback() {
       @Override public void done(AVException e) {
         if (e != null) {
           if (e.getCode() == AVException.DUPLICATE_VALUE) {
@@ -113,17 +112,6 @@ public class AddRequestManager {
         } else {
           addRequest.setStatus(AddRequest.STATUS_DONE);
           addRequest.saveInBackground(saveCallback);
-        }
-      }
-    });
-  }
-
-  public static void addFriend(String friendId, final SaveCallback saveCallback) {
-    SupportUser user = SupportUser.getCurrentUser();
-    user.followInBackground(friendId, new FollowCallback() {
-      @Override public void done(AVObject object, AVException e) {
-        if (saveCallback != null) {
-          saveCallback.done(e);
         }
       }
     });

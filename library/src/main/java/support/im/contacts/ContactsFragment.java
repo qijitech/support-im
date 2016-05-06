@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import butterknife.ButterKnife;
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.FindCallback;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import de.greenrobot.event.EventBus;
 import java.util.List;
@@ -22,6 +23,8 @@ import support.im.data.User;
 import support.im.detail.UserDetailActivity;
 import support.im.events.InvitationEvent;
 import support.im.leanclound.contacts.AddRequestManager;
+import support.im.leanclound.contacts.Friend;
+import support.im.leanclound.contacts.FriendManager;
 import support.im.newcontacts.NewContactsActivity;
 import support.ui.SupportRecyclerViewFragment;
 
@@ -73,6 +76,11 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     getActivity().setTitle(R.string.support_im_contacts_title);
     mPresenter.start();
     EventBus.getDefault().register(this);
+    FriendManager.fetchFriends(true, new FindCallback<Friend>() {
+      @Override public void done(List<Friend> list, AVException e) {
+
+      }
+    });
   }
 
   @Override public void onPause() {
