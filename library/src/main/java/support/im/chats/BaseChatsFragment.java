@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.FrameLayout;
 import butterknife.ButterKnife;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.sj.emoji.EmojiBean;
@@ -19,15 +20,23 @@ import support.im.emoticons.ChatsUtils;
 import support.im.emoticons.Constants;
 import support.im.emoticons.SupportImFuncView;
 import support.ui.SupportFragment;
-import support.ui.adapters.EasyRecyclerAdapter;
+import support.ui.content.ContentPresenter;
+import support.ui.content.ReflectionContentPresenterFactory;
+import support.ui.content.RequiresContent;
 
+@RequiresContent(loadView = ChatsLoadingView.class, emptyView = ChatsEmptyView.class)
 public abstract class BaseChatsFragment extends SupportFragment implements FuncLayout.OnFuncKeyBoardListener,
     EmoticonClickListener {
 
+  ReflectionContentPresenterFactory factory =
+      ReflectionContentPresenterFactory.fromViewClass(getClass());
+
+  protected ContentPresenter mContentPresenter;
   protected SupportEmoticonsKeyBoard mEmoticonsKeyBoard;
+  protected FrameLayout mContainer;
   protected RecyclerView mRecyclerView;
   protected LinearLayoutManager mLayoutManager;
-  protected EasyRecyclerAdapter mAdapter;
+  protected ChatsAdapter mAdapter;
 
   @Override protected int getFragmentLayout() {
     return R.layout.chats;
@@ -35,24 +44,39 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mAdapter = new EasyRecyclerAdapter(getContext());
+    mAdapter = new ChatsAdapter(getContext());
     mAdapter.bind(AVIMMessage.class, ChatsViewHolder.class);
     mAdapter.viewHolderFactory(new ChatsViewHolderFactory(getContext()));
     mLayoutManager = new LinearLayoutManager(getContext());
+    mContentPresenter = factory.createContentPresenter();
+    mContentPresenter.onCreate(getContext());
   }
 
   @Override public void onDestroy() {
     super.onDestroy();
+    mContentPresenter.onDestroy();
     mAdapter = null;
     mLayoutManager = null;
+    mContentPresenter = null;
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    mRecyclerView = ButterKnife.findById(view, android.R.id.list);
     mEmoticonsKeyBoard = ButterKnife.findById(view, R.id.emoticons_key_board);
-    setupRecyclerView();
+    mRecyclerView = ButterKnife.findById(view, R.id.support_ui_recycler_view);
+    mContainer = ButterKnife.findById(view, R.id.support_ui_content_container);
     setupEmoticonsKeyBoardBar();
+    setupRecyclerView();
+
+    mContentPresenter.attachContainer(mContainer);
+    mContentPresenter.attachContentView(mRecyclerView);
+  }
+
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    mRecyclerView = null;
+    mEmoticonsKeyBoard = null;
+    mContainer = null;
   }
 
   private void setupRecyclerView() {

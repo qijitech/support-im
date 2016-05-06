@@ -1,6 +1,7 @@
 package support.im.chats;
 
 import android.content.Context;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -84,4 +85,13 @@ public class ChatsViewHolder extends EasyViewHolder<AVIMMessage> {
         break;
     }
   }
+
+  public void showTimeView(boolean isShow) {
+    ViewUtils.setGone(mSentAtTextView, !isShow);
+  }
+
+  public void showDisplayName(boolean isShow) {
+    ViewUtils.setGone(mDisplayNameTextView, !isShow);
+  }
+
 }

@@ -8,19 +8,16 @@ import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import support.im.Injection;
 import support.im.R;
-import support.im.data.ConversationType;
 import support.im.data.User;
 import support.im.data.source.UsersDataSource;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.Constants;
 import support.im.utilities.AVExceptionHandler;
-import support.im.utilities.ConversationHelper;
 import support.im.utilities.DatabaseUtils;
 import support.im.utilities.SupportLog;
 import support.ui.SupportSinglePaneActivity;
@@ -63,11 +60,6 @@ public class ChatsActivity extends SupportSinglePaneActivity {
         getConversation(extras.getString(Constants.EXTRA_MEMBER_ID));
         return;
       }
-      if (extras.containsKey(Constants.EXTRA_CONVERSATION_ID)) {
-        String conversationId = extras.getString(Constants.EXTRA_CONVERSATION_ID);
-        updateConversation(AVIMClient.getInstance(ChatManager.getInstance().getClientId())
-            .getConversation(conversationId));
-      }
     }
   }
 
@@ -79,16 +71,6 @@ public class ChatsActivity extends SupportSinglePaneActivity {
       actionBar.setDisplayHomeAsUpEnabled(true);
     } else {
       SupportLog.d("action bar is null, so no title, please set an ActionBar style for activity");
-    }
-  }
-
-  protected void updateConversation(AVIMConversation conversation) {
-    if (null != conversation) {
-      mAVIMConversation = conversation;
-      mChatsFragment.setConversation(conversation);
-      mChatsFragment.shouldShowDisplayName(
-          ConversationHelper.typeOfConversation(conversation) != ConversationType.Single);
-      setupActionBar(ConversationHelper.titleOfConversation(conversation));
     }
   }
 
@@ -106,7 +88,7 @@ public class ChatsActivity extends SupportSinglePaneActivity {
                     if (AVExceptionHandler.handAVException(e)) {
                       DatabaseUtils.saveConversation(avimConversation,
                           ChatManager.getInstance().getClientId());
-                      updateConversation(avimConversation);
+                      //updateConversation(avimConversation);
                     }
                   }
                 });
