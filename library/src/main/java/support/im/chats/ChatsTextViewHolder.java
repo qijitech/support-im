@@ -22,11 +22,10 @@ public class ChatsTextViewHolder extends ChatsViewHolder {
     super.setupView();
     if (mIsLeft) {
       mContentContainer.addView(View.inflate(mContext, R.layout.chats_incoming_item_text, null));
-      mContentTextView = ButterKnife.findById(itemView, R.id.text_support_im_chats_item_left_content);
     } else {
       mContentContainer.addView(View.inflate(mContext, R.layout.chats_outgoing_item_text, null));
-      mContentTextView = ButterKnife.findById(itemView, R.id.text_support_im_chats_item_right_content);
     }
+    mContentTextView = ButterKnife.findById(itemView, R.id.text_support_im_chats_item_content);
   }
 
   @Override public void bindTo(int position, AVIMMessage value) {

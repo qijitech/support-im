@@ -10,6 +10,7 @@ import butterknife.ButterKnife;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.facebook.drawee.view.SimpleDraweeView;
 import support.im.R;
+import support.im.data.SupportUser;
 import support.im.data.cache.CacheManager;
 import support.im.utilities.Utils;
 import support.ui.adapters.EasyViewHolder;
@@ -58,8 +59,12 @@ public class ChatsViewHolder extends EasyViewHolder<AVIMMessage> {
   @Override public void bindTo(int position, AVIMMessage value) {
     mMessage = value;
     String objectId = value.getFrom();
-    if (CacheManager.hasCacheUser(objectId)) {
-      mAvatarView.setImageURI(CacheManager.getCacheUser(objectId).toAvatarUri());
+    if (mIsLeft) {
+      if (CacheManager.hasCacheUser(objectId)) {
+        mAvatarView.setImageURI(CacheManager.getCacheUser(objectId).toAvatarUri());
+      }
+    } else {
+      mAvatarView.setImageURI(SupportUser.getCurrentUser().toAvatarUri());
     }
 
     mSentAtTextView.setText(Utils.millisecsToDateString(value.getTimestamp()));

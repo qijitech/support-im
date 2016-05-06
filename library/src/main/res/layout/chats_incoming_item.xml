@@ -50,6 +50,8 @@
           android:gravity="start"
           android:layout_marginLeft="16dp"
           android:layout_marginStart="16dp"
+          android:textSize="@dimen/support_im_text_size_medium"
+          android:textColor="@color/material_grey_600"
           tools:text="Tom"
           />
       <FrameLayout
