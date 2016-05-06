@@ -20,8 +20,8 @@ public class UserHeadCell extends EasyViewHolder<User> {
   public UserHeadCell(Context context, ViewGroup parent) {
     super(context, parent, R.layout.item_account_header);
     ButterKnife.bind(this, itemView);
-    mUserAvatar = ButterKnife.findById(itemView, R.id.sv_user_avatar);
-    mUserName = ButterKnife.findById(itemView, R.id.tv_user_name);
+    mUserAvatar = ButterKnife.findById(itemView, R.id.support_ui_sv_user_avatar);
+    mUserName = ButterKnife.findById(itemView, R.id.support_ui_tv_user_name);
   }
 
   @Override public void bindTo(int position, User value) {
