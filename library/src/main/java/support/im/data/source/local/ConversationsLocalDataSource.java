@@ -2,7 +2,7 @@ package support.im.data.source.local;
 
 import android.support.annotation.NonNull;
 import java.util.List;
-import support.im.data.Conv;
+import support.im.data.Conversation;
 import support.im.data.source.SimpleConversationsDataSource;
 import support.im.utilities.DatabaseUtils;
 
@@ -28,13 +28,13 @@ public class ConversationsLocalDataSource extends SimpleConversationsDataSource 
 
   @Override public void loadConversation(@NonNull String userObjectId,
       final LoadConversationCallback callback) {
-    DatabaseUtils.findRecentConv(mClientId, userObjectId, new DatabaseUtils.FindConvCallback() {
-      @Override public void onSuccess(Conv conv) {
-        if (conv == null) {
+    DatabaseUtils.findRecentConv(mClientId, userObjectId, new DatabaseUtils.FindConversationCallback() {
+      @Override public void onSuccess(Conversation conversation) {
+        if (conversation == null) {
           callback.onConversationNotFound();
           return;
         }
-        callback.onConversationLoaded(conv);
+        callback.onConversationLoaded(conversation);
       }
     });
   }
@@ -42,17 +42,17 @@ public class ConversationsLocalDataSource extends SimpleConversationsDataSource 
   @Override public void loadConversations(@NonNull final LoadConversationsCallback callback) {
     checkNotNull(callback);
 
-    DatabaseUtils.findRecentConv(mClientId, new DatabaseUtils.FindConvsCallback() {
-      @Override public void onSuccess(List<Conv> convs) {
-        if (convs.isEmpty()) {
+    DatabaseUtils.findRecentConv(mClientId, new DatabaseUtils.FindConversationsCallback() {
+      @Override public void onSuccess(List<Conversation> conversations) {
+        if (conversations.isEmpty()) {
           callback.onConversationsNotFound();
           return;
         }
-        callback.onConversationsLoaded(convs);
+        callback.onConversationsLoaded(conversations);
       }
     });
   }
 
-  @Override public void saveConversation(@NonNull Conv conversation) {
+  @Override public void saveConversation(@NonNull Conversation conversation) {
   }
 }

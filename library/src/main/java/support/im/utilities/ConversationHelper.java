@@ -2,6 +2,7 @@ package support.im.utilities;
 
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import java.util.List;
+import support.im.data.Conversation;
 import support.im.data.ConversationType;
 import support.im.data.User;
 import support.im.data.cache.CacheManager;
@@ -106,6 +107,10 @@ public final class ConversationHelper {
 
     // 单聊
     return "对话";
+  }
+
+  public static int getType(AVIMConversation avimConversation) {
+    return (Integer) avimConversation.getAttribute(ConversationType.TYPE_KEY);
   }
 
 }

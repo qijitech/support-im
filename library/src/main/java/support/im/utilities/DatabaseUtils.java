@@ -1,9 +1,9 @@
 package support.im.utilities;
 
 import android.support.annotation.NonNull;
+import com.alibaba.fastjson.JSON;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.google.common.collect.Lists;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.runtime.DBBatchSaveQueue;
@@ -15,77 +15,67 @@ import com.raizlabs.android.dbflow.structure.database.transaction.QueryTransacti
 import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
 import java.util.List;
 import support.im.data.AppDatabase;
-import support.im.data.Conv;
-import support.im.data.Conv_Table;
-import support.im.data.ConversationType;
+import support.im.data.Conversation;
+import support.im.data.Conversation_Table;
 import support.im.data.User;
 import support.im.data.User_Table;
 
 public final class DatabaseUtils {
 
-  public static Conv saveConversation(AVIMConversation avimConversation, String clientId) {
+  public static Conversation saveConversation(AVIMConversation avimConversation, AVIMMessage avimMessage, String clientId) {
     final String conversationId = avimConversation.getConversationId();
-    Conv conv = findByConvId(conversationId);
-    if (conv != null) {
-      conv.update();
+    Conversation conversation = findByConversationId(conversationId);
+    if (conversation != null) {
+      conversation.setFromPeerId(avimMessage.getFrom());
+      conversation.setLastMessage(avimMessage);
+      conversation.setLatestMsgTime(avimMessage.getTimestamp());
+      conversation.setLatestMsg(avimMessage.getContent());
+      conversation.setMembers(JSON.toJSONString(avimConversation.getMembers()));
+      conversation.setName(avimConversation.getName());
+      conversation.setType(ConversationHelper.getType(avimConversation));
+      conversation.update();
     } else {
-      conv = new Conv.Builder()
+      conversation = new Conversation.Builder()
           .conversationId(conversationId)
           .clientId(clientId)
-          .fromObjectId(avimConversation.getCreator())
-          .build();
-      conv.insert();
-    }
-    return conv;
-  }
-
-  public static Conv saveConversation(AVIMConversation avimConversation, AVIMMessage avimMessage, String clientId) {
-    final String conversationId = avimConversation.getConversationId();
-    Conv conv = findByConvId(conversationId);
-    String message = avimMessage.getContent();
-    if (avimMessage instanceof AVIMTextMessage) {
-      message = ((AVIMTextMessage)avimMessage).getText();
-    }
-    if (conv != null) {
-      conv.setLatestMsgTime(avimMessage.getTimestamp());
-      conv.setMessage(message);
-      conv.update();
-    } else {
-      conv = new Conv.Builder()
-          .conversationId(conversationId)
-          .clientId(clientId)
-          .message(message)
-          .type((Integer) avimConversation.getAttribute(ConversationType.TYPE_KEY))
-          .fromObjectId(avimConversation.getCreator())
+          .members(JSON.toJSONString(avimConversation.getMembers()))
+          .type(ConversationHelper.getType(avimConversation))
+          .name(avimConversation.getName())
+          .creator(avimConversation.getCreator())
           .firstMsgId(avimMessage.getMessageId())
           .firstMsgTime(avimMessage.getTimestamp())
           .latestMsgTime(avimMessage.getTimestamp())
+          .latestMsg(avimMessage.getContent())
+          .fromPeerId(avimMessage.getFrom())
+          .isTransient(avimConversation.isTransient())
+          .unreadCount(1)
           .build();
-      conv.insert();
+      conversation.insert();
     }
-    return conv;
+    return conversation;
   }
 
-  public static Conv findByConvId(String conversationId) {
-    Where<Conv> where = SQLite.select().from(Conv.class)
-        .where(Conv_Table.conv_id.eq(conversationId));
+  public static Conversation findByConversationId(String conversationId) {
+    Where<Conversation> where = SQLite.select().from(Conversation.class)
+        .where(Conversation_Table.conversation_id.eq(conversationId));
     return where.querySingle();
   }
 
   public static void updateConversationUnreadCount(AVIMConversation avimConversation) {
-    SQLite.update(Conv.class)
-        .set(Conv_Table.unread_count.concatenate(1))
-        .where(Conv_Table.conv_id.eq(avimConversation.getConversationId()));
+    SQLite.update(Conversation.class)
+        .set(Conversation_Table.unread_count.concatenate(1))
+        .where(Conversation_Table.conversation_id.eq(avimConversation.getConversationId()));
   }
 
-  public static void findRecentConv(String clientId, @NonNull final FindConvsCallback convCallback) {
+  public static void findRecentConv(String clientId, @NonNull final FindConversationsCallback convCallback) {
     FlowManager.getDatabase(AppDatabase.class)
-        .beginTransactionAsync(new QueryTransaction.Builder<>(SQLite.select().from(Conv.class)
-            .where(Conv_Table.client_id.eq(clientId)).orderBy(OrderBy.fromProperty(Conv_Table.latest_msg_time).descending()))
-        .queryResult(new QueryTransaction.QueryResultCallback<Conv>() {
+        .beginTransactionAsync(new QueryTransaction.Builder<>(SQLite.select().from(Conversation.class)
+            .where(Conversation_Table.client_id.eq(clientId)).orderBy(
+                OrderBy.fromProperty(Conversation_Table.latest_msg_time).descending()))
+        .queryResult(new QueryTransaction.QueryResultCallback<Conversation>() {
           @Override public void onQueryResult(QueryTransaction transaction,
-              @NonNull CursorResult<Conv> tResult) {
-            List<Conv> models = tResult.toListClose();
+              @NonNull CursorResult<Conversation> tResult) {
+            List<Conversation> models = tResult.toListClose();
             if (models == null) {
               models = Lists.newArrayList();
             }
@@ -94,30 +84,28 @@ public final class DatabaseUtils {
         .build().execute();
   }
 
-  public static void findRecentConv(String clientId, String fromUser, @NonNull final FindConvCallback convCallback) {
+  public static void findRecentConv(String clientId, String fromUser, @NonNull final FindConversationCallback callback) {
     FlowManager.getDatabase(AppDatabase.class)
-        .beginTransactionAsync(new QueryTransaction.Builder<>(SQLite.select().from(Conv.class)
-            .where(Conv_Table.client_id.eq(clientId))
-            .and(Conv_Table.conv_id.eq(fromUser)) // TODO
+        .beginTransactionAsync(new QueryTransaction.Builder<>(SQLite.select().from(Conversation.class)
+            .where(Conversation_Table.client_id.eq(clientId))
+            .and(Conversation_Table.creator.eq(fromUser))
+            .and(Conversation_Table.type.eq(0))
             .limit(1))
-            .queryResult(new QueryTransaction.QueryResultCallback<Conv>() {
+            .queryResult(new QueryTransaction.QueryResultCallback<Conversation>() {
               @Override public void onQueryResult(QueryTransaction transaction,
-                  @NonNull CursorResult<Conv> tResult) {
-                List<Conv> models = tResult.toListClose();
+                  @NonNull CursorResult<Conversation> tResult) {
+                List<Conversation> models = tResult.toListClose();
                 if (models == null || models.isEmpty()) {
-                  models = Lists.newArrayList();
-                  convCallback.onSuccess(null);
+                  callback.onSuccess(null);
                   return;
                 }
-                convCallback.onSuccess(models.get(0));
+                callback.onSuccess(models.get(0));
               }}).build())
         .build().execute();
   }
 
   public static void saveUser(final User user) {
-    if (user != null) {
-      user.save();
-    }
+    saveUser(user, null);
   }
 
   public static void saveUser(final User user, final SaveUserCallback saveUserCallback) {
@@ -165,7 +153,7 @@ public final class DatabaseUtils {
 
     FlowManager.getDatabase(AppDatabase.class)
         .beginTransactionAsync(new QueryTransaction.Builder<>(SQLite.select().from(User.class)
-            .where(User_Table.objectId.in(objectIds)))
+            .where(User_Table.object_id.in(objectIds)))
             .queryResult(new QueryTransaction.QueryResultCallback<User>() {
               @Override public void onQueryResult(QueryTransaction transaction,
                   @NonNull CursorResult<User> tResult) {
@@ -186,7 +174,7 @@ public final class DatabaseUtils {
 
     FlowManager.getDatabase(AppDatabase.class)
         .beginTransactionAsync(new QueryTransaction.Builder<>(SQLite.select().from(User.class)
-            .where(User_Table.objectId.eq(objectId)).limit(1))
+            .where(User_Table.object_id.eq(objectId)).limit(1))
             .queryResult(new QueryTransaction.QueryResultCallback<User>() {
               @Override public void onQueryResult(QueryTransaction transaction,
                   @NonNull CursorResult<User> tResult) {
@@ -216,12 +204,12 @@ public final class DatabaseUtils {
     void onSuccess(User user);
   }
 
-  public static interface FindConvsCallback {
-    void onSuccess(List<Conv> convs);
+  public static interface FindConversationsCallback {
+    void onSuccess(List<Conversation> conversations);
   }
 
-  public static interface FindConvCallback {
-    void onSuccess(Conv conv);
+  public static interface FindConversationCallback {
+    void onSuccess(Conversation conversation);
   }
 
 }

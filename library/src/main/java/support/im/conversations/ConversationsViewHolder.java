@@ -8,7 +8,7 @@ import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.facebook.drawee.view.SimpleDraweeView;
 import support.im.Injection;
 import support.im.R;
-import support.im.data.Conv;
+import support.im.data.Conversation;
 import support.im.data.ConversationType;
 import support.im.data.User;
 import support.im.data.cache.CacheManager;
@@ -18,7 +18,7 @@ import support.im.utilities.Utils;
 import support.ui.adapters.EasyViewHolder;
 import support.ui.app.SupportApp;
 
-public class ConversationsViewHolder extends EasyViewHolder<Conv> {
+public class ConversationsViewHolder extends EasyViewHolder<Conversation> {
 
   SimpleDraweeView mAvatarImageView;
   //TextView mUnreadTextView;
@@ -38,7 +38,7 @@ public class ConversationsViewHolder extends EasyViewHolder<Conv> {
     mMessageTextView = ButterKnife.findById(itemView, R.id.text_support_im_conversations_message);
   }
 
-  @Override public void bindTo(int position, Conv value) {
+  @Override public void bindTo(int position, Conversation value) {
     //mUnreadTextView.setText(String.valueOf(value.mUnreadCount));
     AVIMConversation conversation = value.getConversation();
     if (conversation == null) {
@@ -58,8 +58,8 @@ public class ConversationsViewHolder extends EasyViewHolder<Conv> {
     } else { // group
     }
 
-    if (value.getMessage() != null) {
-      mMessageTextView.setText(value.getMessage());
+    if (value.getLatestMsg() != null) {
+      mMessageTextView.setText(value.getLatestMsg());
     } else {
       mMessageTextView.setText("");
     }

@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.net.Uri;
 import com.avos.avospush.notification.NotificationCompat;
 import com.google.common.collect.Lists;
-import java.util.LinkedList;
 import java.util.List;
 
 public class NotificationUtils {

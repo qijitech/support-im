@@ -10,13 +10,18 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 @Table(database = AppDatabase.class, name = "users")
 public class User extends BaseModel {
 
-  @Column @PrimaryKey private String userId;
-  @Column private String objectId;
-  @Column private String displayName;
-  @Column private String avatar;
-  @Column private String username;
-
-  @Column private String sortLetters;
+  // 用户id
+  @Column(name = "user_id") @PrimaryKey private String userId;
+  // LeanCloud 保存的id
+  @Column(name = "object_id") private String objectId;
+  // 用户名称
+  @Column(name = "display_name") private String displayName;
+  // 用户头像
+  @Column(name = "avatar") private String avatar;
+  // 用户名
+  @Column(name = "username") private String username;
+  // 用户名拼音
+  @Column(name = "sort_letters") private String sortLetters;
 
   public String getUserId() {
     return userId;

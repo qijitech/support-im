@@ -4,7 +4,7 @@ import com.avos.avoscloud.AVException;
 import java.util.List;
 import support.im.BasePresenter;
 import support.im.BaseView;
-import support.im.data.Conv;
+import support.im.data.Conversation;
 
 public interface ConversationsContract {
 
@@ -13,9 +13,9 @@ public interface ConversationsContract {
 
     void notifyDataSetChanged();
 
-    void notifyDataSetChanged(List<Conv> conversations);
+    void notifyDataSetChanged(List<Conversation> conversations);
 
-    void notifyItemChanged(Conv conversation);
+    void notifyItemChanged(Conversation conversation);
 
     void showNoConversations();
 

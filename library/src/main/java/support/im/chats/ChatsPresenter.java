@@ -10,7 +10,7 @@ import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import java.util.List;
-import support.im.data.Conv;
+import support.im.data.Conversation;
 import support.im.data.User;
 import support.im.data.cache.CacheManager;
 import support.im.data.source.ChatsDataSource;
@@ -55,9 +55,9 @@ public class ChatsPresenter implements ChatsContract.Presenter {
       }
     } else if (!TextUtils.isEmpty(mUserObjectId)){
       mConversationsRepository.loadConversation(mUserObjectId, new ConversationsDataSource.LoadConversationCallback() {
-        @Override public void onConversationLoaded(Conv conv) {
-          if (conv != null) {
-            mAVIMConversation = CacheManager.getCacheConversation(conv.getConversationId());
+        @Override public void onConversationLoaded(Conversation conversation) {
+          if (conversation != null) {
+            mAVIMConversation = CacheManager.getCacheConversation(conversation.getConversationId());
             if (mChatsView.isActive()) {
               mChatsView.updateAVIMConversation(mAVIMConversation);
               fetchMessages(false);

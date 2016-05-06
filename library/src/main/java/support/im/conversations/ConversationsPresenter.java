@@ -6,7 +6,7 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.google.common.collect.Lists;
 import java.util.List;
-import support.im.data.Conv;
+import support.im.data.Conversation;
 import support.im.data.ConversationType;
 import support.im.data.User;
 import support.im.data.source.ConversationsDataSource;
@@ -58,7 +58,7 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
     }
 
     mConversationsRepository.loadConversations(new ConversationsDataSource.LoadConversationsCallback() {
-      @Override public void onConversationsLoaded(List<Conv> conversations) {
+      @Override public void onConversationsLoaded(List<Conversation> conversations) {
         if (mConversationsView.isActive()) {
           mConversationsView.notifyDataSetChanged(conversations);
         }
@@ -80,9 +80,9 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
     });
   }
 
-  private void updateLastMessage(List<Conv> convs) {
-    if (convs != null) {
-      for (final Conv conv : convs) {
+  private void updateLastMessage(List<Conversation> conversations) {
+    if (conversations != null) {
+      for (final Conversation conv : conversations) {
         AVIMConversation conversation = conv.getConversation();
         mConversationsRepository.getLastMessage(conversation, new ConversationsDataSource.GetLastMessageCallback() {
           @Override public void onLastMessageLoaded(AVIMMessage avimMessage) {
@@ -101,10 +101,10 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
     }
   }
 
-  private void cacheRelatedUsers(List<Conv> convs) {
+  private void cacheRelatedUsers(List<Conversation> conversations) {
     List<String> needCacheUsers = Lists.newArrayList();
-    if (convs != null) {
-      for (Conv conv : convs) {
+    if (conversations != null) {
+      for (Conversation conv : conversations) {
         AVIMConversation conversation = conv.getConversation();
         if (ConversationHelper.typeOfConversation(conversation) == ConversationType.Single) {
           needCacheUsers.add(ConversationHelper.otherIdOfConversation(conversation));

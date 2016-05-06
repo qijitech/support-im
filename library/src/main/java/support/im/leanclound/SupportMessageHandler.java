@@ -12,7 +12,7 @@ import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import de.greenrobot.event.EventBus;
 import support.im.Injection;
 import support.im.R;
-import support.im.data.Conv;
+import support.im.data.Conversation;
 import support.im.data.ConversationType;
 import support.im.data.User;
 import support.im.data.cache.CacheManager;
@@ -40,16 +40,17 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
     mUsersRepository = Injection.provideUsersRepository(context);
   }
 
-  @Override public void onMessage(AVIMTypedMessage message, AVIMConversation conversation,
+  @Override public void onMessage(AVIMTypedMessage aVIMmessage, AVIMConversation aVIMConversation,
       AVIMClient client) {
-    if (message == null || message.getMessageId() == null) {
+    if (aVIMmessage == null || aVIMmessage.getMessageId() == null) {
       SupportLog.d("may be SDK Bug, message or message id is null");
       return;
     }
 
     // 判断AVIMConversation是否合法
-    if (!ConversationHelper.isValidConversation(conversation)) {
+    if (!ConversationHelper.isValidConversation(aVIMConversation)) {
       SupportLog.d("receive msg from invalid conversation");
+      return;
     }
 
     // 判断是否已经打开
@@ -65,14 +66,14 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
       return;
     }
 
-    CacheManager.cacheConversation(conversation);
-    Conv conv = DatabaseUtils.saveConversation(conversation, message, localClientId);
-    if (!message.getFrom().equals(client.getClientId())) {
-      fetchUser(conversation, message, conv);
+    CacheManager.cacheConversation(aVIMConversation);
+    Conversation conversation = DatabaseUtils.saveConversation(aVIMConversation, aVIMmessage, localClientId);
+    if (!aVIMmessage.getFrom().equals(client.getClientId())) {
+      fetchUser(aVIMConversation, aVIMmessage, conversation);
     }
   }
 
-  private void fetchUser(final AVIMConversation avimConversation, final AVIMTypedMessage avimTypedMessage, final Conv conv) {
+  private void fetchUser(final AVIMConversation avimConversation, final AVIMTypedMessage avimTypedMessage, final Conversation conversation) {
     final String fromObjectId = avimTypedMessage.getFrom();
     mUsersRepository.fetchUser(fromObjectId, new UsersDataSource.GetUserCallback() {
       @Override public void onUserLoaded(User user) {
@@ -80,7 +81,7 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
           sendNotification(avimTypedMessage, avimConversation, user);
         }
         DatabaseUtils.updateConversationUnreadCount(avimConversation);
-        sendEvent(avimTypedMessage, avimConversation, conv);
+        sendEvent(avimTypedMessage, avimConversation, conversation);
       }
       @Override public void onUserNotFound() {
       }
@@ -100,7 +101,7 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
    * @param message
    * @param aVIMConversation
    */
-  private void sendEvent(AVIMTypedMessage message, AVIMConversation aVIMConversation, Conv conversation) {
+  private void sendEvent(AVIMTypedMessage message, AVIMConversation aVIMConversation, Conversation conversation) {
     ImTypeMessageEvent event = new ImTypeMessageEvent();
     event.message = message;
     event.mAVIMConversation = aVIMConversation;
