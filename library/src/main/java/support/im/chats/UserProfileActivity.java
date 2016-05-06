@@ -20,7 +20,7 @@ public class UserProfileActivity extends SupportCellsActivity
     implements EasyViewHolder.OnItemClickListener {
   public final static String TAG = UserProfileActivity.class.getSimpleName();
   public final static int TOP_CONVERSATION = 1;
-  public final static int NO_NOTIFITY = 2;
+  public final static int NO_NOTIFY = 2;
   public final static int MSG_FILE_CACHE = 3;
   public final static int QUERY_MSG_LOG = 4;
 
@@ -40,7 +40,7 @@ public class UserProfileActivity extends SupportCellsActivity
         case TOP_CONVERSATION:
           Log.d(TAG, "置顶会话");
           break;
-        case NO_NOTIFITY:
+        case NO_NOTIFY:
           Log.d(TAG, "消息免打扰");
           break;
         case MSG_FILE_CACHE:
@@ -67,7 +67,7 @@ public class UserProfileActivity extends SupportCellsActivity
             .build());
     items.add(
         CellModel.checkCell(res.getString(R.string.support_im_label_chats_single_msg_no_notify))
-            .tag(NO_NOTIFITY)
+            .tag(NO_NOTIFY)
             .checked(false)
             .build());
 

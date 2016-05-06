@@ -16,7 +16,7 @@
       android:layout_height="wrap_content"
       android:layout_centerVertical="true"
       android:scaleType="centerCrop"
-      android:src="@drawable/ic_add_member_blue"
+      android:src="@drawable/icon_add_member_blue"
       />
   <TextView
       android:layout_width="wrap_content"

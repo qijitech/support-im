@@ -121,7 +121,7 @@ public class ChatsActivity extends SupportSinglePaneActivity {
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
-    getMenuInflater().inflate(R.menu.chats_menu, menu);
+    getMenuInflater().inflate(R.menu.single_chats_menu, menu);
     return true;
   }
 
