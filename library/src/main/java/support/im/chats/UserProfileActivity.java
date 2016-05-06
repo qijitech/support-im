@@ -31,6 +31,7 @@ public class UserProfileActivity extends SupportCellsActivity
     getAdapter().bind(IconItem.class, IconItemCell.class);
     addItem(new User());
     addItem(new IconItem());
+    addItem(CellModel.shadowCell().build());
     appendAll(buildData());
   }
 
@@ -58,7 +59,6 @@ public class UserProfileActivity extends SupportCellsActivity
   private ArrayList<CellModel> buildData() {
     ArrayList<CellModel> items = new ArrayList<>();
     Resources res = SupportApp.appResources();
-    items.add(CellModel.emptyCell().build());
     items.add(
         CellModel.checkCell(res.getString(R.string.support_im_label_chats_single_top_conversation))
             .tag(TOP_CONVERSATION)
