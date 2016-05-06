@@ -67,6 +67,8 @@ dependencies {
   compile 'com.github.w446108264:XhsEmoticonsKeyboard:2.0.2'
   compile 'com.github.w446108264:AndroidEmoji:1.0.0'
 
+  compile 'com.github.markomilos:paginate:0.5.1'
+
   apt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
   // use kapt for kotlin apt
   compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
