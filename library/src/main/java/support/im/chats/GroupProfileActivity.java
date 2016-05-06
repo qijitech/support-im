@@ -6,7 +6,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import java.util.ArrayList;
 import support.im.R;
+import support.im.data.CTextItem;
 import support.im.data.IconItem;
+import support.im.data.RTextItem;
 import support.im.data.User;
 import support.ui.adapters.EasyViewHolder;
 import support.ui.app.SupportApp;
@@ -28,11 +30,15 @@ public class GroupProfileActivity extends SupportCellsActivity
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    getAdapter().bind(User.class, UserHeadCell.class);
+    getAdapter().bind(User.class, GroupHeadCell.class);
     getAdapter().bind(IconItem.class, IconItemCell.class);
+    getAdapter().bind(RTextItem.class, GroupNameCell.class);
+    getAdapter().bind(CTextItem.class, ButtonItem.class);
+    addItem(new RTextItem());
     addItem(new User());
     addItem(new IconItem());
     appendAll(buildData());
+    addItem(new CTextItem());
   }
 
   @Override protected void onItemClick(Object object) {
@@ -53,6 +59,12 @@ public class GroupProfileActivity extends SupportCellsActivity
       }
     } else if (object instanceof User) {
       Log.d(TAG, "头像点击");
+    } else if (object instanceof CTextItem) {
+      Log.d(TAG, "退出群聊");
+    } else if (object instanceof RTextItem) {
+      Log.d(TAG, "群名称");
+    } else if (object instanceof IconItem) {
+      Log.d(TAG, "添加成员");
     }
   }
 

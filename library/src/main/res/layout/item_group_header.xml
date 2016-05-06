@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:foreground="?attr/selectableItemBackground"
+    android:padding="16dp"
+
+    >
+
+  <TextView
+      android:id="@+id/support_ui_title"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:maxLines="1"
+      android:paddingBottom="8dp"
+      android:paddingLeft="4dp"
+      android:paddingTop="8dp"
+      android:text="群成员"
+      android:textColor="#352E33"
+      android:textSize="18sp"
+      />
+
+
+  <TextView
+      android:id="@+id/support_ui_group_member_number"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_alignRight="@id/support_ui_title"
+      android:drawablePadding="8dp"
+      android:drawableRight="@drawable/icon_arrow_back_white"
+      android:maxLines="1"
+      android:paddingBottom="8dp"
+      android:paddingRight="8dp"
+      android:paddingTop="8dp"
+      android:textColor="#7F7F7F"
+      android:textSize="18sp"
+      tools:text="36人"
+      />
+
+  <LinearLayout
+      android:id="@+id/support_ui_avatar_container"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/support_ui_title"
+      android:orientation="horizontal"
+      />
+</RelativeLayout>
