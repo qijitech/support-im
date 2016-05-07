@@ -6,11 +6,11 @@ import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.google.common.collect.Lists;
 import com.raizlabs.android.dbflow.config.FlowManager;
-import com.raizlabs.android.dbflow.runtime.DBBatchSaveQueue;
 import com.raizlabs.android.dbflow.sql.language.CursorResult;
 import com.raizlabs.android.dbflow.sql.language.OrderBy;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.sql.language.Where;
+import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTransaction;
 import com.raizlabs.android.dbflow.structure.database.transaction.QueryTransaction;
 import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
 import java.util.List;
@@ -115,17 +115,33 @@ public final class DatabaseUtils {
       return;
     }
 
-    DBBatchSaveQueue saveQueue = FlowManager.getDatabase(AppDatabase.class)
-        .getTransactionManager().getSaveQueue();
-    saveQueue.setSuccessListener(new Transaction.Success() {
-      @Override public void onSuccess(Transaction transaction) {
-        transaction.execute();
-        if (saveUserCallback != null) {
-          saveUserCallback.onSuccess(user);
-        }
-      }
-    });
-    saveQueue.add(user);
+    //DBBatchSaveQueue saveQueue = FlowManager.getDatabase(AppDatabase.class)
+    //    .getTransactionManager().getSaveQueue();
+    //saveQueue.setSuccessListener(new Transaction.Success() {
+    //  @Override public void onSuccess(Transaction transaction) {
+    //    transaction.execute();
+    //    if (saveUserCallback != null) {
+    //      saveUserCallback.onSuccess(user);
+    //    }
+    //  }
+    //});
+    //saveQueue.add(user);
+
+    FlowManager.getDatabase(AppDatabase.class)
+        .beginTransactionAsync(new ProcessModelTransaction.Builder<>(new ProcessModelTransaction.ProcessModel<User>() {
+          @Override public void processModel(User model) {
+            model.save();
+          }
+        }).build())
+        .success(new Transaction.Success() {
+          @Override public void onSuccess(Transaction transaction) {
+            if (saveUserCallback != null) {
+              saveUserCallback.onSuccess(user);
+            }
+          }
+        })
+        .build().execute();
+
   }
 
   public static void saveUsers(final List<User> users, final SaveUsersCallback saveCallback) {
@@ -136,25 +152,33 @@ public final class DatabaseUtils {
       return;
     }
 
-    DBBatchSaveQueue saveQueue = FlowManager.getDatabase(AppDatabase.class)
-        .getTransactionManager().getSaveQueue();
-    saveQueue.setSuccessListener(new Transaction.Success() {
-      @Override public void onSuccess(Transaction transaction) {
-        transaction.execute();
-        if (saveCallback != null) {
-          saveCallback.onSuccess(users);
-        }
-      }
-    });
-    saveQueue.setModelSaveSize(1000);
-    saveQueue.setErrorListener(new Transaction.Error() {
-      @Override public void onError(Transaction transaction, Throwable error) {
-        if (saveCallback != null) {
-          saveCallback.onSuccess(users);
-        }
-      }
-    });
-    saveQueue.addAll(users);
+    //DBBatchSaveQueue saveQueue = FlowManager.getDatabase(AppDatabase.class)
+    //    .getTransactionManager().getSaveQueue();
+    //saveQueue.setSuccessListener(new Transaction.Success() {
+    //  @Override public void onSuccess(Transaction transaction) {
+    //    transaction.execute();
+    //    if (saveCallback != null) {
+    //      saveCallback.onSuccess(users);
+    //    }
+    //  }
+    //});
+    //saveQueue.setModelSaveSize(1000);
+    //saveQueue.addAll(users);
+
+    FlowManager.getDatabase(AppDatabase.class)
+        .beginTransactionAsync(new ProcessModelTransaction.Builder<>(users, new ProcessModelTransaction.ProcessModel<User>() {
+          @Override public void processModel(User model) {
+            model.save();
+          }
+        }).build())
+        .success(new Transaction.Success() {
+          @Override public void onSuccess(Transaction transaction) {
+            if (saveCallback != null) {
+              saveCallback.onSuccess(users);
+            }
+          }
+        })
+        .build().execute();
   }
 
   public static void findUserByObjectIds(List<String> objectIds, final FindUsersCallback findUsersCallback) {
@@ -208,16 +232,31 @@ public final class DatabaseUtils {
       return;
     }
 
-    DBBatchSaveQueue saveQueue = FlowManager.getDatabase(AppDatabase.class)
-        .getTransactionManager().getSaveQueue();
-    saveQueue.setSuccessListener(new Transaction.Success() {
-      @Override public void onSuccess(Transaction transaction) {
-        if (callback != null) {
-          callback.onSuccess(contact);
-        }
-      }
-    });
-    saveQueue.add(contact);
+    //DBBatchSaveQueue saveQueue = FlowManager.getDatabase(AppDatabase.class)
+    //    .getTransactionManager().getSaveQueue();
+    //saveQueue.setSuccessListener(new Transaction.Success() {
+    //  @Override public void onSuccess(Transaction transaction) {
+    //    if (callback != null) {
+    //      callback.onSuccess(contact);
+    //    }
+    //  }
+    //});
+    //saveQueue.add(contact);
+
+    FlowManager.getDatabase(AppDatabase.class)
+        .beginTransactionAsync(new ProcessModelTransaction.Builder<>(new ProcessModelTransaction.ProcessModel<Contact>() {
+          @Override public void processModel(Contact model) {
+            model.save();
+          }
+        }).add(contact).build())
+        .success(new Transaction.Success() {
+          @Override public void onSuccess(Transaction transaction) {
+            if (callback != null) {
+              callback.onSuccess(contact);
+            }
+          }
+        })
+        .build().execute();
   }
 
   public static void saveContacts(final List<Contact> contacts, final ContactsCallback callback) {
@@ -228,25 +267,32 @@ public final class DatabaseUtils {
       return;
     }
 
-    DBBatchSaveQueue saveQueue = FlowManager.getDatabase(AppDatabase.class)
-        .getTransactionManager().getSaveQueue();
-    saveQueue.setSuccessListener(new Transaction.Success() {
-      @Override public void onSuccess(Transaction transaction) {
-        if (callback != null) {
-          callback.onSuccess(contacts);
-        }
-      }
-    });
-    saveQueue.setModelSaveSize(1000);
-    saveQueue.setErrorListener(new Transaction.Error() {
-      @Override public void onError(Transaction transaction, Throwable error) {
-        transaction.execute();
-        if (callback != null) {
-          callback.onSuccess(contacts);
-        }
-      }
-    });
-    saveQueue.addAll(contacts);
+    //DBBatchSaveQueue saveQueue = FlowManager.getDatabase(AppDatabase.class)
+    //    .getTransactionManager().getSaveQueue();
+    //saveQueue.setSuccessListener(new Transaction.Success() {
+    //  @Override public void onSuccess(Transaction transaction) {
+    //    if (callback != null) {
+    //      callback.onSuccess(contacts);
+    //    }
+    //  }
+    //});
+    //saveQueue.setModelSaveSize(1000);
+    //saveQueue.addAll(contacts);
+
+    FlowManager.getDatabase(AppDatabase.class)
+        .beginTransactionAsync(new ProcessModelTransaction.Builder<>(contacts, new ProcessModelTransaction.ProcessModel<Contact>() {
+          @Override public void processModel(Contact model) {
+            model.save();
+          }
+        }).build())
+        .success(new Transaction.Success() {
+          @Override public void onSuccess(Transaction transaction) {
+            if (callback != null) {
+              callback.onSuccess(contacts);
+            }
+          }
+        })
+        .build().execute();
   }
 
   /**
