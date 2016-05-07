@@ -19,10 +19,9 @@ import support.im.Injection;
 import support.im.R;
 import support.im.addcontact.AddContactActivity;
 import support.im.data.Contact;
-import support.im.data.SupportUser;
-import support.im.data.User;
 import support.im.detail.UserDetailActivity;
 import support.im.events.InvitationEvent;
+import support.im.leanclound.ChatManager;
 import support.im.leanclound.contacts.AddRequestManager;
 import support.im.newcontacts.NewContactsActivity;
 import support.ui.SupportRecyclerViewFragment;
@@ -57,7 +56,7 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     mAdapter.bind(ContactsTotal.class, ContactsTotalViewHolder.class);
     mAdapter.bind(Contact.class, ContactsViewHolder.class);
 
-    new ContactsPresenter(SupportUser.getCurrentUser().getUserId(), Injection.provideContactsRepository(getContext()), this);
+    new ContactsPresenter(ChatManager.getInstance().getClientId(), Injection.provideContactsRepository(getContext()), this);
 
     setHasOptionsMenu(true);
   }
@@ -128,9 +127,9 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
 
   @Override public void onItemClick(int position, View view) {
     Object object = mAdapter.get(position);
-    if (object instanceof User) {
-      User user = (User) object;
-      UserDetailActivity.startUserDetail(getContext(), user.getObjectId());
+    if (object instanceof Contact) {
+      Contact contact = (Contact) object;
+      UserDetailActivity.startUserDetail(getContext(), contact.getFriend().getObjectId());
       return;
     }
     if (object instanceof ContactsDummy) {
@@ -151,35 +150,32 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
 
   @Override public void showContacts(List<Contact> contacts) {
     mAdapter.addAll(contacts);
-    final int size = contacts.size();
-    mAdapter.add(mNewContacts, 0);
-    mAdapter.add(mGroup, 1);
-    mAdapter.add(new ContactsTotal(size));
+    addCommonData(contacts.size());
     contentPresenter.displayContentView();
   }
 
   @Override public void showNotLoggedIn() {
     mAdapter.clear();
-    mAdapter.add(mNewContacts, 0);
-    mAdapter.add(mGroup, 1);
-    mAdapter.add(new ContactsTotal(0));
+    addCommonData(0);
     contentPresenter.displayContentView();
   }
 
   @Override public void onDataNotAvailable(AVException exception) {
     mAdapter.clear();
-    mAdapter.add(mNewContacts, 0);
-    mAdapter.add(mGroup, 1);
-    mAdapter.add(new ContactsTotal(0));
+    addCommonData(0);
     contentPresenter.displayContentView();
   }
 
   @Override public void showNoContacts() {
     mAdapter.clear();
+    addCommonData(0);
+    contentPresenter.displayContentView();
+  }
+
+  private void addCommonData(int size) {
     mAdapter.add(mNewContacts, 0);
     mAdapter.add(mGroup, 1);
-    mAdapter.add(new ContactsTotal(0));
-    contentPresenter.displayContentView();
+    mAdapter.add(new ContactsTotal(size));
   }
 
   @Override public boolean isActive() {

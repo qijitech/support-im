@@ -6,7 +6,7 @@ import support.im.data.Contact;
 
 public abstract class SimpleContactsDataSource implements ContactsDataSource {
 
-  @Override public void getContacts(@NonNull String currentUserId, @NonNull LoadContactsCallback callback) {
+  @Override public void getContacts(@NonNull String currentClientId, @NonNull LoadContactsCallback callback) {
 
   }
 

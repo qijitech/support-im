@@ -22,7 +22,7 @@ public interface ContactsDataSource {
     void onSuccess(Contact contact);
   }
 
-  void getContacts(@NonNull String currentUserId, @NonNull LoadContactsCallback callback);
+  void getContacts(@NonNull String currentClientId, @NonNull LoadContactsCallback callback);
   void saveContacts(List<Contact> contacts, @NonNull SaveContactsCallback callback);
   void saveContact(Contact contact, @NonNull SaveContactCallback callback);
 

@@ -30,7 +30,7 @@ public class ContactsRemoteDataSource extends SimpleContactsDataSource {
     return INSTANCE;
   }
 
-  @Override public void getContacts(@NonNull String currentUserId, @NonNull final LoadContactsCallback callback) {
+  @Override public void getContacts(@NonNull String currentClientId, @NonNull final LoadContactsCallback callback) {
     AVQuery<Friend> friendAVQuery = AVQuery.getQuery(Friend.class);
     friendAVQuery.setCachePolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
     friendAVQuery.whereEqualTo(Friend.USER, SupportUser.getCurrentUser());

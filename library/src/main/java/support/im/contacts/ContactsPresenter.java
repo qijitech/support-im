@@ -2,9 +2,12 @@ package support.im.contacts;
 
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.AVException;
+import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
 import support.im.data.Contact;
+import support.im.data.User;
+import support.im.data.cache.CacheManager;
 import support.im.data.source.ContactsDataSource;
 import support.im.data.source.ContactsRepository;
 
@@ -17,11 +20,11 @@ public class ContactsPresenter implements ContactsContract.Presenter {
   private final ContactsContract.View mContactsView;
   private final ContactsRepository mContactsRepository;
 
-  private final String mCurrentUserId;
+  private final String mCurrentClientId;
   private boolean mFirstLoad = true;
 
-  public ContactsPresenter(@NonNull String currentId, @NonNull ContactsRepository conversationsRepository, ContactsContract.View contactsView) {
-    mCurrentUserId = checkNotNull(currentId);
+  public ContactsPresenter(@NonNull String currentClientId, @NonNull ContactsRepository conversationsRepository, ContactsContract.View contactsView) {
+    mCurrentClientId = checkNotNull(currentClientId);
     mContactsView = checkNotNull(contactsView);
     mContactsRepository = checkNotNull(conversationsRepository);
 
@@ -43,7 +46,7 @@ public class ContactsPresenter implements ContactsContract.Presenter {
       mContactsRepository.refreshContacts();
     }
 
-    mContactsRepository.getContacts(mCurrentUserId, new ContactsDataSource.LoadContactsCallback() {
+    mContactsRepository.getContacts(mCurrentClientId, new ContactsDataSource.LoadContactsCallback() {
       @Override public void onContactsLoaded(List<Contact> contacts) {
         processContacts(contacts);
         if (!mContactsView.isActive()) {
@@ -67,6 +70,11 @@ public class ContactsPresenter implements ContactsContract.Presenter {
   }
 
   private void processContacts(List<Contact> contacts) {
+    List<User> users = Lists.newArrayList();
+    for (Contact contact : contacts) {
+      users.add(contact.getFriend());
+    }
+    CacheManager.cacheUsers(users);
     Collections.sort(contacts, pinyinComparator);
   }
 

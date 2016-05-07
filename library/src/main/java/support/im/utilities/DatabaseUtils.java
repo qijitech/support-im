@@ -297,11 +297,11 @@ public final class DatabaseUtils {
 
   /**
    * 获取当前用户好友
-   * @param currentUserId 当前用户id
+   * @param currentClientId 当前用户id
    * @param callback ContactsCallback
    */
-  public static void findContacts(String currentUserId, final ContactsCallback callback) {
-    if (currentUserId == null) {
+  public static void findContacts(String currentClientId, final ContactsCallback callback) {
+    if (currentClientId == null) {
       if (callback != null) {
         callback.onSuccess(null);
       }
@@ -310,7 +310,7 @@ public final class DatabaseUtils {
 
     FlowManager.getDatabase(AppDatabase.class)
         .beginTransactionAsync(new QueryTransaction.Builder<>(SQLite.select().from(Contact.class)
-            .where(Contact_Table.user_id.eq(currentUserId))
+            .where(Contact_Table.object_id.eq(currentClientId))
             .and(Contact_Table.deleted.eq(false)))
             .queryResult(new QueryTransaction.QueryResultCallback<Contact>() {
               @Override public void onQueryResult(QueryTransaction transaction,

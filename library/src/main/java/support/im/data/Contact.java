@@ -13,7 +13,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
   // 当前用户id
   @PrimaryKey
   @Column(name = "user_id") String userId;
-  // LeanCloud id
+  // 当前用户LeanCloud id
   @Column(name = "object_id") String objectId;
   // 用户排序字段
   @Column(name = "sort_letters", defaultValue = "\"#\"") String sortLetters;

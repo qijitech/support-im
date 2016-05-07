@@ -46,8 +46,7 @@ public class Injection {
   public static ContactsRepository provideContactsRepository(@NonNull Context context) {
     checkNotNull(context);
     return ContactsRepository.getInstance(ContactsLocalDataSource.getInstance(),
-        ContactsRemoteDataSource.getInstance(),
-        provideUsersRepository(context));
+        ContactsRemoteDataSource.getInstance());
   }
 
   public static ChatsRepository provideChatsRepository() {

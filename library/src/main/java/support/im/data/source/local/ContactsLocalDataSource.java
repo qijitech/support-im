@@ -17,9 +17,9 @@ public class ContactsLocalDataSource extends SimpleContactsDataSource {
     return INSTANCE;
   }
 
-  @Override public void getContacts(@NonNull String currentUserId, @NonNull
+  @Override public void getContacts(@NonNull String currentClientId, @NonNull
   final LoadContactsCallback callback) {
-    DatabaseUtils.findContacts(currentUserId, new DatabaseUtils.ContactsCallback() {
+    DatabaseUtils.findContacts(currentClientId, new DatabaseUtils.ContactsCallback() {
       @Override public void onSuccess(List<Contact> contacts) {
         if (contacts == null || contacts.isEmpty()) {
           callback.onContactsNotFound();
