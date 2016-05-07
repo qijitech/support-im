@@ -56,7 +56,9 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     mAdapter.bind(ContactsTotal.class, ContactsTotalViewHolder.class);
     mAdapter.bind(Contact.class, ContactsViewHolder.class);
 
-    new ContactsPresenter(ChatManager.getInstance().getClientId(), Injection.provideContactsRepository(getContext()), this);
+    if (ChatManager.getInstance().isLogin()) {
+      new ContactsPresenter(ChatManager.getInstance().getClientId(), Injection.provideContactsRepository(getContext()), this);
+    }
 
     setHasOptionsMenu(true);
   }
@@ -72,7 +74,11 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
   @Override public void onResume() {
     super.onResume();
     getActivity().setTitle(R.string.support_im_contacts_title);
-    mPresenter.start();
+    if (mPresenter != null) {
+      mPresenter.start();
+    } else {
+      showNotLoggedIn();
+    }
     EventBus.getDefault().register(this);
   }
 
