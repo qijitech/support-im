@@ -2,33 +2,29 @@ package support.im.contacts;
 
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.AVException;
-import com.google.common.base.Strings;
 import java.util.Collections;
 import java.util.List;
-import support.im.data.User;
-import support.im.data.cache.CacheManager;
+import support.im.data.Contact;
 import support.im.data.source.ContactsDataSource;
 import support.im.data.source.ContactsRepository;
-import support.im.mobilecontact.pinyin.CharacterParser;
-import support.im.utilities.DatabaseUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ContactsPresenter implements ContactsContract.Presenter {
 
-  private CharacterParser characterParser;
   private PinyinComparator pinyinComparator;
 
   private final ContactsContract.View mContactsView;
   private final ContactsRepository mContactsRepository;
 
+  private final String mCurrentUserId;
   private boolean mFirstLoad = true;
 
-  public ContactsPresenter(@NonNull ContactsRepository conversationsRepository, ContactsContract.View contactsView) {
+  public ContactsPresenter(@NonNull String currentId, @NonNull ContactsRepository conversationsRepository, ContactsContract.View contactsView) {
+    mCurrentUserId = checkNotNull(currentId);
     mContactsView = checkNotNull(contactsView);
     mContactsRepository = checkNotNull(conversationsRepository);
 
-    characterParser = CharacterParser.getInstance();
     pinyinComparator = new PinyinComparator();
 
     mContactsView.setPresenter(this);
@@ -47,11 +43,9 @@ public class ContactsPresenter implements ContactsContract.Presenter {
       mContactsRepository.refreshContacts();
     }
 
-    mContactsRepository.getContacts(new ContactsDataSource.LoadContactsCallback() {
-      @Override public void onContactsLoaded(List<User> contacts) {
-        CacheManager.cacheUsers(contacts);
-        DatabaseUtils.saveUsers(contacts, null);
-        processUsers(contacts);
+    mContactsRepository.getContacts(mCurrentUserId, new ContactsDataSource.LoadContactsCallback() {
+      @Override public void onContactsLoaded(List<Contact> contacts) {
+        processContacts(contacts);
         if (!mContactsView.isActive()) {
           return;
         }
@@ -72,19 +66,7 @@ public class ContactsPresenter implements ContactsContract.Presenter {
     });
   }
 
-  private void processUsers(List<User> contacts) {
-    for (User u : contacts) {
-      final String nickname = u.getDisplayName();
-      if (!Strings.isNullOrEmpty(nickname)) {
-        String pinyin = characterParser.getSelling(u.getDisplayName());
-        String sortString = pinyin.substring(0, 1).toUpperCase();
-        if (sortString.matches("[A-Z]")) {
-          u.setSortLetters(sortString.toUpperCase());
-          continue;
-        }
-      }
-      u.setSortLetters("#");
-    }
+  private void processContacts(List<Contact> contacts) {
     Collections.sort(contacts, pinyinComparator);
   }
 

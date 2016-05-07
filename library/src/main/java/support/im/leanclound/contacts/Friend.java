@@ -34,7 +34,7 @@ import support.im.data.SupportUser;
     put(DELETED, deleted);
   }
 
-  public boolean deleted() {
+  public boolean isDeleted() {
     return getBoolean(DELETED);
   }
 }

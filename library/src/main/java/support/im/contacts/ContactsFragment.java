@@ -12,19 +12,18 @@ import android.view.View;
 import android.widget.FrameLayout;
 import butterknife.ButterKnife;
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.FindCallback;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
 import de.greenrobot.event.EventBus;
 import java.util.List;
 import support.im.Injection;
 import support.im.R;
 import support.im.addcontact.AddContactActivity;
+import support.im.data.Contact;
+import support.im.data.SupportUser;
 import support.im.data.User;
 import support.im.detail.UserDetailActivity;
 import support.im.events.InvitationEvent;
 import support.im.leanclound.contacts.AddRequestManager;
-import support.im.leanclound.contacts.Friend;
-import support.im.leanclound.contacts.FriendManager;
 import support.im.newcontacts.NewContactsActivity;
 import support.ui.SupportRecyclerViewFragment;
 
@@ -56,9 +55,9 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     mAdapter.setOnClickListener(this);
     mAdapter.bind(ContactsDummy.class, ContactsDummyViewHolder.class);
     mAdapter.bind(ContactsTotal.class, ContactsTotalViewHolder.class);
-    mAdapter.bind(User.class, ContactsViewHolder.class);
+    mAdapter.bind(Contact.class, ContactsViewHolder.class);
 
-    new ContactsPresenter(Injection.provideContactsRepository(getContext()), this);
+    new ContactsPresenter(SupportUser.getCurrentUser().getUserId(), Injection.provideContactsRepository(getContext()), this);
 
     setHasOptionsMenu(true);
   }
@@ -76,11 +75,6 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     getActivity().setTitle(R.string.support_im_contacts_title);
     mPresenter.start();
     EventBus.getDefault().register(this);
-    FriendManager.fetchFriends(true, new FindCallback<Friend>() {
-      @Override public void done(List<Friend> list, AVException e) {
-
-      }
-    });
   }
 
   @Override public void onPause() {
@@ -155,7 +149,7 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     contentPresenter.displayLoadView();
   }
 
-  @Override public void showContacts(List<User> contacts) {
+  @Override public void showContacts(List<Contact> contacts) {
     mAdapter.addAll(contacts);
     final int size = contacts.size();
     mAdapter.add(mNewContacts, 0);

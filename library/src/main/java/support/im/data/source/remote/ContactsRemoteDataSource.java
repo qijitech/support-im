@@ -4,15 +4,24 @@ import android.support.annotation.NonNull;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.FindCallback;
+import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import support.im.data.Contact;
 import support.im.data.SupportUser;
-import support.im.data.source.ContactsDataSource;
-import support.im.utilities.SupportLog;
+import support.im.data.User;
+import support.im.data.source.SimpleContactsDataSource;
+import support.im.leanclound.contacts.Friend;
+import support.im.mobilecontact.pinyin.CharacterParser;
 
-public class ContactsRemoteDataSource implements ContactsDataSource {
+public class ContactsRemoteDataSource extends SimpleContactsDataSource {
 
   private static ContactsRemoteDataSource INSTANCE = null;
+  private CharacterParser characterParser;
+
+  private ContactsRemoteDataSource() {
+    characterParser = new CharacterParser();
+  }
 
   public static ContactsRemoteDataSource getInstance() {
     if (INSTANCE == null) {
@@ -21,27 +30,40 @@ public class ContactsRemoteDataSource implements ContactsDataSource {
     return INSTANCE;
   }
 
-  @Override public void getContacts(@NonNull final LoadContactsCallback callback) {
-    try {
-      AVQuery.CachePolicy policy = AVQuery.CachePolicy.CACHE_THEN_NETWORK;
-      SupportUser currentUser = SupportUser.getCurrentUser();
-      AVQuery<SupportUser> query = currentUser.followeeQuery(SupportUser.class);
-      query.setCachePolicy(policy);
-      query.setMaxCacheAge(TimeUnit.MINUTES.toMillis(1));
-      query.findInBackground(new FindCallback<SupportUser>() {
-        @Override public void done(List<SupportUser> supportUsers, AVException e) {
-          if (null != e) {
-            callback.onDataNotAvailable(e);
-            return;
-          }
-          callback.onContactsLoaded(SupportUser.toUsers(supportUsers));
+  @Override public void getContacts(@NonNull String currentUserId, @NonNull final LoadContactsCallback callback) {
+    AVQuery<Friend> friendAVQuery = AVQuery.getQuery(Friend.class);
+    friendAVQuery.setCachePolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
+    friendAVQuery.whereEqualTo(Friend.USER, SupportUser.getCurrentUser());
+    friendAVQuery.include(Friend.FRIEND);
+    friendAVQuery.include(Friend.USER);
+    friendAVQuery.setLimit(1000);
+    friendAVQuery.setMaxCacheAge(TimeUnit.DAYS.toMillis(30));
+    friendAVQuery.findInBackground(new FindCallback<Friend>() {
+      @Override public void done(List<Friend> friends, AVException e) {
+        if (friends == null || friends.isEmpty()) {
+          callback.onContactsNotFound();
+          return;
         }
-      });
-    } catch (Exception e) {
-      SupportLog.logException(e);
-    }
-  }
-
-  @Override public void refreshContacts() {
+        List<Contact> contacts = Lists.newArrayListWithCapacity(friends.size());
+        for (Friend friend : friends) {
+          Contact contact = new Contact();
+          User user = friend.getUser().toUser();
+          User friendUser = friend.getFriend().toUser();
+          contact.setObjectId(user.getObjectId());
+          contact.setFriend(friendUser);
+          contact.setDeleted(friend.isDeleted());
+          contact.setUserId(user.getUserId());
+          String pinyin = characterParser.getSelling(friendUser.getDisplayName());
+          String sortString = pinyin.substring(0, 1).toUpperCase();
+          if (sortString.matches("[A-Z]")) {
+            contact.setSortLetters(sortString.toUpperCase());
+          } else {
+            contact.setSortLetters("#");
+          }
+          contacts.add(contact);
+        }
+        callback.onContactsLoaded(contacts);
+      }
+    });
   }
 }

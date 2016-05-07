@@ -15,6 +15,8 @@ import com.raizlabs.android.dbflow.structure.database.transaction.QueryTransacti
 import com.raizlabs.android.dbflow.structure.database.transaction.Transaction;
 import java.util.List;
 import support.im.data.AppDatabase;
+import support.im.data.Contact;
+import support.im.data.Contact_Table;
 import support.im.data.Conversation;
 import support.im.data.Conversation_Table;
 import support.im.data.User;
@@ -117,6 +119,7 @@ public final class DatabaseUtils {
         .getTransactionManager().getSaveQueue();
     saveQueue.setSuccessListener(new Transaction.Success() {
       @Override public void onSuccess(Transaction transaction) {
+        transaction.execute();
         if (saveUserCallback != null) {
           saveUserCallback.onSuccess(user);
         }
@@ -137,6 +140,15 @@ public final class DatabaseUtils {
         .getTransactionManager().getSaveQueue();
     saveQueue.setSuccessListener(new Transaction.Success() {
       @Override public void onSuccess(Transaction transaction) {
+        transaction.execute();
+        if (saveCallback != null) {
+          saveCallback.onSuccess(users);
+        }
+      }
+    });
+    saveQueue.setModelSaveSize(1000);
+    saveQueue.setErrorListener(new Transaction.Error() {
+      @Override public void onError(Transaction transaction, Throwable error) {
         if (saveCallback != null) {
           saveCallback.onSuccess(users);
         }
@@ -188,6 +200,85 @@ public final class DatabaseUtils {
         .build().execute();
   }
 
+  public static void saveContact(final Contact contact, final ContactCallback callback) {
+    if (contact == null) {
+      if (callback != null) {
+        callback.onSuccess(contact);
+      }
+      return;
+    }
+
+    DBBatchSaveQueue saveQueue = FlowManager.getDatabase(AppDatabase.class)
+        .getTransactionManager().getSaveQueue();
+    saveQueue.setSuccessListener(new Transaction.Success() {
+      @Override public void onSuccess(Transaction transaction) {
+        if (callback != null) {
+          callback.onSuccess(contact);
+        }
+      }
+    });
+    saveQueue.add(contact);
+  }
+
+  public static void saveContacts(final List<Contact> contacts, final ContactsCallback callback) {
+    if (contacts == null || contacts.isEmpty()) {
+      if (callback != null) {
+        callback.onSuccess(contacts);
+      }
+      return;
+    }
+
+    DBBatchSaveQueue saveQueue = FlowManager.getDatabase(AppDatabase.class)
+        .getTransactionManager().getSaveQueue();
+    saveQueue.setSuccessListener(new Transaction.Success() {
+      @Override public void onSuccess(Transaction transaction) {
+        if (callback != null) {
+          callback.onSuccess(contacts);
+        }
+      }
+    });
+    saveQueue.setModelSaveSize(1000);
+    saveQueue.setErrorListener(new Transaction.Error() {
+      @Override public void onError(Transaction transaction, Throwable error) {
+        transaction.execute();
+        if (callback != null) {
+          callback.onSuccess(contacts);
+        }
+      }
+    });
+    saveQueue.addAll(contacts);
+  }
+
+  /**
+   * 获取当前用户好友
+   * @param currentUserId 当前用户id
+   * @param callback ContactsCallback
+   */
+  public static void findContacts(String currentUserId, final ContactsCallback callback) {
+    if (currentUserId == null) {
+      if (callback != null) {
+        callback.onSuccess(null);
+      }
+      return;
+    }
+
+    FlowManager.getDatabase(AppDatabase.class)
+        .beginTransactionAsync(new QueryTransaction.Builder<>(SQLite.select().from(Contact.class)
+            .where(Contact_Table.user_id.eq(currentUserId))
+            .and(Contact_Table.deleted.eq(false)))
+            .queryResult(new QueryTransaction.QueryResultCallback<Contact>() {
+              @Override public void onQueryResult(QueryTransaction transaction,
+                  @NonNull CursorResult<Contact> tResult) {
+                List<Contact> models = tResult.toListClose();
+                if (models == null || models.isEmpty()) {
+                  callback.onSuccess(null);
+                } else {
+                  callback.onSuccess(models);
+                }
+              }}).build())
+        .build().execute();
+  }
+
   public static interface FindUserCallback {
     void onSuccess(User user);
   }
@@ -212,4 +303,11 @@ public final class DatabaseUtils {
     void onSuccess(Conversation conversation);
   }
 
+  public static interface ContactsCallback {
+    void onSuccess(List<Contact> contacts);
+  }
+
+  public static interface ContactCallback {
+    void onSuccess(Contact contact);
+  }
 }

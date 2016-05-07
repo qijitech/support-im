@@ -4,15 +4,18 @@ import android.support.annotation.NonNull;
 import android.support.v4.util.ArrayMap;
 import com.avos.avoscloud.AVException;
 import com.google.common.collect.Lists;
+import java.util.ArrayList;
 import java.util.List;
+import support.im.data.Contact;
 import support.im.data.User;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ContactsRepository implements ContactsDataSource {
+public class ContactsRepository extends SimpleContactsDataSource {
 
   private static ContactsRepository INSTANCE = null;
 
+  private final ContactsDataSource mContactsLocalDataSource;
   private final ContactsDataSource mContactsRemoteDataSource;
 
   private final UsersRepository mUsersRepository;
@@ -26,23 +29,25 @@ public class ContactsRepository implements ContactsDataSource {
   /**
    * This variable has package local visibility so it can be accessed from tests.
    */
-  ArrayMap<String, User> mCachedContacts;
+  ArrayMap<String, Contact> mCachedContacts;
 
   // Prevent direct instantiation.
-  private ContactsRepository(@NonNull ContactsDataSource contactsRemoteDataSource,
+  private ContactsRepository(@NonNull ContactsDataSource contactsLocalDataSource,
+      @NonNull ContactsDataSource contactsRemoteDataSource,
       @NonNull UsersRepository usersRepository) {
+    mContactsLocalDataSource = checkNotNull(contactsLocalDataSource);
     mContactsRemoteDataSource = checkNotNull(contactsRemoteDataSource);
     mUsersRepository = checkNotNull(usersRepository);
   }
 
-  public static ContactsRepository getInstance(ContactsDataSource contactsRemoteDataSource, UsersRepository usersRepository) {
+  public static ContactsRepository getInstance(ContactsDataSource contactsLocalDataSource, ContactsDataSource contactsRemoteDataSource, UsersRepository usersRepository) {
     if (INSTANCE == null) {
-      INSTANCE = new ContactsRepository(contactsRemoteDataSource, usersRepository);
+      INSTANCE = new ContactsRepository(contactsLocalDataSource, contactsRemoteDataSource, usersRepository);
     }
     return INSTANCE;
   }
 
-  @Override public void getContacts(@NonNull final LoadContactsCallback callback) {
+  @Override public void getContacts(@NonNull String currentUserId, @NonNull final LoadContactsCallback callback) {
     checkNotNull(callback);
 
     // Respond immediately with cache if available and not dirty
@@ -53,31 +58,45 @@ public class ContactsRepository implements ContactsDataSource {
 
     if (mCacheIsDirty) {
       // If the cache is dirty we need to fetch new data from the network.
-      getContactsFromRemoteDataSource(callback);
+      getContactsFromRemoteDataSource(currentUserId, callback);
+      return;
     }
+    getContactsFromLocalDataSource(currentUserId, callback);
   }
 
-  private void getContactsFromRemoteDataSource(final LoadContactsCallback callback) {
-    mContactsRemoteDataSource.getContacts(new LoadContactsCallback() {
-      @Override public void onContactsLoaded(List<User> users) {
-        final List<String> objectIds = Lists.newArrayList();
-        for (User user : users) {
-          objectIds.add(user.getObjectId());
+  @Override
+  public void saveContacts(List<Contact> contacts, @NonNull SaveContactsCallback callback) {
+    mContactsLocalDataSource.saveContacts(contacts, callback);
+  }
+
+  private void getContactsFromLocalDataSource(@NonNull final String currentUserId, @NonNull final LoadContactsCallback callback) {
+    mContactsLocalDataSource.getContacts(currentUserId, new LoadContactsCallback() {
+      @Override public void onContactsLoaded(List<Contact> contacts) {
+        refreshContactsCache(contacts);
+        callback.onContactsLoaded(contacts);
+      }
+      @Override public void onContactsNotFound() {
+        getContactsFromRemoteDataSource(currentUserId, callback);
+      }
+      @Override public void notLoggedIn() {
+      }
+      @Override public void onDataNotAvailable(AVException exception) {
+        getContactsFromRemoteDataSource(currentUserId, callback);
+      }
+    });
+  }
+
+  private void getContactsFromRemoteDataSource(@NonNull final String currentUserId, final LoadContactsCallback callback) {
+    mContactsRemoteDataSource.getContacts(currentUserId, new LoadContactsCallback() {
+      @Override public void onContactsLoaded(final List<Contact> contacts) {
+        List<User> users = new ArrayList<User>();
+        for (Contact contact : contacts) {
+          users.add(contact.getFriend());
         }
-        mUsersRepository.fetchUsers(objectIds, new UsersDataSource.LoadUsersCallback() {
-          @Override public void onUserLoaded(List<User> users) {
-            refreshContactsCache(users);
-            callback.onContactsLoaded(users);
-          }
-
-          @Override public void onUserNotFound() {
-            callback.onContactsNotFound();
-          }
-
-          @Override public void onDataNotAvailable(AVException exception) {
-            callback.onDataNotAvailable(exception);
-          }
-        });
+        //mUsersRepository.saveUsers(users);
+        saveContacts(contacts, null);
+        refreshContactsCache(contacts);
+        callback.onContactsLoaded(contacts);
       }
 
       @Override public void notLoggedIn() {
@@ -98,12 +117,12 @@ public class ContactsRepository implements ContactsDataSource {
     mCacheIsDirty = true;
   }
 
-  private void refreshContactsCache(List<User> contacts) {
+  private void refreshContactsCache(List<Contact> contacts) {
     if (mCachedContacts == null) {
       mCachedContacts = new ArrayMap<>();
     }
     mCachedContacts.clear();
-    for (User contact : contacts) {
+    for (Contact contact : contacts) {
       mCachedContacts.put(contact.getUserId(), contact);
     }
     mCacheIsDirty = false;

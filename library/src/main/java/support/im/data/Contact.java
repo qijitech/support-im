@@ -6,7 +6,6 @@ import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.structure.BaseModel;
-import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 
 @Table(database = AppDatabase.class, name = "contacts") public class Contact
     extends BaseModel {
@@ -14,9 +13,13 @@ import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
   // 当前用户id
   @PrimaryKey
   @Column(name = "user_id") String userId;
+  // LeanCloud id
+  @Column(name = "object_id") String objectId;
+  // 用户排序字段
+  @Column(name = "sort_letters", defaultValue = "\"#\"") String sortLetters;
   // 朋友id
   @PrimaryKey
-  @ForeignKey(references = {
+  @ForeignKey(saveForeignKeyModel = true,references = {
       @ForeignKeyReference(
           columnType = String.class,
           columnName = "friend_id",
@@ -35,6 +38,22 @@ import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
 
   public void setUserId(String userId) {
     this.userId = userId;
+  }
+
+  public String getObjectId() {
+    return objectId;
+  }
+
+  public void setObjectId(String objectId) {
+    this.objectId = objectId;
+  }
+
+  public String getSortLetters() {
+    return sortLetters;
+  }
+
+  public void setSortLetters(String sortLetters) {
+    this.sortLetters = sortLetters;
   }
 
   public User getFriend() {

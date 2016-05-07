@@ -93,6 +93,7 @@ import java.util.UUID;
     user.setUserId(getUserId());
     user.setObjectId(getObjectId());
     user.setDisplayName(getDisplayName());
+    user.setUsername(getUsername());
     user.setAvatar(getAvatar());
     return user;
   }

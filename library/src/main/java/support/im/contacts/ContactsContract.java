@@ -4,14 +4,14 @@ import com.avos.avoscloud.AVException;
 import java.util.List;
 import support.im.BasePresenter;
 import support.im.BaseView;
-import support.im.data.User;
+import support.im.data.Contact;
 
 public interface ContactsContract {
 
   interface View extends BaseView<Presenter> {
     void setLoadingIndicator(boolean active);
 
-    void showContacts(List<User> contacts);
+    void showContacts(List<Contact> contacts);
 
     void showNotLoggedIn();
 

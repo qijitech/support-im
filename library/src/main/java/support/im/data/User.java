@@ -20,8 +20,6 @@ public class User extends BaseModel {
   @Column(name = "avatar") private String avatar;
   // 用户名
   @Column(name = "username") private String username;
-  // 用户名拼音
-  @Column(name = "sort_letters") private String sortLetters;
 
   public String getUserId() {
     return userId;
@@ -61,14 +59,6 @@ public class User extends BaseModel {
 
   public void setUsername(String username) {
     this.username = username;
-  }
-
-  public void setSortLetters(String sortLetters) {
-    this.sortLetters = sortLetters;
-  }
-
-  public String getSortLetters() {
-    return sortLetters;
   }
 
   public Uri toAvatarUri() {
