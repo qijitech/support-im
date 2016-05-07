@@ -15,9 +15,7 @@ import support.im.data.User;
 import support.im.data.cache.CacheManager;
 import support.im.data.source.ChatsDataSource;
 import support.im.data.source.ConversationsDataSource;
-import support.im.leanclound.ChatManager;
 import support.im.utilities.AVExceptionHandler;
-import support.im.utilities.DatabaseUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -138,30 +136,14 @@ public class ChatsPresenter implements ChatsContract.Presenter {
     mChatsView.notifyItemInserted(message);
 
     if (mAVIMConversation == null) {
-      // create
-      User user = CacheManager.getCacheUser(mUserObjectId);
-      ChatManager.getInstance().createSingleConversation(user, new AVIMConversationCreatedCallback() {
-        @Override public void done(final AVIMConversation avimConversation, AVIMException e) {
-          if (!AVExceptionHandler.handAVException(e, false)) {
-            return;
+      User toUser = CacheManager.getCacheUser(mUserObjectId);
+      mChatsRepository.createConversation(toUser, new AVIMConversationCreatedCallback() {
+        @Override public void done(AVIMConversation avimConversation, AVIMException e) {
+          if (AVExceptionHandler.handAVException(e, false)) {
+            mAVIMConversation = avimConversation;
+            sendMessage(message);
+            mConversationsRepository.saveConversation(mAVIMConversation, message);
           }
-          mAVIMConversation = avimConversation;
-          mChatsRepository.sendMessage(avimConversation, message, new ChatsDataSource.GetMessageCallback() {
-            @Override public void onMessageLoaded(AVIMMessage message) {
-              DatabaseUtils.saveConversation(avimConversation, message, ChatManager.getInstance().getClientId());
-              if (!mChatsView.isActive()) {
-                return;
-              }
-              mChatsView.notifyDataSetChanged();
-            }
-
-            @Override public void onDataNotAvailable(AVException exception) {
-              if (!mChatsView.isActive()) {
-                return;
-              }
-              mChatsView.onDataNotAvailable(AVExceptionHandler.getLocalizedMessage(exception), exception);
-            }
-          });
         }
       });
       return;
@@ -172,6 +154,7 @@ public class ChatsPresenter implements ChatsContract.Presenter {
         if (!mChatsView.isActive()) {
           return;
         }
+        mConversationsRepository.saveConversation(mAVIMConversation, message);
         mChatsView.notifyDataSetChanged();
       }
 
@@ -183,4 +166,5 @@ public class ChatsPresenter implements ChatsContract.Presenter {
       }
     });
   }
+
 }

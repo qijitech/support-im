@@ -3,6 +3,7 @@ package support.im.data.source;
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -14,7 +15,7 @@ import support.im.utilities.AVExceptionHandler;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-public class ConversationsRepository implements ConversationsDataSource {
+public class ConversationsRepository extends SimpleConversationsDataSource {
 
   private static ConversationsRepository INSTANCE = null;
 
@@ -145,8 +146,9 @@ public class ConversationsRepository implements ConversationsDataSource {
     mConversationsRemoteDataSource.getLastMessage(conversation, callback);
   }
 
-  @Override public void saveConversation(@NonNull Conversation conversation) {
-    mConversationsLocalDataSource.saveConversation(conversation);
+  @Override public void saveConversation(@NonNull AVIMConversation avimConversation,
+      @NonNull AVIMMessage avimMessage) {
+    mConversationsLocalDataSource.saveConversation(avimConversation, avimMessage);
   }
 
   @Override public void refreshConversations() {

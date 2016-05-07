@@ -6,10 +6,12 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.util.LinkedHashMap;
 import java.util.List;
+import support.im.data.User;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -104,5 +106,12 @@ public class ChatsRepository implements ChatsDataSource {
         callback.onDataNotAvailable(exception);
       }
     });
+  }
+
+  @Override public void createConversation(@NonNull User toUser,
+      @NonNull final AVIMConversationCreatedCallback callback) {
+    checkNotNull(toUser);
+    checkNotNull(callback);
+    mChatsRemoteDataSource.createConversation(toUser, callback);
   }
 }

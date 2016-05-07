@@ -5,7 +5,9 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import java.util.List;
+import support.im.data.User;
 
 public interface ChatsDataSource {
 
@@ -32,6 +34,8 @@ public interface ChatsDataSource {
       @NonNull final String messageId,
       final long timestamp, final int limit,
       @NonNull LoadMessagesCallback callback);
+
+  void createConversation(@NonNull User toUser, @NonNull AVIMConversationCreatedCallback callback);
 
   void refreshMessages();
 }

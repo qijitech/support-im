@@ -139,4 +139,8 @@ public class ChatManager {
     return mIMClient.getQuery();
   }
 
+  public AVIMClient getAVIMClient() {
+    return mIMClient;
+  }
+
 }

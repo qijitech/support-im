@@ -1,9 +1,13 @@
 package support.im.data.source.local;
 
 import android.support.annotation.NonNull;
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import java.util.List;
 import support.im.data.Conversation;
 import support.im.data.source.SimpleConversationsDataSource;
+import support.im.leanclound.ChatManager;
 import support.im.utilities.DatabaseUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -53,6 +57,8 @@ public class ConversationsLocalDataSource extends SimpleConversationsDataSource 
     });
   }
 
-  @Override public void saveConversation(@NonNull Conversation conversation) {
+  @Override public void saveConversation(@NonNull AVIMConversation avimConversation,
+      @NonNull AVIMMessage avimMessage) {
+    DatabaseUtils.saveConversation(avimConversation, avimMessage, ChatManager.getInstance().getClientId());
   }
 }
