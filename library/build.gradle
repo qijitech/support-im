@@ -33,6 +33,10 @@ android {
     exclude 'META-INF/NOTICE'
     exclude 'META-INF/services/javax.annotation.processing.Processor'
   }
+
+  lintOptions {
+    abortOnError false
+  }
 }
 
 def dbflow_version = "3.0.0-beta6"

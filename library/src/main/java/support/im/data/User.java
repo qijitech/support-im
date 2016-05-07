@@ -11,7 +11,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 public class User extends BaseModel {
 
   // 用户id
-  @Column(name = "user_id") @PrimaryKey private String userId;
+  @Column(name = "user_id", getterName = "getUserId") @PrimaryKey private String userId;
   // LeanCloud 保存的id
   @Column(name = "object_id") private String objectId;
   // 用户名称
