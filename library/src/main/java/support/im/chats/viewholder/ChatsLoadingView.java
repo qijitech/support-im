@@ -1,4 +1,4 @@
-package support.im.chats;
+package support.im.chats.viewholder;
 
 import android.content.Context;
 import android.view.LayoutInflater;

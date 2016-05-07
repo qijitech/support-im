@@ -1,4 +1,4 @@
-package support.im.chats;
+package support.im.chats.viewholder;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -10,6 +10,8 @@ import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMAudioMessage;
 import java.util.Locale;
 import support.im.R;
+import support.im.chats.PlayButton;
+import support.im.chats.viewholder.ChatsViewHolder;
 
 public class ChatsAudioViewHolder extends ChatsViewHolder {
 

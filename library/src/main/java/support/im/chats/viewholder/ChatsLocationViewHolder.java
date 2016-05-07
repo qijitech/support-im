@@ -1,4 +1,4 @@
-package support.im.chats;
+package support.im.chats.viewholder;
 
 import android.content.Context;
 import android.view.View;
@@ -8,6 +8,7 @@ import butterknife.ButterKnife;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMLocationMessage;
 import support.im.R;
+import support.im.chats.viewholder.ChatsViewHolder;
 
 public class ChatsLocationViewHolder extends ChatsViewHolder {
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
+import support.im.chats.viewholder.ChatsViewHolder;
 import support.im.leanclound.ChatManager;
 import support.ui.adapters.EasyRecyclerAdapter;
 import support.ui.adapters.EasyViewHolder;
