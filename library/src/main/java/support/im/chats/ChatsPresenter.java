@@ -8,7 +8,9 @@ import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
+import com.avos.avoscloud.im.v2.messages.AVIMImageMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
+import java.io.IOException;
 import java.util.List;
 import support.im.data.Conversation;
 import support.im.data.User;
@@ -127,6 +129,15 @@ public class ChatsPresenter implements ChatsContract.Presenter {
     AVIMTextMessage message = new AVIMTextMessage();
     message.setText(content);
     sendMessage(message);
+  }
+
+  @Override public void sendImageMessage(String imagePath) {
+    try {
+      AVIMImageMessage imageMessage = new AVIMImageMessage(imagePath);
+      sendMessage(imageMessage);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   private void sendMessage(final AVIMTypedMessage message) {

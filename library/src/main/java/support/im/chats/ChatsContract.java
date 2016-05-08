@@ -23,6 +23,7 @@ public interface ChatsContract {
 
   interface Presenter extends BasePresenter {
     void loadAVIMConversation();
+    void sendImageMessage(String imagePath);
     void sendTextMessage(String content);
     void fetchMessages(boolean forceUpdate);
     void fetchMessages(final String messageId, final long timestamp, final int limit);

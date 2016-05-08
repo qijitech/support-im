@@ -53,10 +53,6 @@ public class FuncViewAdapter extends BaseAdapter {
     if (funcItem != null) {
       viewHolder.mIconView.setBackgroundResource(funcItem.icon);
       viewHolder.mTextView.setText(funcItem.funcName);
-      convertView.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-        }
-      });
     }
     return convertView;
   }

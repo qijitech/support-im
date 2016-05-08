@@ -76,6 +76,10 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
     }
   }
 
+  @Override protected void sendImage(String imagePath) {
+    mPresenter.sendImageMessage(imagePath);
+  }
+
   @Override protected void onSendBtnClick(String message) {
     mPresenter.sendTextMessage(message);
   }
@@ -123,6 +127,7 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
   }
 
   @Override public void onDataNotAvailable(String error, AVException exception) {
+    mAdapter.notifyDataSetChanged();
     if (mAdapter.isEmpty()) {
       mContentPresenter.displayEmptyView();
     }
