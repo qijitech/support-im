@@ -112,7 +112,7 @@ public final class ChatsUtils {
               viewHolder.ly_root.setBackgroundResource(R.drawable.list_selector_white);
 
               if (isDelBtn) {
-                viewHolder.iv_emoticon.setImageResource(R.drawable.icon_del);
+                viewHolder.iv_emoticon.setImageResource(R.drawable.si_emoji_del);
               } else {
                 viewHolder.iv_emoticon.setImageResource(emojiBean.icon);
               }
@@ -127,7 +127,7 @@ public final class ChatsUtils {
             }
         }))
         .setShowDelBtn(EmoticonPageEntity.DelBtnStatus.LAST)
-        .setIconUri(ImageBase.Scheme.DRAWABLE.toUri("icon_emoji"))
+        .setIconUri(ImageBase.Scheme.DRAWABLE.toUri("si_emoji_icon"))
         .build();
     pageSetAdapter.add(emojiPageSetEntity);
   }
@@ -230,7 +230,7 @@ public final class ChatsUtils {
         viewHolder.ly_root.setBackgroundResource(R.drawable.list_selector);
 
         if (isDelBtn) {
-          viewHolder.iv_emoticon.setImageResource(R.drawable.icon_del);
+          viewHolder.iv_emoticon.setImageResource(R.drawable.si_emoji_del);
         } else {
           try {
             ImageLoader.getInstance(viewHolder.iv_emoticon.getContext()).displayImage(emoticonEntity.getIconUri(),

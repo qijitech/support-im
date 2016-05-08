@@ -64,7 +64,7 @@ public class BigEmoticonsAdapter extends EmoticonsAdapter<EmoticonEntity> {
     final boolean isDelBtn = isDelBtn(position);
     final EmoticonEntity emoticonEntity = mData.get(position);
     if (isDelBtn) {
-      viewHolder.iv_emoticon.setImageResource(R.drawable.icon_del);
+      viewHolder.iv_emoticon.setImageResource(R.drawable.si_emoji_del);
       viewHolder.iv_emoticon.setBackgroundResource(com.keyboard.view.R.drawable.bg_emoticon);
     } else {
       if (emoticonEntity != null) {
