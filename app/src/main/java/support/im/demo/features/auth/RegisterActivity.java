@@ -14,7 +14,7 @@ import support.im.data.SupportUser;
 import support.im.demo.BaseActivity;
 import support.im.demo.R;
 import support.im.utilities.AVExceptionHandler;
-import support.ui.utilities.HudUtils;
+import support.im.utilities.HudUtils;
 
 public class RegisterActivity extends BaseActivity {
 

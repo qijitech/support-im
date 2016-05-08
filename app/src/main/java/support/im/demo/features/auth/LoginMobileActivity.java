@@ -19,7 +19,7 @@ import support.im.demo.R;
 import support.im.demo.features.main.MainActivity;
 import support.im.leanclound.ChatManager;
 import support.im.utilities.AVExceptionHandler;
-import support.ui.utilities.HudUtils;
+import support.im.utilities.HudUtils;
 import support.ui.utilities.ToastUtils;
 
 public class LoginMobileActivity extends BaseActivity {

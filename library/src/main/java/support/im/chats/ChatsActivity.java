@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import support.im.R;
 import support.im.leanclound.Constants;
-import support.ui.SupportSinglePaneActivity;
+import support.ui.app.SupportSinglePaneActivity;
 
 public class ChatsActivity extends SupportSinglePaneActivity {
 

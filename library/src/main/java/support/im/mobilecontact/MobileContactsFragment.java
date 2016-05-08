@@ -14,9 +14,8 @@ import pl.tajchert.nammu.Nammu;
 import pl.tajchert.nammu.PermissionCallback;
 import support.im.R;
 import support.im.data.MobileContact;
-import support.ui.SupportRecyclerViewFragment;
-import support.ui.adapters.EasyRecyclerAdapter;
-import support.ui.widget.SideBar;
+import support.im.SupportRecyclerViewFragment;
+import support.im.widget.SideBar;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

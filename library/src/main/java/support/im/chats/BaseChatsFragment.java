@@ -22,7 +22,7 @@ import support.im.chats.viewholder.ChatsViewHolderFactory;
 import support.im.emoticons.ChatsUtils;
 import support.im.emoticons.Constants;
 import support.im.emoticons.SupportImFuncView;
-import support.ui.SupportFragment;
+import support.ui.app.SupportFragment;
 import support.ui.content.ContentPresenter;
 import support.ui.content.ReflectionContentPresenterFactory;
 import support.ui.content.RequiresContent;

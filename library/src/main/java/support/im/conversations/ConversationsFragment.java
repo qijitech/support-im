@@ -12,7 +12,7 @@ import support.im.chats.ChatsActivity;
 import support.im.data.Conversation;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.event.ImTypeMessageEvent;
-import support.ui.SupportRecyclerViewFragment;
+import support.im.SupportRecyclerViewFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

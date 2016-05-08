@@ -1,4 +1,4 @@
-package support.ui.utilities;
+package support.im.utilities;
 
 import android.content.Context;
 import com.kaopiz.kprogresshud.KProgressHUD;

@@ -2,7 +2,6 @@ package support.im.utilities;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import support.ui.utilities.HudUtils;
 
 public abstract class NetworkAsyncTask extends AsyncTask<Void, Void, Void> {
 

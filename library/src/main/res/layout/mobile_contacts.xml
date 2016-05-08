@@ -29,7 +29,7 @@
         android:textSize="30.0dip"
         android:visibility="invisible"
         />
-    <support.ui.widget.SideBar
+    <support.im.widget.SideBar
         android:id="@+id/contact_sidebar"
         android:layout_width="30dp"
         android:layout_height="match_parent"

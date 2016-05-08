@@ -9,8 +9,8 @@ import support.im.events.InvitationEvent;
 import support.im.events.NewContactAgreeEvent;
 import support.im.leanclound.contacts.AddRequest;
 import support.im.leanclound.contacts.AddRequestManager;
-import support.ui.SupportRecyclerViewFragment;
-import support.ui.utilities.HudUtils;
+import support.im.SupportRecyclerViewFragment;
+import support.im.utilities.HudUtils;
 import support.ui.utilities.ToastUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;

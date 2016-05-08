@@ -11,11 +11,10 @@ import support.im.Injection;
 import support.im.R;
 import support.im.chats.ChatsActivity;
 import support.im.data.User;
-import support.im.data.cache.CacheManager;
 import support.im.data.source.UsersDataSource;
 import support.im.leanclound.Constants;
 import support.im.leanclound.contacts.AddRequestManager;
-import support.ui.SupportActivity;
+import support.ui.app.SupportActivity;
 import support.ui.components.SupportButton;
 
 public class UserDetailActivity extends SupportActivity implements View.OnClickListener {

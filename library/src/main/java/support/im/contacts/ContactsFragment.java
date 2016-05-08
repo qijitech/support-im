@@ -24,7 +24,7 @@ import support.im.events.InvitationEvent;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.contacts.AddRequestManager;
 import support.im.newcontacts.NewContactsActivity;
-import support.ui.SupportRecyclerViewFragment;
+import support.im.SupportRecyclerViewFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

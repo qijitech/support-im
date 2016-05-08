@@ -3,7 +3,7 @@ package support.im.newcontacts;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import support.im.Injection;
-import support.ui.SupportSinglePaneActivity;
+import support.ui.app.SupportSinglePaneActivity;
 
 public class NewContactsActivity extends SupportSinglePaneActivity {
 

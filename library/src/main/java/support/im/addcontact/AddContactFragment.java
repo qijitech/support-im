@@ -14,8 +14,8 @@ import support.im.data.User;
 import support.im.detail.UserDetailActivity;
 import support.im.mobilecontact.MobileContactsActivity;
 import support.im.utilities.DialogUtils;
-import support.ui.SupportFragment;
-import support.ui.utilities.HudUtils;
+import support.im.utilities.HudUtils;
+import support.ui.app.SupportFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

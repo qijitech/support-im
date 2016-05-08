@@ -1,4 +1,4 @@
-package support.ui.widget;
+package support.im.widget;
 
 import android.content.Context;
 import android.support.v4.view.ViewCompat;

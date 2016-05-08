@@ -10,7 +10,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import support.im.demo.R;
 import support.im.demo.features.main.MainActivity;
-import support.ui.SupportFragment;
+import support.ui.app.SupportFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

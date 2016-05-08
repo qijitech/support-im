@@ -3,7 +3,7 @@ package support.im.demo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import com.avos.avoscloud.AVAnalytics;
-import support.ui.SupportSinglePaneActivity;
+import support.ui.app.SupportSinglePaneActivity;
 
 public abstract class BaseSinglePaneActivity extends SupportSinglePaneActivity {
 

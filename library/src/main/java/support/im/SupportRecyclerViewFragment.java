@@ -1,4 +1,4 @@
-package support.ui;
+package support.im;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +11,7 @@ import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import support.im.R;
 import support.ui.adapters.EasyRecyclerAdapter;
 import support.ui.adapters.EasyViewHolder;
+import support.ui.app.SupportFragment;
 import support.ui.content.ContentPresenter;
 import support.ui.content.EmptyView;
 import support.ui.content.ErrorView;

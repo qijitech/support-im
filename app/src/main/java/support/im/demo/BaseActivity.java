@@ -1,7 +1,7 @@
 package support.im.demo;
 
 import com.avos.avoscloud.AVAnalytics;
-import support.ui.SupportActivity;
+import support.ui.app.SupportActivity;
 
 public class BaseActivity extends SupportActivity {
 
