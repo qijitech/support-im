@@ -4,7 +4,8 @@ import android.content.Context;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
-import support.im.chats.viewholder.ChatsViewHolder;
+import support.im.chats.viewholder.ChatsCommonViewHolder;
+import support.im.chats.viewholder.ChatsIncomingViewHolder;
 import support.im.leanclound.ChatManager;
 import support.ui.adapters.EasyRecyclerAdapter;
 import support.ui.adapters.EasyViewHolder;
@@ -23,10 +24,13 @@ public class ChatsAdapter extends EasyRecyclerAdapter {
 
   @Override public void onBindViewHolder(EasyViewHolder holder, int position) {
     super.onBindViewHolder(holder, position);
-    if (holder instanceof ChatsViewHolder) {
-      ChatsViewHolder chatsViewHolder = (ChatsViewHolder) holder;
-      chatsViewHolder.showDisplayName(isShowDisplayName);
+    if (holder instanceof ChatsCommonViewHolder) {
+      ChatsCommonViewHolder chatsViewHolder = (ChatsCommonViewHolder) holder;
       chatsViewHolder.showTimeView(shouldShowTime(position));
+    }
+    if (holder instanceof ChatsIncomingViewHolder) {
+      ChatsIncomingViewHolder chatsViewHolder = (ChatsIncomingViewHolder) holder;
+      chatsViewHolder.showDisplayName(isShowDisplayName);
     }
   }
 

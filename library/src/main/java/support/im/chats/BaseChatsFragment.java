@@ -27,7 +27,7 @@ import sj.keyboard.widget.EmoticonsEditText;
 import sj.keyboard.widget.FuncLayout;
 import support.im.R;
 import support.im.chats.viewholder.ChatsLoadingView;
-import support.im.chats.viewholder.ChatsViewHolder;
+import support.im.chats.viewholder.ChatsCommonViewHolder;
 import support.im.chats.viewholder.ChatsViewHolderFactory;
 import support.im.emoticons.ChatsUtils;
 import support.im.emoticons.Constants;
@@ -70,7 +70,7 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
     super.onCreate(savedInstanceState);
     localCameraPath = PathUtils.getPicturePathByCurrentTime(getContext());
     mAdapter = new ChatsAdapter(getContext());
-    mAdapter.bind(AVIMMessage.class, ChatsViewHolder.class);
+    mAdapter.bind(AVIMMessage.class, ChatsCommonViewHolder.class);
     mAdapter.viewHolderFactory(new ChatsViewHolderFactory(getContext()));
     mLayoutManager = new LinearLayoutManager(getContext());
     mContentPresenter = factory.createContentPresenter();

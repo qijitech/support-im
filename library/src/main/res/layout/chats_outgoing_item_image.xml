@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -25,36 +24,21 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/image_support_im_chats_item_avatar"
         android:layout_toStartOf="@id/image_support_im_chats_item_avatar"
+        android:background="@drawable/si_selector_outgoing_photo"
         android:orientation="horizontal"
-        android:paddingRight="8dp"
+        android:padding="8dp"
         >
-      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:custom="http://schemas.android.com/apk/res-auto"
-          xmlns:tools="http://schemas.android.com/tools"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:orientation="horizontal"
-          >
-
-        <TextView
-            android:id="@id/text_support_im_chats_item_audio_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            tools:text="Text"
-            />
-
-        <support.im.chats.PlayButton
-            android:id="@id/btn_support_im_chats_item_audio_play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/si_selector_incoming_photo"
-            android:orientation="vertical"
-            custom:left="false"
-            />
-      </LinearLayout>
+      <com.facebook.drawee.view.SimpleDraweeView
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:fresco="http://schemas.android.com/apk/res-auto"
+          android:id="@id/image_support_im_chats_item_content"
+          android:layout_width="@dimen/support_im_chats_item_image_width"
+          android:layout_height="@dimen/support_im_chats_item_image_width"
+          android:maxWidth="@dimen/support_im_chats_item_image_width"
+          android:minWidth="@dimen/support_im_chats_item_image_width"
+          fresco:placeholderImage="@drawable/support_im_placeholder_avatar"
+          fresco:placeholderImageScaleType="centerCrop"
+          />
     </FrameLayout>
 
     <include layout="@layout/chats_item_status"/>

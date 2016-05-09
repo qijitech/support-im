@@ -28,33 +28,17 @@
         android:orientation="horizontal"
         android:paddingRight="8dp"
         >
-      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:custom="http://schemas.android.com/apk/res-auto"
+      <TextView
+          xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
+          android:id="@id/text_support_im_chats_item_location"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:orientation="horizontal"
-          >
-
-        <TextView
-            android:id="@id/text_support_im_chats_item_audio_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            tools:text="Text"
-            />
-
-        <support.im.chats.PlayButton
-            android:id="@id/btn_support_im_chats_item_audio_play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/si_selector_incoming_photo"
-            android:orientation="vertical"
-            custom:left="false"
-            />
-      </LinearLayout>
+          android:background="@drawable/support_im_chats_location_default"
+          android:gravity="center_horizontal"
+          android:textColor="@android:color/white"
+          tools:text="Text"
+          />
     </FrameLayout>
 
     <include layout="@layout/chats_item_status"/>

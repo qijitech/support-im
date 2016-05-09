@@ -18,12 +18,10 @@
       android:layout_marginEnd="72dp"
       android:layout_marginRight="72dp"
       >
-
     <include
         layout="@layout/chats_item_incoming_avatar"
         android:id="@id/image_support_im_chats_item_avatar"
         />
-
     <LinearLayout
         android:id="@id/container_support_im_chats_item_content_display_name"
         android:layout_width="wrap_content"
@@ -51,23 +49,19 @@
           android:id="@id/container_support_im_chats_item_content"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:orientation="horizontal"
+          android:background="@drawable/si_selector_incoming_photo"
+          android:padding="8dp"
           >
         <TextView
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
-            android:id="@id/text_support_im_chats_item_content"
+            android:id="@id/text_support_im_chats_item_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/si_selector_incoming"
-            android:gravity="center_vertical"
-            android:paddingBottom="12dp"
-            android:paddingLeft="25dp"
-            android:paddingRight="16dp"
-            android:paddingTop="12dp"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/support_im_text_size_medium"
-            tools:text="TextTextTextTextTextTextTextTextTextTextTextTextTextTextText"
+            android:background="@drawable/support_im_chats_location_default"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/white"
+            tools:text="Text"
             />
       </FrameLayout>
     </LinearLayout>

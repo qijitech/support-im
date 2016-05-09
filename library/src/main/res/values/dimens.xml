@@ -20,5 +20,6 @@
 
   <dimen name="support_im_emoticon_item_big_size">60dp</dimen>
   <dimen name="support_im_chats_item_image_width">150dp</dimen>
+  <dimen name="si_chats_item_avatar_size">48dp</dimen>
 
 </resources>

@@ -9,12 +9,12 @@ import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import support.im.R;
 import support.im.leanclound.EmotionHelper;
 
-public abstract class ChatsTextViewHolder extends ChatsOutgoingViewHolder {
+public class ChatsIncomingTextViewHolder extends ChatsIncomingViewHolder {
 
   protected TextView mMessageTextView;
 
-  public ChatsTextViewHolder(Context context, ViewGroup parent, int layoutId) {
-    super(context, parent, layoutId);
+  public ChatsIncomingTextViewHolder(Context context, ViewGroup parent) {
+    super(context, parent, R.layout.chats_incoming_item_text);
     mMessageTextView = ButterKnife.findById(itemView, R.id.text_support_im_chats_item_content);
   }
 
@@ -25,4 +25,5 @@ public abstract class ChatsTextViewHolder extends ChatsOutgoingViewHolder {
       mMessageTextView.setText(EmotionHelper.replace(mContext, textMessage.getText()));
     }
   }
+
 }

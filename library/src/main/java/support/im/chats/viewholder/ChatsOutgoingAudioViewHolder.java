@@ -2,7 +2,6 @@ package support.im.chats.viewholder;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.ButterKnife;
@@ -11,24 +10,14 @@ import com.avos.avoscloud.im.v2.messages.AVIMAudioMessage;
 import java.util.Locale;
 import support.im.R;
 import support.im.chats.PlayButton;
-import support.im.chats.viewholder.ChatsViewHolder;
 
-public class ChatsAudioViewHolder extends ChatsViewHolder {
+public class ChatsOutgoingAudioViewHolder extends ChatsOutgoingViewHolder {
 
   protected PlayButton mPlayButton;
   protected TextView mDurationTextView;
 
-  public ChatsAudioViewHolder(Context context, ViewGroup parent, boolean isLeft) {
-    super(context, parent, isLeft);
-  }
-
-  @Override protected void setupView() {
-    super.setupView();
-    if (mIsLeft) {
-      mContentContainer.addView(View.inflate(mContext, R.layout.chats_incoming_item_audio, null));
-    } else {
-      mContentContainer.addView(View.inflate(mContext, R.layout.chats_outgoing_item_audio, null));
-    }
+  public ChatsOutgoingAudioViewHolder(Context context, ViewGroup parent) {
+    super(context, parent, R.layout.chats_outgoing_item_audio);
     mPlayButton = ButterKnife.findById(itemView, R.id.btn_support_im_chats_item_audio_play);
     mDurationTextView = ButterKnife.findById(itemView, R.id.text_support_im_chats_item_audio_duration);
   }
@@ -49,4 +38,5 @@ public class ChatsAudioViewHolder extends ChatsViewHolder {
       }
     }
   }
+
 }

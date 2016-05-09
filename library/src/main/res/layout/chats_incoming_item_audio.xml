@@ -1,26 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="8dp"
     >
-  <support.im.chats.PlayButton
-      android:id="@id/btn_support_im_chats_item_audio_play"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:background="@drawable/si_selector_incoming_photo"
-      android:orientation="vertical"
-      custom:left="true"
-      />
 
-  <TextView
-      android:id="@id/text_support_im_chats_item_audio_duration"
+  <include layout="@layout/chats_item_time"/>
+
+  <RelativeLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="center_vertical"
-      android:layout_marginLeft="16dp"
-      android:layout_marginRight="16dp"
-      android:text="@android:color/white"
-      />
+      android:layout_marginEnd="72dp"
+      android:layout_marginRight="72dp"
+      >
+
+    <include
+        layout="@layout/chats_item_incoming_avatar"
+        android:id="@id/image_support_im_chats_item_avatar"
+        />
+
+    <LinearLayout
+        android:id="@id/container_support_im_chats_item_content_display_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/image_support_im_chats_item_avatar"
+        android:layout_toRightOf="@id/image_support_im_chats_item_avatar"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        >
+      <TextView
+          android:id="@+id/text_support_im_chats_item_display_name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="16dp"
+          android:layout_marginStart="16dp"
+          android:ellipsize="end"
+          android:gravity="start"
+          android:lines="1"
+          android:textColor="@color/material_grey_600"
+          android:textSize="@dimen/support_im_text_size_medium"
+          tools:text="Tom"
+          />
+      <FrameLayout
+          android:id="@id/container_support_im_chats_item_content"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:background="@drawable/si_selector_incoming_photo"
+          android:foreground="?attr/selectableItemBackground"
+          android:padding="8dp"
+          >
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:custom="http://schemas.android.com/apk/res-auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+          <support.im.chats.PlayButton
+              android:id="@id/btn_support_im_chats_item_audio_play"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@drawable/si_selector_incoming_photo"
+              android:orientation="vertical"
+              custom:left="true"
+              />
+          <TextView
+              android:id="@id/text_support_im_chats_item_audio_duration"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center_vertical"
+              android:layout_marginLeft="16dp"
+              android:layout_marginRight="16dp"
+              android:text="@android:color/white"
+              />
+        </LinearLayout>
+      </FrameLayout>
+    </LinearLayout>
+
+  </RelativeLayout>
+
 </LinearLayout>

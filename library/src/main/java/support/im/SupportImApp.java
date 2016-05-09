@@ -3,7 +3,6 @@ package support.im;
 import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import pl.tajchert.nammu.Nammu;
@@ -12,6 +11,7 @@ import support.im.leanclound.ChatManager;
 import support.im.leanclound.contacts.AddRequest;
 import support.im.leanclound.contacts.Friend;
 import support.im.service.PushManager;
+import support.im.utilities.FrescoDisplayUtils;
 import support.ui.app.SupportApp;
 
 public class SupportImApp extends SupportApp {
@@ -36,6 +36,7 @@ public class SupportImApp extends SupportApp {
     ChatManager.getInstance().initialize();
     ChatManager.setDebugEnabled(SupportIm.sDebugEnabled);
 
-    Fresco.initialize(appContext());
+    // 初始化Fresco
+    FrescoDisplayUtils.initialize(appContext());
   }
 }
