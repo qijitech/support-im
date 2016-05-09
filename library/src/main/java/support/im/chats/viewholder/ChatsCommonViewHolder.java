@@ -8,8 +8,10 @@ import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.facebook.drawee.view.SimpleDraweeView;
 import support.im.R;
 import support.im.data.cache.CacheManager;
+import support.im.utilities.FrescoDisplayUtils;
 import support.im.utilities.Utils;
 import support.ui.adapters.EasyViewHolder;
+import support.ui.app.SupportApp;
 import support.ui.utilities.ViewUtils;
 
 public abstract class ChatsCommonViewHolder extends EasyViewHolder<AVIMMessage> {
@@ -18,10 +20,12 @@ public abstract class ChatsCommonViewHolder extends EasyViewHolder<AVIMMessage> 
   protected TextView mSentAtTextView;
   protected SimpleDraweeView mAvatarView;
   protected Context mContext;
+  private static int avatarSize;
 
   public ChatsCommonViewHolder(Context context, ViewGroup parent, int layoutId) {
     super(context, parent, layoutId);
     mContext = context;
+    avatarSize = (int) SupportApp.dimen(R.dimen.si_chats_item_avatar_size);
     mSentAtTextView = ButterKnife.findById(itemView, R.id.text_support_im_chats_item_sent_at);
     mAvatarView = ButterKnife.findById(itemView, R.id.image_support_im_chats_item_avatar);
   }
@@ -30,7 +34,8 @@ public abstract class ChatsCommonViewHolder extends EasyViewHolder<AVIMMessage> 
     mMessage = value;
     String objectId = value.getFrom();
     if (CacheManager.hasCacheUser(objectId)) {
-      mAvatarView.setImageURI(CacheManager.getCacheUser(objectId).toAvatarUri());
+      FrescoDisplayUtils.showThumb(CacheManager.getCacheUser(objectId).toAvatarUri(),
+          mAvatarView, avatarSize, avatarSize);
     } else {
       mAvatarView.setImageURI(null);
     }

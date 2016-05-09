@@ -9,6 +9,7 @@ import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMImageMessage;
 import com.facebook.drawee.view.SimpleDraweeView;
 import support.im.R;
+import support.im.utilities.FrescoDisplayUtils;
 
 public class ChatsIncomingImageViewHolder extends ChatsIncomingViewHolder {
 
@@ -25,9 +26,9 @@ public class ChatsIncomingImageViewHolder extends ChatsIncomingViewHolder {
       AVIMImageMessage avimImageMessage = (AVIMImageMessage) value;
       String localFilePath = avimImageMessage.getLocalFilePath();
       if (!TextUtils.isEmpty(localFilePath)) {
-        mContentImageView.setImageURI(Uri.parse("file://" + localFilePath));
+        FrescoDisplayUtils.showThumb(Uri.parse("file://" + localFilePath), mContentImageView, 200, 400);
       } else {
-        mContentImageView.setImageURI(Uri.parse(avimImageMessage.getFileUrl()));
+        FrescoDisplayUtils.showThumb(Uri.parse(avimImageMessage.getFileUrl()), mContentImageView, 200, 400);
       }
     }
   }
