@@ -22,11 +22,13 @@
         android:id="@id/container_support_im_chats_item_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/image_support_im_chats_item_avatar"
-        android:layout_toStartOf="@id/image_support_im_chats_item_avatar"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="56dp"
+        android:layout_marginRight="56dp"
         android:background="@drawable/si_selector_outgoing_photo"
         android:orientation="horizontal"
-        android:padding="8dp"
+        android:padding="4dp"
         >
       <include layout="@layout/chats_item_thumb"/>
     </FrameLayout>

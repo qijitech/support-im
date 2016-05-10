@@ -53,7 +53,7 @@
           android:layout_height="wrap_content"
           android:background="@drawable/si_selector_incoming_photo"
           android:foreground="?attr/selectableItemBackground"
-          android:padding="8dp"
+          android:padding="4dp"
           >
         <include layout="@layout/chats_item_thumb"/>
       </FrameLayout>

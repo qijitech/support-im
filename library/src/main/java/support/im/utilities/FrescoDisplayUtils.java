@@ -31,7 +31,7 @@ public class FrescoDisplayUtils {
     Fresco.initialize(context, config);
   }
 
-  public static void showThumb(Uri uri, SimpleDraweeView draweeView, int width, int height) {
+  public static void showThumb(Uri uri, final SimpleDraweeView draweeView, int width, int height) {
     ImageRequest request = buildImageRequest(uri, width, height);
 
     DraweeController controller = Fresco.newDraweeControllerBuilder()
