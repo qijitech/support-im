@@ -6,13 +6,11 @@ import android.text.TextUtils;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMImageMessage;
 import com.facebook.drawee.view.SimpleDraweeView;
-import java.util.Map;
 import support.im.R;
 import support.im.utilities.FrescoDisplayUtils;
-import support.ui.utilities.AndroidUtilities;
+import support.im.utilities.ThumbnailUtils;
 import support.ui.utilities.ScreenUtils;
 
 public class ChatsOutgoingImageViewHolder extends ChatsOutgoingViewHolder {
@@ -30,24 +28,15 @@ public class ChatsOutgoingImageViewHolder extends ChatsOutgoingViewHolder {
     if (value instanceof AVIMImageMessage) {
       AVIMImageMessage avimImageMessage = (AVIMImageMessage) value;
       String localFilePath = avimImageMessage.getLocalFilePath();
+      final int width = avimImageMessage.getWidth();
+      final int height = avimImageMessage.getHeight();
+      int[] thumbSize = ThumbnailUtils.getThumbSize(width, height);
       if (!TextUtils.isEmpty(localFilePath)) {
         FrescoDisplayUtils.showThumb(Uri.parse("file://" + localFilePath), mContentImageView, 200, 400);
       } else {
         FrescoDisplayUtils.showThumb(Uri.parse(avimImageMessage.getFileUrl()), mContentImageView, 200, 400);
       }
     }
-  }
-
-  // TODO
-  private int[] getThumbSize(AVIMImageMessage avimImageMessage) {
-    Map<String, Object> fileMetaData = avimImageMessage.getFileMetaData();
-    int width = (Integer) fileMetaData.get("width");
-    int height = (Integer) fileMetaData.get("height");
-
-    if (width > screenWidth) {
-
-    }
-    return new int[] { width, height };
   }
 
 }

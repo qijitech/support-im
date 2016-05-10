@@ -10,6 +10,7 @@ import com.avos.avoscloud.im.v2.messages.AVIMImageMessage;
 import com.facebook.drawee.view.SimpleDraweeView;
 import support.im.R;
 import support.im.utilities.FrescoDisplayUtils;
+import support.im.utilities.ThumbnailUtils;
 
 public class ChatsIncomingImageViewHolder extends ChatsIncomingViewHolder {
 
@@ -25,6 +26,9 @@ public class ChatsIncomingImageViewHolder extends ChatsIncomingViewHolder {
     if (value instanceof AVIMImageMessage) {
       AVIMImageMessage avimImageMessage = (AVIMImageMessage) value;
       String localFilePath = avimImageMessage.getLocalFilePath();
+      final int width = avimImageMessage.getWidth();
+      final int height = avimImageMessage.getHeight();
+      int[] thumbSize = ThumbnailUtils.getThumbSize(width, height);
       if (!TextUtils.isEmpty(localFilePath)) {
         FrescoDisplayUtils.showThumb(Uri.parse("file://" + localFilePath), mContentImageView, 200, 400);
       } else {
