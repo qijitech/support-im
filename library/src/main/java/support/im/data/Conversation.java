@@ -42,7 +42,7 @@ public class Conversation extends BaseModel {
   @ColumnIgnore private AVIMMessage lastMessage;
 
   public AVIMConversation getConversation() {
-    return CacheManager.getCacheConversation(getConversationId());
+    return CacheManager.getCacheAVIMConversation(getConversationId());
   }
 
   public String getConversationId() {

@@ -91,7 +91,7 @@ public class ChatsRepository implements ChatsDataSource {
     mCacheIsDirty = true;
   }
 
-  @Override public void sendMessage(@NonNull AVIMConversation aVIMConversation, @NonNull AVIMTypedMessage message,
+  @Override public void sendMessage(@NonNull AVIMConversation aVIMConversation, @NonNull AVIMMessage message,
       @NonNull final GetMessageCallback callback) {
     checkNotNull(aVIMConversation);
     checkNotNull(message);

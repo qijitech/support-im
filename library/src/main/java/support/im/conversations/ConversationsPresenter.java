@@ -9,6 +9,7 @@ import java.util.List;
 import support.im.data.Conversation;
 import support.im.data.ConversationType;
 import support.im.data.User;
+import support.im.data.cache.CacheManager;
 import support.im.data.source.ConversationsDataSource;
 import support.im.data.source.ConversationsRepository;
 import support.im.data.source.UsersDataSource;
@@ -62,6 +63,7 @@ public class ConversationsPresenter implements ConversationsContract.Presenter {
         if (mConversationsView.isActive()) {
           mConversationsView.notifyDataSetChanged(conversations);
         }
+        CacheManager.cacheConversations(conversations);
         updateLastMessage(conversations);
         cacheRelatedUsers(conversations);
       }

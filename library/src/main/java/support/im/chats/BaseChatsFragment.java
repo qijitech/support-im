@@ -12,10 +12,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import butterknife.ButterKnife;
-import com.avos.avoscloud.im.v2.AVIMMessage;
+import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.sj.emoji.EmojiBean;
 import de.greenrobot.event.EventBus;
 import java.io.File;
@@ -26,8 +28,8 @@ import sj.keyboard.interfaces.EmoticonClickListener;
 import sj.keyboard.widget.EmoticonsEditText;
 import sj.keyboard.widget.FuncLayout;
 import support.im.R;
-import support.im.chats.viewholder.ChatsLoadingView;
 import support.im.chats.viewholder.ChatsCommonViewHolder;
+import support.im.chats.viewholder.ChatsLoadingView;
 import support.im.chats.viewholder.ChatsViewHolderFactory;
 import support.im.emoticons.ChatsUtils;
 import support.im.emoticons.Constants;
@@ -70,7 +72,7 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
     super.onCreate(savedInstanceState);
     localCameraPath = PathUtils.getPicturePathByCurrentTime(getContext());
     mAdapter = new ChatsAdapter(getContext());
-    mAdapter.bind(AVIMMessage.class, ChatsCommonViewHolder.class);
+    mAdapter.bind(AVIMTypedMessage.class, ChatsCommonViewHolder.class);
     mAdapter.viewHolderFactory(new ChatsViewHolderFactory(getContext()));
     mLayoutManager = new LinearLayoutManager(getContext());
     mContentPresenter = factory.createContentPresenter();
@@ -83,6 +85,11 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
     mAdapter = null;
     mLayoutManager = null;
     mContentPresenter = null;
+  }
+
+  @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+      Bundle savedInstanceState) {
+    return super.onCreateView(inflater, container, savedInstanceState);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -160,6 +167,7 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
     }
 
     if (actionType == Constants.EMOTICON_CLICK_BIGIMAGE && (o instanceof EmoticonEntity)) {
+      hideKeyBoard();
       onSendImage(((EmoticonEntity) o).getIconUri());
       return;
     }
@@ -180,6 +188,10 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
 
   protected void scrollToBottom() {
     mLayoutManager.scrollToPositionWithOffset(mAdapter.getItemCount() - 1, 0);
+  }
+
+  protected void hideKeyBoard() {
+    mEmoticonsKeyBoard.reset();
   }
 
   public void onEvent(FuncViewClickEvent event) {
@@ -236,9 +248,11 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
           uri = data.getData();
         }
         String localSelectPath = ProviderPathUtils.getPath(getActivity(), uri);
+        hideKeyBoard();
         sendImage(localSelectPath);
         break;
       case TAKE_IMAGE_REQUEST:
+        hideKeyBoard();
         sendImage(localCameraPath);
         break;
     }

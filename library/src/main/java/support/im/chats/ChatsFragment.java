@@ -6,11 +6,11 @@ import android.text.TextUtils;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.avos.avoscloud.im.v2.AVIMTypedMessage;
+import com.google.common.collect.Lists;
+import java.util.ArrayList;
 import java.util.List;
 import support.im.Injection;
 import support.im.data.ConversationType;
-import support.im.data.SupportUser;
 import support.im.data.User;
 import support.im.data.cache.CacheManager;
 import support.im.leanclound.ChatManager;
@@ -48,7 +48,7 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
     if (extras.containsKey(Constants.EXTRA_MEMBER_ID)) {
       mUserObjectId = extras.getString(Constants.EXTRA_MEMBER_ID);
       final User user = CacheManager.getCacheUser(mUserObjectId);
-      if (user != null) {
+      if (user != null && isAdded()) {
         getActivity().setTitle(user.getDisplayName());
       }
       return;
@@ -86,7 +86,7 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
 
   ///////////////// ChatsContact View
 
-  @Override public void updateAVIMConversation(AVIMConversation avimConversation) {
+  @Override public void updateUI(AVIMConversation avimConversation) {
     final String title = ConversationHelper.titleOfConversation(avimConversation);
     if (!TextUtils.isEmpty(title)) {
       getActivity().setTitle(title);
@@ -98,8 +98,7 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
     mContentPresenter.displayLoadView();
   }
 
-  @Override public void notifyItemInserted(AVIMTypedMessage message) {
-    message.setFrom(SupportUser.getCurrentUser().getObjectId());
+  @Override public void notifyItemInserted(AVIMMessage message) {
     mAdapter.add(message);
     scrollToBottom();
     mContentPresenter.displayContentView();
@@ -114,6 +113,10 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
     mAdapter.addAll(messages);
     mContentPresenter.displayContentView();
     scrollToBottom();
+  }
+
+  @Override public void appendMessages(List<AVIMMessage> messages) {
+    mAdapter.appendAll(messages);
   }
 
   @Override public void showNoMessages() {

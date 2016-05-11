@@ -18,6 +18,7 @@ public class SupportImApp extends SupportApp {
 
   @Override public void onCreate() {
     super.onCreate();
+
     Nammu.init(appContext());
     FlowManager.init(new FlowConfig.Builder(this).build());
 

@@ -70,7 +70,7 @@ public class ConversationsRepository extends SimpleConversationsDataSource {
 
     mConversationsLocalDataSource.loadConversation(userObjectId, new LoadConversationCallback() {
       @Override public void onConversationLoaded(final Conversation conversation) {
-        if (!CacheManager.hasCacheConversation(conversation.getConversationId())) {
+        if (!CacheManager.hasCacheAVIMConversation(conversation.getConversationId())) {
           findConversations(Lists.newArrayList(conversation.getConversationId()), new AVIMConversationQueryCallback() {
             @Override public void done(List<AVIMConversation> list, AVIMException e) {
               if (AVExceptionHandler.handAVException(e, false)) {
@@ -78,7 +78,7 @@ public class ConversationsRepository extends SimpleConversationsDataSource {
                   callback.onConversationNotFound();
                   return;
                 }
-                CacheManager.cacheConversations(list);
+                CacheManager.cacheAVIMConversations(list);
                 callback.onConversationLoaded(conversation);
               } else {
                 callback.onConversationNotFound();
@@ -110,7 +110,7 @@ public class ConversationsRepository extends SimpleConversationsDataSource {
         List<String> unCachedConversationIds = Lists.newArrayList();
         for (Conversation conversation : conversations) {
           final String conversationId = conversation.getConversationId();
-          if (!CacheManager.hasCacheConversation(conversationId)) {
+          if (!CacheManager.hasCacheAVIMConversation(conversationId)) {
             unCachedConversationIds.add(conversationId);
           }
         }
@@ -125,7 +125,7 @@ public class ConversationsRepository extends SimpleConversationsDataSource {
           @Override public void done(List<AVIMConversation> aVIMConversations, AVIMException e) {
             if (AVExceptionHandler.handAVException(e, false)) {
               for (AVIMConversation aVIMConversation : aVIMConversations) {
-                CacheManager.cacheConversation(aVIMConversation);
+                CacheManager.cacheAVIMConversation(aVIMConversation);
               }
               callback.onConversationsLoaded(conversations);
             }

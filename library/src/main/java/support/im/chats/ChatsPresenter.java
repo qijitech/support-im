@@ -6,13 +6,15 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMImageMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
+import com.google.common.collect.Lists;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import support.im.data.Conversation;
+import support.im.data.SupportUser;
 import support.im.data.User;
 import support.im.data.cache.CacheManager;
 import support.im.data.source.ChatsDataSource;
@@ -28,9 +30,13 @@ public class ChatsPresenter implements ChatsContract.Presenter {
   private final ConversationsDataSource mConversationsRepository;
 
   private boolean mFirstLoad = true;
+  private SupportUser mCurrentUser;
   private final String mUserObjectId;
   private final String mConversationId;
   private AVIMConversation mAVIMConversation;
+  private Conversation mConversation;
+
+  private ArrayList<AVIMMessage> mMessages = Lists.newArrayList();
 
   public ChatsPresenter(
       String userObjectId,
@@ -38,6 +44,7 @@ public class ChatsPresenter implements ChatsContract.Presenter {
       @NonNull ChatsDataSource chatsRepository,
       @NonNull ConversationsDataSource conversationsRepository,
       @NonNull ChatsContract.View chatsView) {
+    mCurrentUser = SupportUser.getCurrentUser();
     mUserObjectId = userObjectId;
     mConversationId = conversationId;
     mChatsRepository = checkNotNull(chatsRepository, "chatsRepository cannot be null");
@@ -48,18 +55,21 @@ public class ChatsPresenter implements ChatsContract.Presenter {
 
   @Override public void loadAVIMConversation() {
     if (!TextUtils.isEmpty(mConversationId)) {
-      mAVIMConversation = CacheManager.getCacheConversation(mConversationId);
+      mAVIMConversation = CacheManager.getCacheAVIMConversation(mConversationId);
+      mConversation = CacheManager.getCacheConversation(mConversationId);
       if (mChatsView.isActive()) {
-        mChatsView.updateAVIMConversation(mAVIMConversation);
+        mChatsView.updateUI(mAVIMConversation);
         fetchMessages(false);
       }
     } else if (!TextUtils.isEmpty(mUserObjectId)){
       mConversationsRepository.loadConversation(mUserObjectId, new ConversationsDataSource.LoadConversationCallback() {
         @Override public void onConversationLoaded(Conversation conversation) {
           if (conversation != null) {
-            mAVIMConversation = CacheManager.getCacheConversation(conversation.getConversationId());
+            mConversation = conversation;
+            CacheManager.cacheConversation(conversation);
+            mAVIMConversation = CacheManager.getCacheAVIMConversation(conversation.getConversationId());
             if (mChatsView.isActive()) {
-              mChatsView.updateAVIMConversation(mAVIMConversation);
+              mChatsView.updateUI(mAVIMConversation);
               fetchMessages(false);
             }
           }
@@ -112,7 +122,16 @@ public class ChatsPresenter implements ChatsContract.Presenter {
   }
 
   @Override public void fetchMessages(String messageId, long timestamp, int limit) {
+    AVIMMessage message = getFirstMessage();
+    if (message == null) {
+    }
+  }
 
+  private AVIMMessage getFirstMessage() {
+    if (mMessages == null || mMessages.isEmpty()) {
+      return null;
+    }
+    return mMessages.get(0);
   }
 
   private void processMessage(List<AVIMMessage> messages) {
@@ -127,6 +146,7 @@ public class ChatsPresenter implements ChatsContract.Presenter {
 
   @Override public void sendTextMessage(String content) {
     AVIMTextMessage message = new AVIMTextMessage();
+    message.setFrom(mCurrentUser.getObjectId());
     message.setText(content);
     sendMessage(message);
   }
@@ -134,17 +154,19 @@ public class ChatsPresenter implements ChatsContract.Presenter {
   @Override public void sendImageMessage(String imagePath) {
     try {
       AVIMImageMessage imageMessage = new AVIMImageMessage(imagePath);
+      imageMessage.setFrom(mCurrentUser.getObjectId());
       sendMessage(imageMessage);
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  private void sendMessage(final AVIMTypedMessage message) {
+  private void sendMessage(final AVIMMessage message) {
     if (!mChatsView.isActive()) {
       return;
     }
-    mChatsView.notifyItemInserted(message);
+    //mChatsView.addMessage(message);
+    //mChatsView.notifyItemInserted(message);
 
     if (mAVIMConversation == null) {
       User toUser = CacheManager.getCacheUser(mUserObjectId);
@@ -166,6 +188,7 @@ public class ChatsPresenter implements ChatsContract.Presenter {
           return;
         }
         mConversationsRepository.saveConversation(mAVIMConversation, message);
+        mChatsView.notifyItemInserted(message);
         mChatsView.notifyDataSetChanged();
       }
 
@@ -177,5 +200,4 @@ public class ChatsPresenter implements ChatsContract.Presenter {
       }
     });
   }
-
 }

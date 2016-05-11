@@ -66,7 +66,7 @@ public class SupportMessageHandler extends AVIMTypedMessageHandler<AVIMTypedMess
       return;
     }
 
-    CacheManager.cacheConversation(aVIMConversation);
+    CacheManager.cacheAVIMConversation(aVIMConversation);
     Conversation conversation = DatabaseUtils.saveConversation(aVIMConversation, aVIMmessage, localClientId);
     if (!aVIMmessage.getFrom().equals(client.getClientId())) {
       fetchUser(aVIMConversation, aVIMmessage, conversation);

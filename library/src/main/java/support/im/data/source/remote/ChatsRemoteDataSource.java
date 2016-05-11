@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
@@ -69,7 +68,7 @@ public class ChatsRemoteDataSource implements ChatsDataSource {
 
   }
 
-  @Override public void sendMessage(@NonNull AVIMConversation aVIMConversation, @NonNull final AVIMTypedMessage message,
+  @Override public void sendMessage(@NonNull AVIMConversation aVIMConversation, @NonNull final AVIMMessage message,
       @NonNull final GetMessageCallback callback) {
     checkNotNull(aVIMConversation);
     checkNotNull(message);
