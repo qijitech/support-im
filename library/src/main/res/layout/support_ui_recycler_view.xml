@@ -7,10 +7,21 @@
     android:layout_gravity="center"
     android:animateLayoutChanges="true"
     >
-  <android.support.v7.widget.RecyclerView
-      android:id="@id/support_ui_recycler_view"
+
+  <LinearLayout
+      android:id="@id/support_ui_content_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:scrollbars="vertical"
-      />
+      android:orientation="vertical"
+      >
+    <include layout="@layout/view_chat_client_state"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@id/support_ui_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        />
+  </LinearLayout>
+
 </FrameLayout>

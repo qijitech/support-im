@@ -28,7 +28,7 @@ public class SupportImApp extends SupportApp {
     AVObject.registerSubclass(Friend.class);
 
     // 节省流量
-    AVOSCloud.setLastModifyEnabled(true);
+    //AVOSCloud.setLastModifyEnabled(true);
 
     PushManager.getInstance().initialize(appContext(), SupportIm.sDefaultPushCallback);
     AVOSCloud.setDebugLogEnabled(SupportIm.sDebugEnabled);

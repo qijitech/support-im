@@ -4,15 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import com.avos.avoscloud.AVException;
-import de.greenrobot.event.EventBus;
 import java.util.List;
 import support.im.Injection;
 import support.im.R;
+import support.im.SupportRecyclerViewFragment;
 import support.im.chats.ChatsActivity;
 import support.im.data.Conversation;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.event.ImTypeMessageEvent;
-import support.im.SupportRecyclerViewFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -37,16 +36,6 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
     super.onResume();
     getActivity().setTitle(R.string.support_im_conversations_title);
     mPresenter.start();
-  }
-
-  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-    EventBus.getDefault().register(this);
-  }
-
-  @Override public void onDestroyView() {
-    super.onDestroyView();
-    EventBus.getDefault().unregister(this);
   }
 
   @SuppressWarnings("unused") public void onEvent(ImTypeMessageEvent event) {

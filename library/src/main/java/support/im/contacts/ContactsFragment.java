@@ -9,14 +9,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
-import butterknife.ButterKnife;
 import com.avos.avoscloud.AVException;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
-import de.greenrobot.event.EventBus;
 import java.util.List;
 import support.im.Injection;
 import support.im.R;
+import support.im.SupportRecyclerViewFragment;
 import support.im.addcontact.AddContactActivity;
 import support.im.data.Contact;
 import support.im.detail.UserDetailActivity;
@@ -24,14 +22,12 @@ import support.im.events.InvitationEvent;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.contacts.AddRequestManager;
 import support.im.newcontacts.NewContactsActivity;
-import support.im.SupportRecyclerViewFragment;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ContactsFragment extends SupportRecyclerViewFragment implements ContactsContract.View {
 
   ContactsContract.Presenter mPresenter;
-  private FrameLayout mContentView;
 
   protected ContactsAdapter mAdapter;
   private ContactsDummy mNewContacts;
@@ -41,9 +37,9 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     return new ContactsFragment();
   }
 
-  @Override protected int getFragmentLayout() {
-    return R.layout.contacts;
-  }
+  //@Override protected int getFragmentLayout() {
+  //  return R.layout.contacts;
+  //}
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -67,10 +63,6 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     mRecyclerView.setAdapter(mAdapter);
   }
 
-  @Override protected View getAttachContentView() {
-    return mContentView;
-  }
-
   @Override public void onResume() {
     super.onResume();
     getActivity().setTitle(R.string.support_im_contacts_title);
@@ -79,17 +71,14 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     } else {
       showNotLoggedIn();
     }
-    EventBus.getDefault().register(this);
   }
 
   @Override public void onPause() {
     super.onPause();
-    EventBus.getDefault().unregister(this);
   }
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    mContentView = ButterKnife.findById(view, R.id.support_ui_content_view);
     final StickyRecyclerHeadersDecoration headersDecor = new StickyRecyclerHeadersDecoration(mAdapter);
     mRecyclerView.addItemDecoration(headersDecor);
     mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
