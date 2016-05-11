@@ -9,8 +9,6 @@ import com.avos.avoscloud.im.v2.AVIMMessage;
 import java.util.List;
 import support.im.Injection;
 import support.im.data.ConversationType;
-import support.im.data.User;
-import support.im.data.cache.CacheManager;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.Constants;
 import support.im.utilities.ConversationHelper;
@@ -32,8 +30,7 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     initialize();
-    new ChatsPresenter(mUserObjectId, mConversationId,
-        Injection.provideChatsRepository(),
+    new ChatsPresenter(mConversationId, mUserObjectId, Injection.provideChatsRepository(),
         Injection.provideConversationsRepository(mCurrentClientId),
         this);
   }
@@ -46,10 +43,6 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
     }
     if (extras.containsKey(Constants.EXTRA_MEMBER_ID)) {
       mUserObjectId = extras.getString(Constants.EXTRA_MEMBER_ID);
-      final User user = CacheManager.getCacheUser(mUserObjectId);
-      if (user != null && isAdded()) {
-        getActivity().setTitle(user.getDisplayName());
-      }
       return;
     }
     // 来源conversations列表,直接读取Conversation

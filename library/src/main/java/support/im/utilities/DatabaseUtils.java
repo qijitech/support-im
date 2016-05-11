@@ -24,10 +24,33 @@ import support.im.data.User_Table;
 
 public final class DatabaseUtils {
 
+  public static Conversation createConversation(AVIMConversation avimConversation, User toUser, String clientId) {
+    final String conversationId = avimConversation.getConversationId();
+    Conversation conversation = findByConversationId(conversationId);
+    if (conversation == null) {
+      conversation = new Conversation.Builder()
+          .conversationId(conversationId)
+          .clientId(clientId)
+          .members(JSON.toJSONString(avimConversation.getMembers()))
+          .type(ConversationHelper.getType(avimConversation))
+          .name(avimConversation.getName())
+          .creator(avimConversation.getCreator())
+          .fromPeerId(toUser.getObjectId())
+          .isTransient(avimConversation.isTransient())
+          .build();
+      conversation.insert();
+    }
+    return conversation;
+  }
+
   public static Conversation saveConversation(AVIMConversation avimConversation, AVIMMessage avimMessage, String clientId) {
     final String conversationId = avimConversation.getConversationId();
     Conversation conversation = findByConversationId(conversationId);
     if (conversation != null) {
+      if (conversation.getFirstMsgId() == null) {
+        conversation.setFirstMsgId(avimMessage.getMessageId());
+        conversation.setFirstMsgTime(avimMessage.getTimestamp());
+      }
       conversation.setFromPeerId(avimMessage.getFrom());
       conversation.setLastMessage(avimMessage);
       conversation.setLatestMsgTime(avimMessage.getTimestamp());
@@ -74,8 +97,9 @@ public final class DatabaseUtils {
   public static void findRecentConv(String clientId, @NonNull final FindConversationsCallback convCallback) {
     FlowManager.getDatabase(AppDatabase.class)
         .beginTransactionAsync(new QueryTransaction.Builder<>(SQLite.select().from(Conversation.class)
-            .where(Conversation_Table.client_id.eq(clientId)).orderBy(
-                OrderBy.fromProperty(Conversation_Table.latest_msg_time).descending()))
+            .where(Conversation_Table.client_id.eq(clientId))
+            .and(Conversation_Table.latest_msg.isNotNull())
+            .orderBy(OrderBy.fromProperty(Conversation_Table.latest_msg_time).descending()))
         .queryResult(new QueryTransaction.QueryResultCallback<Conversation>() {
           @Override public void onQueryResult(QueryTransaction transaction,
               @NonNull CursorResult<Conversation> tResult) {

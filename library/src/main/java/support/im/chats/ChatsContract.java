@@ -29,7 +29,8 @@ public interface ChatsContract {
   }
 
   interface Presenter extends BasePresenter {
-    void loadAVIMConversation();
+    void getAVIMConversation(String conversationId);
+    void getConversation(final String userObjectId);
     void sendImageMessage(String imagePath);
     void sendTextMessage(String content);
     void fetchMessages(boolean forceUpdate);

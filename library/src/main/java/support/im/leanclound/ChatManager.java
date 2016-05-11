@@ -55,6 +55,8 @@ public class ChatManager {
     AVIMMessageManager.registerMessageHandler(AVIMTypedMessage.class,
         new SupportMessageHandler(mContext));
 
+    AVIMClient.setTimeoutInSecs(300);
+
     // 与网络相关的 handler
     AVIMClient.setClientEventHandler(SupportClientEventHandler.getInstance());
 
