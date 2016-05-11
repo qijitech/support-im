@@ -3,13 +3,12 @@ package support.im.newcontacts;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import com.avos.avoscloud.AVException;
-import de.greenrobot.event.EventBus;
 import java.util.List;
+import support.im.SupportRecyclerViewFragment;
 import support.im.events.InvitationEvent;
 import support.im.events.NewContactAgreeEvent;
 import support.im.leanclound.contacts.AddRequest;
 import support.im.leanclound.contacts.AddRequestManager;
-import support.im.SupportRecyclerViewFragment;
 import support.im.utilities.HudUtils;
 import support.ui.utilities.ToastUtils;
 
@@ -31,12 +30,10 @@ public class NewContactsFragment extends SupportRecyclerViewFragment implements 
   @Override public void onResume() {
     super.onResume();
     mPresenter.start();
-    EventBus.getDefault().register(this);
   }
 
   @Override public void onPause() {
     super.onPause();
-    EventBus.getDefault().unregister(this);
   }
 
   @SuppressWarnings("unused") public void onEvent(InvitationEvent event) {
