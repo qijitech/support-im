@@ -36,6 +36,7 @@ import support.im.emoticons.Constants;
 import support.im.emoticons.FuncItem;
 import support.im.emoticons.SupportImFuncView;
 import support.im.events.FuncViewClickEvent;
+import support.im.leanclound.event.ImTypeMessageEvent;
 import support.im.utilities.PathUtils;
 import support.im.utilities.ProviderPathUtils;
 import support.ui.app.SupportFragment;
@@ -192,6 +193,15 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
 
   protected void hideKeyBoard() {
     mEmoticonsKeyBoard.reset();
+  }
+
+  /**
+   * 处理推送过来的消息
+   * 同理，避免无效消息，此处加了 conversation id 判断
+   */
+  public void onEvent(ImTypeMessageEvent event) {
+    mAdapter.add(event.message);
+    scrollToBottom();
   }
 
   public void onEvent(FuncViewClickEvent event) {

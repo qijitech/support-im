@@ -190,8 +190,7 @@ public class ChatsPresenter implements ChatsContract.Presenter {
     if (!mChatsView.isActive()) {
       return;
     }
-    //mChatsView.addMessage(message);
-    //mChatsView.notifyItemInserted(message);
+    mChatsView.notifyItemInserted(message);
 
     if (mAVIMConversation == null) {
       User toUser = CacheManager.getCacheUser(mUserObjectId);

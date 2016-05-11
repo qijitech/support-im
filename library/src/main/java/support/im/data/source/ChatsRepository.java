@@ -41,11 +41,11 @@ public class ChatsRepository implements ChatsDataSource {
 
     checkNotNull(callback);
     // Respond immediately with cache if available and not dirty
-    LinkedHashMap<String, AVIMMessage> cachedMessage = null;
-    if (!mCacheIsDirty && mCachedMessages != null &&
-        (cachedMessage = mCachedMessages.get(aVIMConversation.getConversationId())) != null) {
-      callback.onMessagesLoaded(Lists.<AVIMMessage>newArrayList(cachedMessage.values()));
-      return;
+    if (mCachedMessages != null) {
+      LinkedHashMap<String, AVIMMessage> cachedMessage = mCachedMessages.get(aVIMConversation.getConversationId());
+      if (cachedMessage != null) {
+        callback.onMessagesLoaded(Lists.<AVIMMessage>newArrayList(cachedMessage.values()));
+      }
     }
 
     mChatsRemoteDataSource.loadMessages(aVIMConversation, messageId, timestamp, limit, new LoadMessagesCallback() {

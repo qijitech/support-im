@@ -6,8 +6,6 @@ import android.text.TextUtils;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.google.common.collect.Lists;
-import java.util.ArrayList;
 import java.util.List;
 import support.im.Injection;
 import support.im.data.ConversationType;
@@ -16,6 +14,7 @@ import support.im.data.cache.CacheManager;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.Constants;
 import support.im.utilities.ConversationHelper;
+import support.im.utilities.NotificationUtils;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -61,8 +60,18 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
 
   @Override public void onResume() {
     super.onResume();
+    if (null != mConversationId) {
+      NotificationUtils.addTag(mConversationId);
+    }
     if (mPresenter != null) {
       mPresenter.start();
+    }
+  }
+
+  @Override public void onPause() {
+    super.onPause();
+    if (null != mConversationId) {
+      NotificationUtils.removeTag(mConversationId);
     }
   }
 
@@ -116,7 +125,7 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
   }
 
   @Override public void appendMessages(List<AVIMMessage> messages) {
-    mAdapter.appendAll(messages);
+    mAdapter.add(messages);
   }
 
   @Override public void showNoMessages() {

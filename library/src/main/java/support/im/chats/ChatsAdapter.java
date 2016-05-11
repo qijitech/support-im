@@ -4,6 +4,7 @@ import android.content.Context;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
+import java.util.List;
 import support.im.chats.viewholder.ChatsCommonViewHolder;
 import support.im.chats.viewholder.ChatsIncomingViewHolder;
 import support.im.leanclound.ChatManager;
@@ -64,6 +65,10 @@ public class ChatsAdapter extends EasyRecyclerAdapter {
     } else {
       return null;
     }
+  }
+
+  public void add(List<Object> objects) {
+    getItems().addAll(0, objects);
   }
 
 }
