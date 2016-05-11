@@ -40,7 +40,7 @@ public abstract class ChatsOutgoingViewHolder extends ChatsCommonViewHolder {
         ViewUtils.setGone(mStatusContainer, false);
         ViewUtils.setGone(mStatusProgressBar, true);
         ViewUtils.setGone(mStatusTextView, true);
-        ViewUtils.setGone(mStatusErrorView, true);
+        ViewUtils.setGone(mStatusErrorView, false);
         break;
       case AVIMMessageStatusSent:
         ViewUtils.setGone(mStatusContainer, false);

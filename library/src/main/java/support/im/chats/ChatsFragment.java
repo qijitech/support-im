@@ -3,6 +3,7 @@ package support.im.chats;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.View;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
@@ -51,13 +52,17 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
     }
   }
 
+  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    if (mPresenter != null) {
+      mPresenter.start();
+    }
+  }
+
   @Override public void onResume() {
     super.onResume();
     if (null != mConversationId) {
       NotificationUtils.addTag(mConversationId);
-    }
-    if (mPresenter != null) {
-      mPresenter.start();
     }
   }
 
@@ -84,6 +89,7 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
 
   @Override protected void onSendBtnClick(String message) {
     mPresenter.sendTextMessage(message);
+    //mPresenter.sendImageMessage("/storage/emulated/0/XhsEmoticonsKeyboard/Emoticons/wxemoticons/icon_002_cover.png");
   }
 
   ///////////////// ChatsContact View
