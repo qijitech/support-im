@@ -10,9 +10,12 @@ import com.google.common.collect.Maps;
 import java.util.List;
 import java.util.Map;
 import support.im.R;
+import support.im.data.Contact;
 import support.im.data.SupportUser;
 import support.im.data.source.AddRequestsDataSource;
 import support.im.data.source.AddRequestsRepository;
+import support.im.data.source.ContactsDataSource;
+import support.im.data.source.ContactsRepository;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.contacts.AddRequest;
 import support.im.leanclound.contacts.AddRequestManager;
@@ -24,11 +27,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class NewContactsPresenter implements NewContactsContract.Presenter {
 
   private final AddRequestsRepository mAddRequestsRepository;
+  private final ContactsRepository mContactsRepository;
 
   private final NewContactsContract.View mNewContactView;
 
   public NewContactsPresenter(AddRequestsRepository addRequestsRepository,
+      ContactsRepository contactsRepository,
       NewContactsContract.View newContactView) {
+    mContactsRepository = checkNotNull(contactsRepository);
     mAddRequestsRepository = checkNotNull(addRequestsRepository);
     mNewContactView = checkNotNull(newContactView);
     mNewContactView.setPresenter(this);
@@ -76,6 +82,10 @@ public class NewContactsPresenter implements NewContactsContract.Presenter {
         }
         SupportUser fromUser = addRequest.getFromUser();
         if (fromUser != null) {
+          mContactsRepository.saveContact(SupportUser.getCurrentUser(), fromUser, new ContactsDataSource.SaveContactCallback() {
+            @Override public void onSuccess(Contact contact) {
+            }
+          });
           ChatManager.getInstance().createSingleConversation(fromUser, new AVIMConversationCreatedCallback() {
             @Override
             public void done(AVIMConversation avimConversation, AVIMException e) {

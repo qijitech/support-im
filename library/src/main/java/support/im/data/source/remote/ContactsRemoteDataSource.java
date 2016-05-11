@@ -9,9 +9,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import support.im.data.Contact;
 import support.im.data.SupportUser;
-import support.im.data.User;
 import support.im.data.source.SimpleContactsDataSource;
-import support.im.leanclound.contacts.Friend;
 import support.im.mobilecontact.pinyin.CharacterParser;
 
 public class ContactsRemoteDataSource extends SimpleContactsDataSource {
@@ -30,40 +28,43 @@ public class ContactsRemoteDataSource extends SimpleContactsDataSource {
     return INSTANCE;
   }
 
-  @Override public void getContacts(@NonNull String currentClientId, @NonNull final LoadContactsCallback callback) {
-    AVQuery<Friend> friendAVQuery = AVQuery.getQuery(Friend.class);
-    friendAVQuery.setCachePolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
-    friendAVQuery.whereEqualTo(Friend.USER, SupportUser.getCurrentUser());
-    friendAVQuery.include(Friend.FRIEND);
-    friendAVQuery.include(Friend.USER);
-    friendAVQuery.setLimit(1000);
-    friendAVQuery.setMaxCacheAge(TimeUnit.DAYS.toMillis(30));
-    friendAVQuery.findInBackground(new FindCallback<Friend>() {
-      @Override public void done(List<Friend> friends, AVException e) {
-        if (friends == null || friends.isEmpty()) {
-          callback.onContactsNotFound();
-          return;
-        }
-        List<Contact> contacts = Lists.newArrayListWithCapacity(friends.size());
-        for (Friend friend : friends) {
-          Contact contact = new Contact();
-          User user = friend.getUser().toUser();
-          User friendUser = friend.getFriend().toUser();
-          contact.setObjectId(user.getObjectId());
-          contact.setFriend(friendUser);
-          contact.setDeleted(friend.isDeleted());
-          contact.setUserId(user.getUserId());
-          String pinyin = characterParser.getSelling(friendUser.getDisplayName());
-          String sortString = pinyin.substring(0, 1).toUpperCase();
-          if (sortString.matches("[A-Z]")) {
-            contact.setSortLetters(sortString.toUpperCase());
-          } else {
-            contact.setSortLetters("#");
+  @Override public void getContacts(@NonNull final String currentClientId, @NonNull final LoadContactsCallback callback) {
+    SupportUser supportUser = SupportUser.getCurrentUser();
+    AVQuery<SupportUser> friendAVQuery = null;
+    try {
+      friendAVQuery = supportUser.followeeQuery(SupportUser.class);
+      friendAVQuery.setCachePolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
+      friendAVQuery.include("followee");
+      friendAVQuery.setLimit(1000);
+      friendAVQuery.setMaxCacheAge(TimeUnit.DAYS.toMillis(30));
+      friendAVQuery.findInBackground(new FindCallback<SupportUser>() {
+        @Override public void done(List<SupportUser> friends, AVException e) {
+          if (friends == null || friends.isEmpty()) {
+            callback.onContactsNotFound();
+            return;
           }
-          contacts.add(contact);
+          List<Contact> contacts = Lists.newArrayListWithCapacity(friends.size());
+          for (SupportUser friend : friends) {
+            Contact contact = new Contact();
+            contact.setObjectId(friend.getObjectId());
+            contact.setFriend(friend.toUser());
+            contact.setDeleted(false);
+            contact.setUserId(currentClientId);
+            String pinyin = characterParser.getSelling(friend.getDisplayName());
+            String sortString = pinyin.substring(0, 1).toUpperCase();
+            if (sortString.matches("[A-Z]")) {
+              contact.setSortLetters(sortString.toUpperCase());
+            } else {
+              contact.setSortLetters("#");
+            }
+            contacts.add(contact);
+          }
+          callback.onContactsLoaded(contacts);
         }
-        callback.onContactsLoaded(contacts);
-      }
-    });
+      });
+    } catch (AVException e) {
+      e.printStackTrace();
+      callback.onContactsNotFound();
+    }
   }
 }

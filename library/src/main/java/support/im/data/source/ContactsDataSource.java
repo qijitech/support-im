@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import com.avos.avoscloud.AVException;
 import java.util.List;
 import support.im.data.Contact;
+import support.im.data.SupportUser;
 
 public interface ContactsDataSource {
 
@@ -24,7 +25,7 @@ public interface ContactsDataSource {
 
   void getContacts(@NonNull String currentClientId, @NonNull LoadContactsCallback callback);
   void saveContacts(List<Contact> contacts, @NonNull SaveContactsCallback callback);
-  void saveContact(Contact contact, @NonNull SaveContactCallback callback);
+  void saveContact(SupportUser currentUser, SupportUser supportUser, @NonNull SaveContactCallback callback);
 
   void refreshContacts();
 }

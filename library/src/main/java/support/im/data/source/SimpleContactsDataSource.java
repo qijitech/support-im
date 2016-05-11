@@ -3,6 +3,7 @@ package support.im.data.source;
 import android.support.annotation.NonNull;
 import java.util.List;
 import support.im.data.Contact;
+import support.im.data.SupportUser;
 
 public abstract class SimpleContactsDataSource implements ContactsDataSource {
 
@@ -15,7 +16,7 @@ public abstract class SimpleContactsDataSource implements ContactsDataSource {
 
   }
 
-  @Override public void saveContact(Contact contact, @NonNull SaveContactCallback callback) {
+  @Override public void saveContact(SupportUser currentUser, SupportUser supportUser, @NonNull SaveContactCallback callback) {
 
   }
 

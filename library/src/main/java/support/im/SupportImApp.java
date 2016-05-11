@@ -9,7 +9,6 @@ import pl.tajchert.nammu.Nammu;
 import support.im.data.SupportUser;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.contacts.AddRequest;
-import support.im.leanclound.contacts.Friend;
 import support.im.service.PushManager;
 import support.im.utilities.FrescoDisplayUtils;
 import support.ui.app.SupportApp;
@@ -25,10 +24,9 @@ public class SupportImApp extends SupportApp {
     AVOSCloud.initialize(appContext(), SupportIm.sApplicationId, SupportIm.sClientKey);
     SupportUser.alwaysUseSubUserClass(SupportUser.class);
     AVObject.registerSubclass(AddRequest.class);
-    AVObject.registerSubclass(Friend.class);
 
     // 节省流量
-    //AVOSCloud.setLastModifyEnabled(true);
+    AVOSCloud.setLastModifyEnabled(true);
 
     PushManager.getInstance().initialize(appContext(), SupportIm.sDefaultPushCallback);
     AVOSCloud.setDebugLogEnabled(SupportIm.sDebugEnabled);

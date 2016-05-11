@@ -10,7 +10,7 @@ public class NewContactsActivity extends SupportSinglePaneActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    new NewContactsPresenter(Injection.provideAddRequestsRepository(this),
+    new NewContactsPresenter(Injection.provideAddRequestsRepository(this),Injection.provideContactsRepository(this),
         (NewContactsContract.View) getFragment());
   }
 
