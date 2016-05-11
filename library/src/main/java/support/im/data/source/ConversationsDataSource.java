@@ -33,7 +33,7 @@ public interface ConversationsDataSource {
   void getLastMessage(@NonNull AVIMConversation conversation,
       @NonNull GetLastMessageCallback callback);
 
-  void saveConversation(@NonNull AVIMConversation avimConversation, @NonNull AVIMMessage avimTypedMessage);
+  Conversation saveConversation(@NonNull AVIMConversation avimConversation, @NonNull AVIMMessage avimTypedMessage);
 
   void loadConversations(@NonNull LoadConversationsCallback callback);
 

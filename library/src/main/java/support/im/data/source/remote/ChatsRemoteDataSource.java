@@ -34,25 +34,9 @@ public class ChatsRemoteDataSource implements ChatsDataSource {
     return INSTANCE;
   }
 
-  @Override public void loadMessages(@NonNull AVIMConversation aVIMConversation,
-      @NonNull final LoadMessagesCallback callback) {
-    checkNotNull(aVIMConversation);
-    checkNotNull(callback);
-    aVIMConversation.queryMessages(new AVIMMessagesQueryCallback() {
-      @Override public void done(List<AVIMMessage> messages, AVIMException e) {
-        if (AVExceptionHandler.handAVException(e, false)) {
-          callback.onMessagesLoaded(messages);
-          return;
-        }
-        callback.onDataNotAvailable(e);
-      }
-    });
-  }
-
   @Override public void loadMessages(@NonNull AVIMConversation aVIMConversation, @NonNull String messageId, long timestamp, int limit,
       @NonNull final LoadMessagesCallback callback) {
     checkNotNull(aVIMConversation);
-    checkNotNull(messageId);
     aVIMConversation.queryMessages(messageId, timestamp, limit, new AVIMMessagesQueryCallback() {
       @Override public void done(List<AVIMMessage> messages, AVIMException e) {
         if (AVExceptionHandler.handAVException(e, false)) {

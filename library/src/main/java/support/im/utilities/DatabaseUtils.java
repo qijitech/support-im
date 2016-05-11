@@ -31,6 +31,7 @@ public final class DatabaseUtils {
       conversation.setFromPeerId(avimMessage.getFrom());
       conversation.setLastMessage(avimMessage);
       conversation.setLatestMsgTime(avimMessage.getTimestamp());
+      conversation.setLatestMsgId(avimMessage.getMessageId());
       conversation.setLatestMsg(avimMessage.getContent());
       conversation.setMembers(JSON.toJSONString(avimConversation.getMembers()));
       conversation.setName(avimConversation.getName());
@@ -48,6 +49,7 @@ public final class DatabaseUtils {
           .firstMsgTime(avimMessage.getTimestamp())
           .latestMsgTime(avimMessage.getTimestamp())
           .latestMsg(avimMessage.getContent())
+          .latestMsgId(avimMessage.getMessageId())
           .fromPeerId(avimMessage.getFrom())
           .isTransient(avimConversation.isTransient())
           .unreadCount(1)

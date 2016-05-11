@@ -28,12 +28,6 @@ public interface ChatsDataSource {
       GetMessageCallback callback);
 
   /**
-   * 获取最新20条数据,根据
-   */
-  void loadMessages(@NonNull AVIMConversation aVIMConversation,
-      @NonNull LoadMessagesCallback callback);
-
-  /**
    * 获取更多数据
    */
   void loadMessages(

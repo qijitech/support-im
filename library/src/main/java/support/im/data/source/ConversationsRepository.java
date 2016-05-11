@@ -146,9 +146,9 @@ public class ConversationsRepository extends SimpleConversationsDataSource {
     mConversationsRemoteDataSource.getLastMessage(conversation, callback);
   }
 
-  @Override public void saveConversation(@NonNull AVIMConversation avimConversation,
+  @Override public Conversation saveConversation(@NonNull AVIMConversation avimConversation,
       @NonNull AVIMMessage avimMessage) {
-    mConversationsLocalDataSource.saveConversation(avimConversation, avimMessage);
+    return mConversationsLocalDataSource.saveConversation(avimConversation, avimMessage);
   }
 
   @Override public void refreshConversations() {

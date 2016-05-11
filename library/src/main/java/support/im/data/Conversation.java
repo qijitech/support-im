@@ -34,7 +34,8 @@ public class Conversation extends BaseModel {
   @Column(name = "first_msg_id") private String firstMsgId;
   // 第一条消息时间
   @Column(name = "first_msg_time") private long firstMsgTime;
-  // 最新一条消息时间
+  // 最新一条消息id
+  @Column(name = "latest_msg_id") private String latestMsgId;
   @Column(name = "latest_msg") private String latestMsg;
   // 最新一条消息时间
   @Column(name = "latest_msg_time") private long latestMsgTime;
@@ -141,6 +142,14 @@ public class Conversation extends BaseModel {
     this.latestMsg = latestMsg;
   }
 
+  public String getLatestMsgId() {
+    return latestMsgId;
+  }
+
+  public void setLatestMsgId(String latestMsgId) {
+    this.latestMsgId = latestMsgId;
+  }
+
   public long getLatestMsgTime() {
     return latestMsgTime;
   }
@@ -171,6 +180,7 @@ public class Conversation extends BaseModel {
     private long firstMsgTime;
     private long latestMsgTime;
     private String latestMsg;
+    private String latestMsgId;
 
     public Builder conversationId(String conversationId) {
       this.conversationId = conversationId;
@@ -234,6 +244,11 @@ public class Conversation extends BaseModel {
 
     public Builder fromPeerId(String fromPeerId) {
       this.fromPeerId = fromPeerId;
+      return this;
+    }
+
+    public Builder latestMsgId(String latestMsgId) {
+      this.latestMsgId = latestMsgId;
       return this;
     }
 

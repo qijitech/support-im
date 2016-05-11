@@ -57,8 +57,8 @@ public class ConversationsLocalDataSource extends SimpleConversationsDataSource 
     });
   }
 
-  @Override public void saveConversation(@NonNull AVIMConversation avimConversation,
+  @Override public Conversation saveConversation(@NonNull AVIMConversation avimConversation,
       @NonNull AVIMMessage avimMessage) {
-    DatabaseUtils.saveConversation(avimConversation, avimMessage, ChatManager.getInstance().getClientId());
+    return DatabaseUtils.saveConversation(avimConversation, avimMessage, ChatManager.getInstance().getClientId());
   }
 }

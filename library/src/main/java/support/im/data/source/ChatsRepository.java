@@ -5,7 +5,6 @@ import android.support.v4.util.ArrayMap;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
-import com.avos.avoscloud.im.v2.AVIMTypedMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -36,8 +35,10 @@ public class ChatsRepository implements ChatsDataSource {
     return INSTANCE;
   }
 
-  @Override public void loadMessages(@NonNull AVIMConversation aVIMConversation, @NonNull final LoadMessagesCallback callback) {
-    checkNotNull(aVIMConversation);
+  @Override public void loadMessages(@NonNull final AVIMConversation aVIMConversation, @NonNull final String messageId,
+      long timestamp, int limit,
+      @NonNull final LoadMessagesCallback callback) {
+
     checkNotNull(callback);
     // Respond immediately with cache if available and not dirty
     LinkedHashMap<String, AVIMMessage> cachedMessage = null;
@@ -47,29 +48,16 @@ public class ChatsRepository implements ChatsDataSource {
       return;
     }
 
-    if (mCacheIsDirty) {
-      // If the cache is dirty we need to fetch new data from the network.
-      getMessagesFromRemoteDataSource(aVIMConversation, callback);
-    }
-
-  }
-
-  private void getMessagesFromRemoteDataSource(@NonNull final AVIMConversation aVIMConversation, @NonNull final LoadMessagesCallback callback) {
-    mChatsRemoteDataSource.loadMessages(aVIMConversation, new LoadMessagesCallback() {
+    mChatsRemoteDataSource.loadMessages(aVIMConversation, messageId, timestamp, limit, new LoadMessagesCallback() {
       @Override public void onMessagesLoaded(List<AVIMMessage> messages) {
         refreshCache(aVIMConversation, messages);
         callback.onMessagesLoaded(messages);
       }
+
       @Override public void onDataNotAvailable(AVException exception) {
         callback.onDataNotAvailable(exception);
       }
     });
-  }
-
-  @Override public void loadMessages(@NonNull AVIMConversation aVIMConversation, @NonNull String messageId,
-      long timestamp, int limit,
-      @NonNull LoadMessagesCallback callback) {
-
   }
 
   private void refreshCache(@NonNull AVIMConversation aVIMConversation, List<AVIMMessage> messages) {

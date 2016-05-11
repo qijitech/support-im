@@ -33,6 +33,6 @@ public interface ChatsContract {
     void sendImageMessage(String imagePath);
     void sendTextMessage(String content);
     void fetchMessages(boolean forceUpdate);
-    void fetchMessages(final String messageId, final long timestamp, final int limit);
+    void loadMoreMessages();
   }
 }

@@ -5,6 +5,7 @@ import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationQueryCallback;
 import java.util.List;
+import support.im.data.Conversation;
 
 public class SimpleConversationsDataSource implements ConversationsDataSource {
 
@@ -18,9 +19,9 @@ public class SimpleConversationsDataSource implements ConversationsDataSource {
 
   }
 
-  @Override public void saveConversation(@NonNull AVIMConversation avimConversation,
+  @Override public Conversation saveConversation(@NonNull AVIMConversation avimConversation,
       @NonNull AVIMMessage avimMessage) {
-
+    return null;
   }
 
   @Override public void loadConversations(@NonNull LoadConversationsCallback callback) {
