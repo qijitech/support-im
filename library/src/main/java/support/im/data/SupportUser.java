@@ -19,7 +19,9 @@ import java.util.UUID;
   public static final String AVATAR = "avatar";
   public static final String INSTALLATION = "installation";
 
-  public static void register(String username, String password, String nickname, String avatar,
+  public static void register(String username,
+      String password,
+      String nickname, String avatar,
       SignUpCallback callback) {
     SupportUser user = new SupportUser();
     user.setAvatar(avatar);
@@ -28,6 +30,15 @@ import java.util.UUID;
     user.setPassword(password);
     user.setDisplayName(nickname);
     user.signUpInBackground(callback);
+  }
+
+  /**
+   * 用户第三方注册, 密码可以不用填写
+   */
+  public static void register2LeanCloud(SupportUser supportUser, SignUpCallback callback) {
+    if (supportUser != null && callback != null) {
+      supportUser.signUpInBackground(callback);
+    }
   }
 
   public void setDisplayName(String displayName) {
@@ -107,6 +118,52 @@ import java.util.UUID;
       users.add(supportUser.toUser());
     }
     return users;
+  }
+
+  public static class Builder {
+    private String userId;
+    private String username;
+    private String password;
+    private String nickname;
+    private String avatar;
+
+    public Builder userId(String userId) {
+      this.userId = userId;
+      return this;
+    }
+
+    public Builder username(String username) {
+      this.username = username;
+      return this;
+    }
+    public Builder password(String password) {
+      this.password = password;
+      return this;
+    }
+    public Builder nickname(String nickname) {
+      this.nickname = nickname;
+      return this;
+    }
+    public Builder avatar(String avatar) {
+      this.avatar = avatar;
+      return this;
+    }
+
+    /**
+     * username和password可以不用传
+     * userId用于在点击时需要获取本应用的用户详情的时候需要用到
+     * nickname用于显示
+     * avatar用于显示头像
+     */
+    public SupportUser build() {
+      SupportUser user = new SupportUser();
+      user.setUserId(this.userId);
+      user.setUsername(this.username);
+      user.setDisplayName(this.nickname);
+      user.setPassword(this.password);
+      user.setAvatar(this.avatar);
+      return user;
+    }
   }
 
 }
