@@ -3,6 +3,7 @@ package support.im;
 import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
+import com.fuck_boilerplate.rx_paparazzo.RxPaparazzo;
 import com.raizlabs.android.dbflow.config.FlowConfig;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import pl.tajchert.nammu.Nammu;
@@ -19,6 +20,8 @@ public class SupportImApp extends SupportApp {
     super.onCreate();
 
     Nammu.init(appContext());
+    RxPaparazzo.register(this);
+
     FlowManager.init(new FlowConfig.Builder(this).build());
 
     AVOSCloud.initialize(appContext(), SupportIm.sApplicationId, SupportIm.sClientKey);

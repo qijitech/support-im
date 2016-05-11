@@ -10,8 +10,8 @@ public class ThumbnailUtils {
   static {
     final int screenWidth = ScreenUtils.getScreenWidth();
     final int screenHeight = ScreenUtils.getScreenHeight();
-    maxThumbWidth = screenWidth / 3;
-    maxThumbHeight = screenHeight / 4;
+    maxThumbWidth = 2 * screenWidth / 5;
+    maxThumbHeight = 2 * screenHeight / 5;
   }
 
   public static int[] getThumbSize(int sourceThumbWidth, int sourceThumbHeight) {

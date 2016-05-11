@@ -77,6 +77,9 @@ dependencies {
   // use kapt for kotlin apt
   compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
   compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+
+  compile "com.github.FuckBoilerplate:RxPaparazzo:0.0.6"
+  compile "io.reactivex:rxjava:1.1.4"
 }
 
 apply from: '../.buildscript/deploy.gradle'

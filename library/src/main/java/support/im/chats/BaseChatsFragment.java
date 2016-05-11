@@ -1,11 +1,6 @@
 package support.im.chats;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,11 +13,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import butterknife.ButterKnife;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
+import com.fuck_boilerplate.rx_paparazzo.RxPaparazzo;
+import com.fuck_boilerplate.rx_paparazzo.entities.Response;
 import com.sj.emoji.EmojiBean;
 import de.greenrobot.event.EventBus;
-import java.io.File;
-import pl.tajchert.nammu.Nammu;
-import pl.tajchert.nammu.PermissionCallback;
+import rx.functions.Action1;
 import sj.keyboard.data.EmoticonEntity;
 import sj.keyboard.interfaces.EmoticonClickListener;
 import sj.keyboard.widget.EmoticonsEditText;
@@ -37,23 +32,14 @@ import support.im.emoticons.FuncItem;
 import support.im.emoticons.SupportImFuncView;
 import support.im.events.FuncViewClickEvent;
 import support.im.leanclound.event.ImTypeMessageEvent;
-import support.im.utilities.PathUtils;
-import support.im.utilities.ProviderPathUtils;
 import support.ui.app.SupportFragment;
 import support.ui.content.ContentPresenter;
 import support.ui.content.ReflectionContentPresenterFactory;
 import support.ui.content.RequiresContent;
-import support.ui.utilities.ToastUtils;
 
 @RequiresContent(loadView = ChatsLoadingView.class, emptyView = ChatsEmptyView.class)
 public abstract class BaseChatsFragment extends SupportFragment implements FuncLayout.OnFuncKeyBoardListener,
     EmoticonClickListener {
-
-  private static final int TAKE_IMAGE_REQUEST = 1;
-  private static final int PICKER_IMAGE_REQUEST = 2;
-  private static final int PICKER_IMAGE_KITKAT_REQUEST = 3;
-
-  protected String localCameraPath;
 
   ReflectionContentPresenterFactory factory =
       ReflectionContentPresenterFactory.fromViewClass(getClass());
@@ -71,7 +57,6 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    localCameraPath = PathUtils.getPicturePathByCurrentTime(getContext());
     mAdapter = new ChatsAdapter(getContext());
     mAdapter.bind(AVIMTypedMessage.class, ChatsCommonViewHolder.class);
     mAdapter.viewHolderFactory(new ChatsViewHolderFactory(getContext()));
@@ -204,92 +189,36 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
     scrollToBottom();
   }
 
-  public void onEvent(FuncViewClickEvent event) {
+  @SuppressWarnings("unused") public void onEvent(FuncViewClickEvent event) {
     final FuncItem funcItem = event.mFuncItem;
     switch (funcItem.tag) {
       case FuncItem.TAG_CAMERA:
-        if (Nammu.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-          takeImage();
-        } else {
-          Nammu.askForPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionCallback() {
-            @Override public void permissionGranted() {
-              takeImage();
-            }
-            @Override public void permissionRefused() {
-            }
-          });
-        }
+        RxPaparazzo.takeImage(this)
+            .usingCamera()
+            .subscribe(new Action1<Response<BaseChatsFragment, String>>() {
+              @Override
+              public void call(Response<BaseChatsFragment, String> response) {
+                if (response.resultCode() == Activity.RESULT_OK) {
+                  hideKeyBoard();
+                  response.targetUI().sendImage(response.data());
+                }
+              }
+            });
         break;
       case FuncItem.TAG_GALLERY:
-        if (Nammu.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-          pickerImage();
-        } else {
-          Nammu.askForPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE, new PermissionCallback() {
-            @Override public void permissionGranted() {
-              pickerImage();
-            }
-            @Override public void permissionRefused() {
-            }
-          });
-        }
+        RxPaparazzo.takeImage(this)
+            .usingGallery()
+            .subscribe(new Action1<Response<BaseChatsFragment, String>>() {
+              @Override public void call(Response<BaseChatsFragment, String> response) {
+                if (response.resultCode() == Activity.RESULT_OK) {
+                  hideKeyBoard();
+                  response.targetUI().sendImage(response.data());
+                }
+              }
+            });
         break;
       case FuncItem.TAG_LOCATION:
         break;
-    }
-  }
-
-  @TargetApi(Build.VERSION_CODES.KITKAT) @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    if (resultCode != Activity.RESULT_OK) {
-      return;
-    }
-    switch (requestCode) {
-      case PICKER_IMAGE_REQUEST:
-      case PICKER_IMAGE_KITKAT_REQUEST:
-        if (data == null) {
-          ToastUtils.toast("return intent is null");
-          return;
-        }
-        Uri uri;
-        if (requestCode == PICKER_IMAGE_REQUEST) {
-          uri = data.getData();
-        } else {
-          //for Android 4.4
-          uri = data.getData();
-        }
-        String localSelectPath = ProviderPathUtils.getPath(getActivity(), uri);
-        hideKeyBoard();
-        sendImage(localSelectPath);
-        break;
-      case TAKE_IMAGE_REQUEST:
-        hideKeyBoard();
-        sendImage(localCameraPath);
-        break;
-    }
-  }
-
-  public void takeImage() {
-    Intent takePictureIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-    Uri imageUri = Uri.fromFile(new File(localCameraPath));
-    takePictureIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, imageUri);
-    if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-      startActivityForResult(takePictureIntent, TAKE_IMAGE_REQUEST);
-    }
-  }
-
-  public void pickerImage() {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-      Intent intent = new Intent();
-      intent.setType("image/*");
-      intent.setAction(Intent.ACTION_GET_CONTENT);
-      startActivityForResult(
-          Intent.createChooser(intent, getResources().getString(
-              R.string.si_activity_select_picture)), PICKER_IMAGE_REQUEST);
-    } else {
-      Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-      intent.addCategory(Intent.CATEGORY_OPENABLE);
-      intent.setType("image/*");
-      startActivityForResult(intent, PICKER_IMAGE_KITKAT_REQUEST);
     }
   }
 
