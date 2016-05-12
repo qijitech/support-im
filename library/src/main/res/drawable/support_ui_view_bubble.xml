@@ -8,7 +8,7 @@
       android:topLeftRadius="44dp"
       android:topRightRadius="44dp"/>
 
-  <solid android:color="#FF0288D1"/>
+  <solid android:color="?attr/colorAccent"/>
   <size
       android:height="88dp"
       android:width="88dp"/>

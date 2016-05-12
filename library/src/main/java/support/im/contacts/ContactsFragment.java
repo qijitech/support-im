@@ -9,8 +9,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import butterknife.ButterKnife;
 import com.avos.avoscloud.AVException;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
+import java.util.ArrayList;
 import java.util.List;
 import support.im.Injection;
 import support.im.R;
@@ -22,6 +25,7 @@ import support.im.events.InvitationEvent;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.contacts.AddRequestManager;
 import support.im.newcontacts.NewContactsActivity;
+import support.im.widget.SideBar;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -32,6 +36,8 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
   protected ContactsAdapter mAdapter;
   private ContactsDummy mNewContacts;
   private ContactsDummy mGroup;
+  private SideBar mSideBar;
+  private TextView mBubble;
 
   public static ContactsFragment create() {
     return new ContactsFragment();
@@ -45,7 +51,7 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     super.onCreate(savedInstanceState);
     mNewContacts = ContactsDummy.newContacts();
     mGroup = ContactsDummy.group();
-    
+
     mAdapter = new ContactsAdapter(getContext());
     mAdapter.setOnClickListener(this);
     mAdapter.bind(ContactsDummy.class, ContactsDummyViewHolder.class);
@@ -53,7 +59,8 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     mAdapter.bind(Contact.class, ContactsViewHolder.class);
 
     if (ChatManager.getInstance().isLogin()) {
-      new ContactsPresenter(ChatManager.getInstance().getClientId(), Injection.provideContactsRepository(getContext()), this);
+      new ContactsPresenter(ChatManager.getInstance().getClientId(),
+          Injection.provideContactsRepository(getContext()), this);
     }
 
     setHasOptionsMenu(true);
@@ -79,11 +86,27 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
 
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    final StickyRecyclerHeadersDecoration headersDecor = new StickyRecyclerHeadersDecoration(mAdapter);
+    mSideBar = ButterKnife.findById(view, R.id.support_ui_sidebar);
+    mBubble = ButterKnife.findById(view, R.id.support_ui_view_bubble);
+    mSideBar.setBubble(mBubble);
+    ArrayList<String> charList = new ArrayList<>();
+    List<Object> contactList = mAdapter.getItems();
+    if (contactList != null) {
+      for (int i = 0; i < contactList.size(); i++) {
+        Object o = contactList.get(i);
+        if (o instanceof Contact) {
+          if (!charList.contains(((Contact) o).getSortLetters())) {
+            charList.add(((Contact) o).getSortLetters());
+          }
+        }
+      }
+    }
+    mSideBar.setUpCharList(charList);
+    final StickyRecyclerHeadersDecoration headersDecor =
+        new StickyRecyclerHeadersDecoration(mAdapter);
     mRecyclerView.addItemDecoration(headersDecor);
     mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-      @Override
-      public void onChanged() {
+      @Override public void onChanged() {
         headersDecor.invalidateHeaders();
       }
     });
@@ -104,7 +127,8 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
   }
 
   private void showMorePopUpMenu() {
-    PopupMenu popup = new PopupMenu(getContext(), getActivity().findViewById(R.id.menu_support_im_contacts_add));
+    PopupMenu popup =
+        new PopupMenu(getContext(), getActivity().findViewById(R.id.menu_support_im_contacts_add));
     popup.getMenuInflater().inflate(R.menu.contacts_menu_add, popup.getMenu());
     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
       public boolean onMenuItemClick(MenuItem item) {
@@ -186,5 +210,4 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     // TODO
     //updateNewRequestBadge();
   }
-
 }

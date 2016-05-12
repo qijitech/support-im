@@ -84,6 +84,9 @@ public class SideBar extends View {
         afterCharList.add(item);
       }
     }
+    if (!mContainerCharList.contains("#")) {
+      afterCharList.add("#");
+    }
     mContainerCharList.clear();
     mContainerCharList.addAll(afterCharList);
     afterCharList = null;
@@ -188,7 +191,6 @@ public class SideBar extends View {
         break;
       default:
         setBackgroundDrawable(new ColorDrawable(0x13161316));
-        showBubble();
         if (oldChoose != c) {
           int len;
           if (mContainerCharList != null) {
@@ -212,9 +214,13 @@ public class SideBar extends View {
               }
               mTextDialog.setVisibility(View.VISIBLE);
             }
-            setBubblePosition(event.getY());
-            mBubble.setText(mContainerCharList.get(c));
-            showBubble();
+
+            if (mContainerCharList != null && mBubble != null) {
+              mBubble.setText(mContainerCharList.get(c));
+              setBubblePosition(event.getY());
+              showBubble();
+            }
+
             choose = c;
             invalidate();
           }
@@ -258,7 +264,9 @@ public class SideBar extends View {
   private void showBubble() {
     if (mBubble == null) return;
     if (mBubble.getVisibility() == INVISIBLE) {
-      mBubble.setVisibility(VISIBLE);
+      if (mContainerCharList != null) {
+        mBubble.setVisibility(VISIBLE);
+      }
     }
   }
 
