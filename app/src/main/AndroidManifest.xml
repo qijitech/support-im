@@ -180,6 +180,8 @@
     </activity>
     <!-- 反馈组件 END -->
 
+    <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
+    <service android:name="com.amap.api.location.APSService" />
     <meta-data
         android:name="com.amap.api.v2.apikey"
         android:value="7f71c655a3ebb0b9bbdeb1204dbc800e" />
