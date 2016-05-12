@@ -17,13 +17,12 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMapOptions;
+import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
 import com.amap.api.maps2d.model.MyLocationStyle;
-import com.amap.api.services.cloud.CloudSearch;
-import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.core.SuggestionCity;
 import com.amap.api.services.poisearch.PoiResult;
@@ -101,7 +100,7 @@ public class LocationActivity extends SupportActivity implements LocationSource,
     mAMap.setMyLocationStyle(myLocationStyle);
     mAMap.setMyLocationEnabled(true);
     mAMap.setLocationSource(this);// 设置定位监听
-
+    mAMap.moveCamera(CameraUpdateFactory.zoomTo(16));
     UiSettings uiSettings = mAMap.getUiSettings();
     uiSettings.setLogoPosition(AMapOptions.ZOOM_POSITION_RIGHT_BUTTOM);
     uiSettings.setScaleControlsEnabled(true);
