@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import butterknife.ButterKnife;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import de.greenrobot.event.EventBus;
@@ -32,7 +31,7 @@ import support.ui.utilities.ViewUtils;
   protected ContentPresenter contentPresenter;
   protected RecyclerView mRecyclerView;
   protected FrameLayout mContainer;
-  protected LinearLayout mContentView;
+  protected View mContentView;
   protected EasyRecyclerAdapter mAdapter;
 
   View mClientStateView;
