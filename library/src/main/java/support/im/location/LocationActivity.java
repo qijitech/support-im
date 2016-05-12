@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import butterknife.ButterKnife;
+import com.amap.api.maps2d.MapView;
 import support.im.R;
 import support.ui.app.SupportActivity;
 
@@ -16,7 +17,7 @@ public class LocationActivity extends SupportActivity {
 
   public CoordinatorLayout mCoordinatorLayout;
   public RecyclerView mRecyclerView;
-  public View mMapView;
+  public MapView mMapView;
 
   public BottomSheetBehavior mBehavior;
   private LocationAdapter mLocationAdapter;
@@ -28,6 +29,28 @@ public class LocationActivity extends SupportActivity {
     setupViews();
     setupRecyclerView();
     setupBottomSheetBehavior();
+
+    mMapView.onCreate(savedInstanceState);
+  }
+
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    mMapView.onDestroy();
+  }
+
+  @Override protected void onResume() {
+    super.onResume();
+    mMapView.onResume();
+  }
+
+  @Override protected void onPause() {
+    super.onPause();
+    mMapView.onPause();
+  }
+
+  @Override protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    mMapView.onSaveInstanceState(outState);
   }
 
   private void initialize() {
