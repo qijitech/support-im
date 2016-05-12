@@ -37,15 +37,15 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     return new ContactsFragment();
   }
 
-  //@Override protected int getFragmentLayout() {
-  //  return R.layout.contacts;
-  //}
+  @Override protected int getFragmentLayout() {
+    return R.layout.contacts;
+  }
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mNewContacts = ContactsDummy.newContacts();
     mGroup = ContactsDummy.group();
-
+    
     mAdapter = new ContactsAdapter(getContext());
     mAdapter.setOnClickListener(this);
     mAdapter.bind(ContactsDummy.class, ContactsDummyViewHolder.class);

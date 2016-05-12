@@ -57,12 +57,11 @@ public class MobileContactsFragment extends SupportRecyclerViewFragment
     mContentView = ButterKnife.findById(view, R.id.support_ui_content_view);
     mSideBar = ButterKnife.findById(view, R.id.contact_sidebar);
     mUserDialog = ButterKnife.findById(view, R.id.contact_dialog);
-    mSideBar.setTextView(mUserDialog);
+    mSideBar.setCenterDialog(mUserDialog);
 
     mSideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
 
-      @Override
-      public void onTouchingLetterChanged(String s) {
+      @Override public void onTouchingLetterChanged(String s) {
         int position = mMobileContactsAdapter.getPositionForSection(s.charAt(0));
         if (position != -1) {
           mRecyclerView.scrollToPosition(position);
@@ -70,11 +69,11 @@ public class MobileContactsFragment extends SupportRecyclerViewFragment
       }
     });
 
-    final StickyRecyclerHeadersDecoration headersDecor = new StickyRecyclerHeadersDecoration(mMobileContactsAdapter);
+    final StickyRecyclerHeadersDecoration headersDecor =
+        new StickyRecyclerHeadersDecoration(mMobileContactsAdapter);
     mRecyclerView.addItemDecoration(headersDecor);
     mAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
-      @Override
-      public void onChanged() {
+      @Override public void onChanged() {
         headersDecor.invalidateHeaders();
       }
     });
@@ -110,15 +109,16 @@ public class MobileContactsFragment extends SupportRecyclerViewFragment
     if (Nammu.checkPermission(Manifest.permission.READ_CONTACTS)) {
       mPresenter.start();
     } else {
-      Nammu.askForPermission(getActivity(), Manifest.permission.READ_CONTACTS, new PermissionCallback() {
-        @Override public void permissionGranted() {
-          mPresenter.start();
-        }
+      Nammu.askForPermission(getActivity(), Manifest.permission.READ_CONTACTS,
+          new PermissionCallback() {
+            @Override public void permissionGranted() {
+              mPresenter.start();
+            }
 
-        @Override public void permissionRefused() {
-          getActivity().finish();
-        }
-      });
+            @Override public void permissionRefused() {
+              getActivity().finish();
+            }
+          });
     }
   }
 
