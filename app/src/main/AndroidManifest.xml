@@ -84,6 +84,16 @@
           android:value=".features.main.MainActivity"/>
     </activity>
 
+    <!--地理位置选择-->
+    <activity
+        android:name="support.im.location.LocationActivity"
+        android:label="@string/support_im_label_location"
+        android:launchMode="singleTask">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value="support.im.chats.ChatsActivity"/>
+    </activity>
+
     <!--聊天界面-->
     <activity
         android:name="support.im.chats.UserProfileActivity"

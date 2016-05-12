@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:background="@android:color/white"
+    android:foreground="?attr/selectableItemBackground"
+    >
+
+  <com.facebook.drawee.view.SimpleDraweeView
+      android:id="@+id/image_support_im_contacts_avatar"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:layout_gravity="center_vertical"
+      android:layout_marginLeft="16dp"
+      fresco:placeholderImage="@drawable/si_round_grey"
+      fresco:placeholderImageScaleType="centerCrop"
+      fresco:roundAsCircle="true"
+      />
+
+  <TextView
+      android:id="@+id/text_location_name"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="72dp"
+      android:layout_marginRight="16dp"
+      android:layout_marginTop="5dp"
+      android:ellipsize="end"
+      android:lines="1"
+      android:text="Send your current location"
+      android:textColor="#ff212121"
+      android:textSize="@dimen/support_im_text_size_medium"
+      />
+
+  <TextView
+      android:id="@+id/text_location_address"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="72dp"
+      android:layout_marginRight="16dp"
+      android:layout_marginTop="30dp"
+      android:ellipsize="end"
+      android:lines="1"
+      android:text="Loading..."
+      android:textColor="#ff999999"
+      android:textSize="@dimen/support_im_text_size_xmedium"
+      />
+
+</FrameLayout>

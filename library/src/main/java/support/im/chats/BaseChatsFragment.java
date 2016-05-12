@@ -1,6 +1,7 @@
 package support.im.chats;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +33,7 @@ import support.im.emoticons.FuncItem;
 import support.im.emoticons.SupportImFuncView;
 import support.im.events.FuncViewClickEvent;
 import support.im.leanclound.event.ImTypeMessageEvent;
+import support.im.location.LocationActivity;
 import support.ui.app.SupportFragment;
 import support.ui.content.ContentPresenter;
 import support.ui.content.ReflectionContentPresenterFactory;
@@ -218,6 +220,7 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
             });
         break;
       case FuncItem.TAG_LOCATION:
+        startActivity(new Intent(getContext(), LocationActivity.class));
         break;
     }
   }
