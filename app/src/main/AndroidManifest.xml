@@ -14,6 +14,19 @@
   <!-- 基础模块 END -->
   <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
+  <!--地图包、搜索包需要的基础权限-->
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+  <!--定位包、导航包需要的额外权限（注：基础权限也需要）-->
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+  <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
   <uses-sdk tools:overrideLibrary="com.fuck_boilerplate.rx_paparazzo.library,io.victoralbertos.rxactivityresult"/>
 
   <application
@@ -82,6 +95,16 @@
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
           android:value=".features.main.MainActivity"/>
+    </activity>
+
+    <!--地理位置选择-->
+    <activity
+        android:name="support.im.location.LocationActivity"
+        android:label="@string/support_im_label_location"
+        android:launchMode="singleTask">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value="support.im.chats.ChatsActivity"/>
     </activity>
 
     <!--聊天界面-->
@@ -156,6 +179,10 @@
         android:name="com.avos.avoscloud.feedback.ThreadActivity">
     </activity>
     <!-- 反馈组件 END -->
+
+    <meta-data
+        android:name="com.amap.api.v2.apikey"
+        android:value="7f71c655a3ebb0b9bbdeb1204dbc800e" />
   </application>
 
 </manifest>
