@@ -8,6 +8,7 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.services.core.PoiItem;
+import com.amap.api.services.geocoder.RegeocodeAddress;
 import com.google.common.collect.Lists;
 import java.util.List;
 import support.im.R;
@@ -21,16 +22,10 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
   private SendLocationViewHolder mSendLocationViewHolder;
   private List<PoiItem> mPlaces = Lists.newArrayList();
-  private AMapLocation mAMapLocation;
-  private AMapLocation gpsLocation;
+  private RegeocodeAddress mAMapLocation;
 
-  public void setCustomLocation(AMapLocation aMapLocation) {
+  public void setCustomLocation(RegeocodeAddress aMapLocation) {
     mAMapLocation = aMapLocation;
-    updateSendLocation();
-  }
-
-  public void setGpsLocation(AMapLocation aMapLocation) {
-    gpsLocation = aMapLocation;
     updateSendLocation();
   }
 
@@ -38,8 +33,6 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     if (mSendLocationViewHolder != null) {
       if (mAMapLocation != null) {
         mSendLocationViewHolder.bindTo(mAMapLocation);
-      } else if (gpsLocation != null) {
-        mSendLocationViewHolder.bindTo(gpsLocation);
       }
     }
   }
@@ -60,7 +53,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
   @Override public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
     if (holder instanceof LocationViewHolder) {
-      ((LocationViewHolder)holder).bindTo(mPlaces.get(position));
+      ((LocationViewHolder)holder).bindTo(getItem(position));
       return;
     }
     if (holder instanceof SendLocationViewHolder) {
@@ -99,6 +92,13 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     return 2 + mPlaces.size();
   }
 
+  public PoiItem getItem(int position) {
+    if (!mPlaces.isEmpty()) {
+      return mPlaces.get(position - 2);
+    }
+    return null;
+  }
+
    static class SendLocationViewHolder extends RecyclerView.ViewHolder {
      TextView mTitleTextView;
      TextView mAccurateTextView;
@@ -112,9 +112,9 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       mAccurateTextView = ButterKnife.findById(itemView, R.id.text_location_send_accurate);
     }
 
-    public void bindTo(AMapLocation aMapLocation) {
+    public void bindTo(RegeocodeAddress aMapLocation) {
       if (aMapLocation != null) {
-        mAccurateTextView.setText(aMapLocation.getAddress());
+        mAccurateTextView.setText(aMapLocation.getFormatAddress());
       }
     }
   }

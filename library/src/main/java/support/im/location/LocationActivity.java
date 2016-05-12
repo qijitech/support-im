@@ -1,5 +1,6 @@
 package support.im.location;
 
+import android.animation.ValueAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,8 +9,8 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import butterknife.ButterKnife;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -17,14 +18,24 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.AMapOptions;
+import com.amap.api.maps2d.CameraUpdate;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.CameraPosition;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.Marker;
+import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
+import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
-import com.amap.api.services.core.SuggestionCity;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeAddress;
+import com.amap.api.services.geocoder.RegeocodeQuery;
+import com.amap.api.services.geocoder.RegeocodeResult;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import java.util.List;
@@ -32,7 +43,8 @@ import support.im.R;
 import support.ui.app.SupportActivity;
 
 public class LocationActivity extends SupportActivity implements LocationSource,
-    AMapLocationListener, PoiSearch.OnPoiSearchListener {
+    AMapLocationListener, PoiSearch.OnPoiSearchListener, AMap.OnCameraChangeListener,
+    GeocodeSearch.OnGeocodeSearchListener, View.OnClickListener {
 
   public CoordinatorLayout mCoordinatorLayout;
   public RecyclerView mRecyclerView;
@@ -44,15 +56,21 @@ public class LocationActivity extends SupportActivity implements LocationSource,
 
   private OnLocationChangedListener mListener;
   private AMapLocationClient mLocationClient;
-  private AMapLocationClientOption mLocationOption;
 
+  private AMapLocationClientOption mLocationOption;
   private PoiResult poiResult; // poi返回的结果
   private int currentPage = 0;// 当前页面，从0开始计数
   private PoiSearch.Query query;// Poi查询条件类
   private PoiSearch poiSearch;// POI搜索
+
   private List<PoiItem> poiItems;// poi数据
 
   private AMapLocation mCurrentMapLocation;
+  private LatLng myLocation = null;
+  private Marker centerMarker;
+  private boolean isMovingMarker = false;
+  private ValueAnimator animator = null;
+  private GeocodeSearch geocodeSearch;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -63,6 +81,7 @@ public class LocationActivity extends SupportActivity implements LocationSource,
     setupBottomSheetBehavior();
     mMapView.onCreate(savedInstanceState);
     setupMap();
+    setupLocationStyle();
   }
 
   @Override protected void onDestroy() {
@@ -91,22 +110,32 @@ public class LocationActivity extends SupportActivity implements LocationSource,
   }
 
   private void setupMap() {
-    mAMap = mMapView.getMap();
-    MyLocationStyle myLocationStyle = new MyLocationStyle();
-    myLocationStyle.myLocationIcon(BitmapDescriptorFactory.fromResource(R.drawable.si_map_pin));// 设置小蓝点的图标
-    myLocationStyle.strokeColor(Color.BLACK);// 设置圆形的边框颜色
-    myLocationStyle.radiusFillColor(Color.argb(100, 0, 0, 180));// 设置圆形的填充颜色
-    myLocationStyle.strokeWidth(1.0f);// 设置圆形的边框粗细
-    mAMap.setMyLocationStyle(myLocationStyle);
-    mAMap.setMyLocationEnabled(true);
+    if (mAMap == null) {
+      mAMap = mMapView.getMap();
+    }
     mAMap.setLocationSource(this);// 设置定位监听
-    mAMap.moveCamera(CameraUpdateFactory.zoomTo(16));
+    mAMap.setMyLocationEnabled(true);
+
+    CameraUpdate cameraUpdate = CameraUpdateFactory.zoomTo(15);
+    mAMap.moveCamera(cameraUpdate);
+    mAMap.setOnCameraChangeListener(this);
+
     UiSettings uiSettings = mAMap.getUiSettings();
     uiSettings.setLogoPosition(AMapOptions.ZOOM_POSITION_RIGHT_BUTTOM);
-    uiSettings.setScaleControlsEnabled(true);
     uiSettings.setZoomControlsEnabled(false);
-    uiSettings.setCompassEnabled(false);
-    uiSettings.setMyLocationButtonEnabled(true);
+    uiSettings.setMyLocationButtonEnabled(false);
+
+    geocodeSearch = new GeocodeSearch(this);
+    geocodeSearch.setOnGeocodeSearchListener(this);
+  }
+
+  private void setupLocationStyle() {
+    // 自定义系统定位蓝点
+    MyLocationStyle myLocationStyle = new MyLocationStyle();
+    myLocationStyle.myLocationIcon(BitmapDescriptorFactory.fromResource(R.drawable.img_location_now));
+    myLocationStyle.strokeWidth(0);
+    myLocationStyle.radiusFillColor(Color.TRANSPARENT);
+    mAMap.setMyLocationStyle(myLocationStyle);
   }
 
   private void setupBottomSheetBehavior() {
@@ -130,27 +159,41 @@ public class LocationActivity extends SupportActivity implements LocationSource,
   }
 
   private void setupViews() {
+    ButterKnife.findById(this, R.id.fab_my_location).setOnClickListener(this);
     mCoordinatorLayout = ButterKnife.findById(this, R.id.coordinator_layout);
     mRecyclerView = ButterKnife.findById(this, android.R.id.list);
     mMapView = ButterKnife.findById(this, R.id.map_view);
   }
 
+  @Override public void onClick(View v) {
+    CameraUpdate update = CameraUpdateFactory.changeLatLng(myLocation);
+    mAMap.animateCamera(update);
+  }
+
+  private void addChooseMarker() {
+    if (centerMarker == null) {
+      MarkerOptions centerMarkerOption = new MarkerOptions().position(myLocation)
+          .icon(BitmapDescriptorFactory.fromResource(R.drawable.si_map_pin));
+      centerMarker = mAMap.addMarker(centerMarkerOption);
+    }
+    centerMarker.setPositionByPixels(mMapView.getWidth() / 2, mMapView.getHeight() / 2);
+  }
+
   @Override public void onLocationChanged(AMapLocation aMapLocation) {
-    if (mListener != null && aMapLocation != null) {
-      mCurrentMapLocation = aMapLocation;
-      if (aMapLocation.getErrorCode() == 0) {
-        mListener.onLocationChanged(aMapLocation);// 显示系统小蓝点
-        mLocationAdapter.setCustomLocation(aMapLocation);
-        searchBound(aMapLocation);
-      } else {
-        String errText = "定位失败," + aMapLocation.getErrorCode()+ ": " + aMapLocation.getErrorInfo();
-        Log.e("AmapErr",errText);
+    if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
+      if (mListener != null) {
+        mListener.onLocationChanged(aMapLocation);
       }
+      mCurrentMapLocation = aMapLocation;
+      myLocation = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
+      addChooseMarker();
     }
   }
+
   @Override public void activate(OnLocationChangedListener onLocationChangedListener) {
     mListener = onLocationChangedListener;
     if (mLocationClient == null) {
+
       mLocationClient = new AMapLocationClient(this);
       mLocationOption = new AMapLocationClientOption();
       //设置定位监听
@@ -181,10 +224,8 @@ public class LocationActivity extends SupportActivity implements LocationSource,
         this.poiResult = poiResult;
         if (poiResult.getQuery().equals(query)) {
           poiItems = poiResult.getPois();// 取得第一页的poiitem数据，页数从数字0开始
-          List<SuggestionCity> suggestionCities = poiResult.getSearchSuggestionCitys();// 当搜索不到poiitem数据时，会返回含有搜索关键字的城市信息
-          mLocationAdapter.addData(poiItems);
+          mLocationAdapter.replace(poiItems);
           if (poiItems != null && poiItems.size() > 0) {
-
           }
         }
       }
@@ -194,10 +235,75 @@ public class LocationActivity extends SupportActivity implements LocationSource,
   @Override public void onPoiItemSearched(PoiItem poiItem, int rcode) {
   }
 
-  private void searchBound(AMapLocation aMapLocation) {
+  @Override public void onCameraChange(CameraPosition cameraPosition) {
+    if (centerMarker != null) {
+      setMovingMarker();
+    }
+  }
+
+  @Override public void onCameraChangeFinish(CameraPosition cameraPosition) {
+    LatLonPoint point = new LatLonPoint(cameraPosition.target.latitude, cameraPosition.target.longitude);
+    RegeocodeQuery query = new RegeocodeQuery(point, 50, GeocodeSearch.AMAP);
+    geocodeSearch.getFromLocationAsyn(query);
+    if (centerMarker != null) {
+      animMarker();
+    }
+  }
+
+  private void endAnim() {
+    if (animator != null && animator.isRunning())
+      animator.end();
+  }
+
+  @Override public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+    if(regeocodeResult != null&& regeocodeResult.getRegeocodeAddress() != null){
+      endAnim();
+      RegeocodeAddress regeocodeAddress = regeocodeResult.getRegeocodeAddress();
+      mLocationAdapter.setCustomLocation(regeocodeAddress);
+      searchBound(regeocodeAddress);
+      //String formatAddress = regeocodeResult.getRegeocodeAddress().getFormatAddress();
+      //String shortAdd = formatAddress.replace(regeocodeAddress.getProvince(), "").replace(regeocodeAddress.getCity(), "").replace(regeocodeAddress.getDistrict(), "");
+      //tvCurLocation.setText(shortAdd);
+    } else{
+      //ToastUtil.show(AmapActivity.this, R.string.no_result);
+    }
+  }
+
+  @Override public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+  }
+
+  private void animMarker() {
+    isMovingMarker = false;
+    if (animator != null) {
+      animator.start();
+      return;
+    }
+    animator = ValueAnimator.ofFloat(mMapView.getHeight()/2, mMapView.getHeight()/2 - 30);
+    animator.setInterpolator(new DecelerateInterpolator());
+    animator.setDuration(150);
+    animator.setRepeatCount(1);
+    animator.setRepeatMode(ValueAnimator.REVERSE);
+    animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+      @Override
+      public void onAnimationUpdate(ValueAnimator animation) {
+        Float value = (Float) animation.getAnimatedValue();
+        centerMarker.setPositionByPixels(mMapView.getWidth() / 2, Math.round(value));
+      }
+    });
+    animator.start();
+  }
+
+  private void setMovingMarker() {
+    if (isMovingMarker)
+      return;
+
+    isMovingMarker = true;
+  }
+
+  private void searchBound(RegeocodeAddress regeocodeAddress) {
     query = new PoiSearch.Query("",
         "050000|060000|070000|080000|090000|100000|110000|120000|130000|140000|150000|160000|170000",
-        aMapLocation.getCity());
+        regeocodeAddress.getCity());
 
     query.setPageNum(currentPage);
     query.setPageSize(20);

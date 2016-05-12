@@ -8,11 +8,29 @@
     android:fitsSystemWindows="true"
     >
 
-  <com.amap.api.maps2d.MapView
-      android:id="@+id/map_view"
+  <FrameLayout
       android:layout_width="match_parent"
       android:layout_height="300dp"
-      />
+      >
+    <com.amap.api.maps2d.MapView
+        android:id="@+id/map_view"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_my_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/si_location_myloc_on"
+        app:backgroundTint="@android:color/white"
+        app:fabSize="normal"
+        />
+  </FrameLayout>
+
 
   <android.support.v7.widget.RecyclerView
       android:id="@android:id/list"
