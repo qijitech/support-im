@@ -4,7 +4,7 @@
     android:layout_width="64dp"
     android:layout_height="64dp"
     android:padding="6dp"
-    fresco:placeholderImage="@drawable/support_im_placeholder_avatar"
+    fresco:placeholderImage="@drawable/si_logo_avatar"
     fresco:placeholderImageScaleType="centerCrop"
     fresco:roundedCornerRadius="4dp"
     />

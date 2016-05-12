@@ -20,7 +20,7 @@
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_gravity="center_vertical"
-        fresco:placeholderImage="@drawable/support_im_placeholder_avatar"
+        fresco:placeholderImage="@drawable/si_logo_avatar"
         fresco:placeholderImageScaleType="centerCrop"
         fresco:roundAsCircle="true"
         />

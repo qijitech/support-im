@@ -6,7 +6,7 @@
     <item name="android:layout_width">45dp</item>
     <item name="android:layout_height">45dp</item>
     <item name="android:scaleType">centerCrop</item>
-    <item name="android:src">@drawable/support_im_placeholder_avatar</item>
+    <item name="android:src">@drawable/si_logo_avatar</item>
   </style>
 
   <style name="SupportImAvatar.Large">
