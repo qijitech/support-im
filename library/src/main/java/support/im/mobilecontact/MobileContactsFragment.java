@@ -95,6 +95,7 @@ public class MobileContactsFragment extends SupportRecyclerViewFragment
   @Override public void showMobileContacts(List<MobileContact> mobileContacts) {
     mMobileContactsAdapter.addAll(mobileContacts);
     contentPresenter.displayContentView();
+    mSideBar.setUpCharList(mMobileContactsAdapter.getSortLetter());
   }
 
   @Override public void showNoMobileContacts() {

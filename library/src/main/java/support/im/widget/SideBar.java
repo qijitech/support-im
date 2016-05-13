@@ -118,7 +118,7 @@ public class SideBar extends View {
     if (mContainerCharList != null) {
       firstPos = (getHeight() - eachHeight * mContainerCharList.size()) / 2;
     } else {
-      firstPos = (getHeight() - (paint.measureText(b[0]) * b.length / 2)) / b.length;
+      firstPos = (getHeight() - (eachHeight * b.length)) / 2;
     }
 
     for (int i = 0; i < len; i++) {
@@ -175,7 +175,13 @@ public class SideBar extends View {
         }
       }
     } else {
-      cTemp = (int) (y / getHeight() * b.length);// 点击y坐标所占总高度的比例*b数组的长度就等于点击b中的个数.
+      if (y > mFirstCharY || y < mLastCharY) {
+        for (int i = 0; i < b.length; i++) {
+          if (y > mFirstCharY + charHeight * i && y < mFirstCharY + charHeight * (i + 1)) {
+            cTemp = i;
+          }
+        }
+      }
     }
     final int c = cTemp;
     switch (action) {

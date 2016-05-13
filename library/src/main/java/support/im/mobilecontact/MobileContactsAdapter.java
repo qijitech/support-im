@@ -4,13 +4,15 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
+import java.util.ArrayList;
+import java.util.List;
 import support.im.R;
 import support.im.data.MobileContact;
 import support.ui.adapters.EasyRecyclerAdapter;
 import support.ui.adapters.EasyViewHolder;
 
-public class MobileContactsAdapter extends EasyRecyclerAdapter implements
-    StickyRecyclerHeadersAdapter<EasyViewHolder> {
+public class MobileContactsAdapter extends EasyRecyclerAdapter
+    implements StickyRecyclerHeadersAdapter<EasyViewHolder> {
 
   public MobileContactsAdapter(Context context) {
     super(context);
@@ -29,6 +31,22 @@ public class MobileContactsAdapter extends EasyRecyclerAdapter implements
       }
     }
     return -1;
+  }
+
+  public List<String> getSortLetter() {
+    List<String> sortList = null;
+    if (getItems() != null) {
+      sortList = new ArrayList<>();
+      for (int i = 0; i < getItemCount(); i++) {
+        char firstChar = get(i).getSortLetters().charAt(0);
+        if (!sortList.contains(String.valueOf(firstChar))) {
+          sortList.add(String.valueOf(firstChar));
+        }
+      }
+      return sortList;
+    } else {
+      return null;
+    }
   }
 
   @Override public long getHeaderId(int position) {

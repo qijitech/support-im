@@ -5,13 +5,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter;
+import java.util.ArrayList;
+import java.util.List;
 import support.im.R;
 import support.im.data.Contact;
 import support.ui.adapters.EasyRecyclerAdapter;
 import support.ui.adapters.EasyViewHolder;
 
-public class ContactsAdapter extends EasyRecyclerAdapter implements
-    StickyRecyclerHeadersAdapter<EasyViewHolder> {
+public class ContactsAdapter extends EasyRecyclerAdapter
+    implements StickyRecyclerHeadersAdapter<EasyViewHolder> {
 
   public ContactsAdapter(Context context) {
     super(context);
@@ -29,6 +31,27 @@ public class ContactsAdapter extends EasyRecyclerAdapter implements
       }
     }
     return RecyclerView.NO_POSITION;
+  }
+
+  public List<String> getSortLetter() {
+    List<String> sortList = null;
+    if (getItems() != null) {
+      sortList = new ArrayList<>();
+      List<Object> list = getItems();
+      for (int i = 0; i < list.size(); i++) {
+        Object o = list.get(i);
+        if (o instanceof Contact) {
+          Contact contact = (Contact) o;
+          char firstChar = contact.getSortLetters().toUpperCase().charAt(0);
+          if (!sortList.contains(String.valueOf(firstChar))) {
+            sortList.add(String.valueOf(firstChar));
+          }
+        }
+      }
+      return sortList;
+    } else {
+      return null;
+    }
   }
 
   @Override public long getHeaderId(int position) {
