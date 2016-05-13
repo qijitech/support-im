@@ -1,5 +1,7 @@
 package support.im.feature.photodraweeview;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,14 +9,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.WindowManager;
 import butterknife.ButterKnife;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
-import com.facebook.drawee.drawable.ProgressBarDrawable;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.imagepipeline.image.ImageInfo;
 import support.im.R;
+import support.im.feature.photodraweeview.drawable.CircularDrawable;
 import support.im.feature.photodraweeview.widget.OnPhotoTapListener;
 import support.im.feature.photodraweeview.widget.OnViewTapListener;
 import support.im.feature.photodraweeview.widget.PhotoDraweeView;
@@ -32,6 +35,11 @@ public class SingleDraweeActivity extends AppCompatActivity {
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    if (getSupportActionBar() != null) {
+      getSupportActionBar().hide();
+    }
     setContentView(R.layout.activity_single_drawee_view);
     ButterKnife.bind(this);
     mPhotoDraweeView = ButterKnife.findById(this, R.id.support_im_single_drawee_view);
@@ -45,7 +53,7 @@ public class SingleDraweeActivity extends AppCompatActivity {
 
   private void initPhotoView() {
     GenericDraweeHierarchy hierarchy = mPhotoDraweeView.getHierarchy();
-    hierarchy.setProgressBarImage(new ProgressBarDrawable());
+    hierarchy.setProgressBarImage(new CircularDrawable());
     mPhotoDraweeView.setHierarchy(hierarchy);
     PipelineDraweeControllerBuilder controller = Fresco.newDraweeControllerBuilder();
     controller.setUri(Uri.parse(mImgUrl));
@@ -72,5 +80,11 @@ public class SingleDraweeActivity extends AppCompatActivity {
         //skip
       }
     });
+  }
+
+  public static void startBroswerSingleImg(Context context, String url) {
+    Intent intent = new Intent(context, SingleDraweeActivity.class);
+    intent.putExtra(IMG_URL, url);
+    context.startActivity(intent);
   }
 }

@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import com.avos.avoscloud.AVGeoPoint;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
+import com.avos.avoscloud.im.v2.messages.AVIMImageMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMLocationMessage;
 import com.fuck_boilerplate.rx_paparazzo.RxPaparazzo;
 import com.fuck_boilerplate.rx_paparazzo.entities.Response;
@@ -36,6 +37,7 @@ import support.im.emoticons.FuncItem;
 import support.im.emoticons.SupportImFuncView;
 import support.im.events.ChatClickEvent;
 import support.im.events.FuncViewClickEvent;
+import support.im.feature.photodraweeview.SingleDraweeActivity;
 import support.im.leanclound.event.ImTypeMessageEvent;
 import support.im.location.Location;
 import support.im.location.LocationActivity;
@@ -46,8 +48,8 @@ import support.ui.content.ReflectionContentPresenterFactory;
 import support.ui.content.RequiresContent;
 
 @RequiresContent(loadView = ChatsLoadingView.class, emptyView = ChatsEmptyView.class)
-public abstract class BaseChatsFragment extends SupportFragment implements FuncLayout.OnFuncKeyBoardListener,
-    EmoticonClickListener {
+public abstract class BaseChatsFragment extends SupportFragment
+    implements FuncLayout.OnFuncKeyBoardListener, EmoticonClickListener {
 
   private static final int REQUEST_CODE_LOCATION = 1000;
 
@@ -128,11 +130,12 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
     mEmoticonsKeyBoard.addOnFuncKeyBoardListener(this);
     mEmoticonsKeyBoard.addFuncView(new SupportImFuncView(getContext()));
 
-    mEmoticonsKeyBoard.getEtChat().setOnSizeChangedListener(new EmoticonsEditText.OnSizeChangedListener() {
-      @Override public void onSizeChanged(int w, int h, int oldw, int oldh) {
-        scrollToBottom();
-      }
-    });
+    mEmoticonsKeyBoard.getEtChat()
+        .setOnSizeChangedListener(new EmoticonsEditText.OnSizeChangedListener() {
+          @Override public void onSizeChanged(int w, int h, int oldw, int oldh) {
+            scrollToBottom();
+          }
+        });
     mEmoticonsKeyBoard.getBtnSend().setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         onSendBtnClick(mEmoticonsKeyBoard.getEtChat().getText().toString());
@@ -205,7 +208,11 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
       if (avimMessage instanceof AVIMLocationMessage) {
         AVIMLocationMessage locationMessage = (AVIMLocationMessage) avimMessage;
         AVGeoPoint avGeoPoint = locationMessage.getLocation();
-        LocationActivity.startLocation(getContext(), avGeoPoint.getLatitude(), avGeoPoint.getLongitude());
+        LocationActivity.startLocation(getContext(), avGeoPoint.getLatitude(),
+            avGeoPoint.getLongitude());
+      } else if (avimMessage instanceof AVIMImageMessage) {
+        AVIMImageMessage imageMessage = (AVIMImageMessage) avimMessage;
+        SingleDraweeActivity.startBroswerSingleImg(getContext(), imageMessage.getFileUrl());
       }
     }
   }
@@ -217,8 +224,7 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
         RxPaparazzo.takeImage(this)
             .usingCamera()
             .subscribe(new Action1<Response<BaseChatsFragment, String>>() {
-              @Override
-              public void call(Response<BaseChatsFragment, String> response) {
+              @Override public void call(Response<BaseChatsFragment, String> response) {
                 if (response.resultCode() == Activity.RESULT_OK) {
                   hideKeyBoard();
                   response.targetUI().sendImage(response.data());
@@ -239,7 +245,8 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
             });
         break;
       case FuncItem.TAG_LOCATION:
-        startActivityForResult(new Intent(getContext(), LocationPickerActivity.class), REQUEST_CODE_LOCATION);
+        startActivityForResult(new Intent(getContext(), LocationPickerActivity.class),
+            REQUEST_CODE_LOCATION);
         break;
     }
   }
@@ -257,8 +264,10 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
   }
 
   protected abstract void sendLocation(Location location);
-  protected abstract void sendImage(String imagePath);
-  protected abstract void onSendImage(String imageUri);
-  protected abstract void onSendBtnClick(String message);
 
+  protected abstract void sendImage(String imagePath);
+
+  protected abstract void onSendImage(String imageUri);
+
+  protected abstract void onSendBtnClick(String message);
 }
