@@ -133,7 +133,7 @@ public class LocationPickerAdapter extends RecyclerView.Adapter<RecyclerView.Vie
      }
 
      @Override public void onClick(View v) {
-       if (delegate != null) {
+       if (delegate != null && regeocodeAddress != null) {
          Location location = new Location();
          StreetNumber streetNumber = regeocodeAddress.getStreetNumber();
          LatLonPoint latLonPoint = streetNumber.getLatLonPoint();
