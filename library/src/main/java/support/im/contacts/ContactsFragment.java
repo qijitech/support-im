@@ -13,7 +13,6 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import com.avos.avoscloud.AVException;
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration;
-import java.util.ArrayList;
 import java.util.List;
 import support.im.Injection;
 import support.im.R;
@@ -89,19 +88,15 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     mSideBar = ButterKnife.findById(view, R.id.support_ui_sidebar);
     mBubble = ButterKnife.findById(view, R.id.support_ui_view_bubble);
     mSideBar.setBubble(mBubble);
-    ArrayList<String> charList = new ArrayList<>();
-    List<Object> contactList = mAdapter.getItems();
-    if (contactList != null) {
-      for (int i = 0; i < contactList.size(); i++) {
-        Object o = contactList.get(i);
-        if (o instanceof Contact) {
-          if (!charList.contains(((Contact) o).getSortLetters())) {
-            charList.add(((Contact) o).getSortLetters());
-          }
+    mSideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
+
+      @Override public void onTouchingLetterChanged(String s) {
+        int position = mAdapter.getPositionForSection(s.charAt(0));
+        if (position != -1) {
+          mRecyclerView.scrollToPosition(position);
         }
       }
-    }
-    mSideBar.setUpCharList(charList);
+    });
     final StickyRecyclerHeadersDecoration headersDecor =
         new StickyRecyclerHeadersDecoration(mAdapter);
     mRecyclerView.addItemDecoration(headersDecor);
@@ -171,6 +166,7 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     mAdapter.addAll(contacts);
     addCommonData(contacts.size());
     contentPresenter.displayContentView();
+    mSideBar.setUpCharList(mAdapter.getSortLetter());
   }
 
   @Override public void showNotLoggedIn() {
