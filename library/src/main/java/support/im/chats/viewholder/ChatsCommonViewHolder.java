@@ -1,13 +1,16 @@
 package support.im.chats.viewholder;
 
 import android.content.Context;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.facebook.drawee.view.SimpleDraweeView;
+import de.greenrobot.event.EventBus;
 import support.im.R;
 import support.im.data.cache.CacheManager;
+import support.im.events.ChatClickEvent;
 import support.im.utilities.FrescoDisplayUtils;
 import support.im.utilities.Utils;
 import support.ui.adapters.EasyViewHolder;
@@ -28,6 +31,15 @@ public abstract class ChatsCommonViewHolder extends EasyViewHolder<AVIMMessage> 
     avatarSize = (int) SupportApp.dimen(R.dimen.si_chats_item_avatar_size);
     mSentAtTextView = ButterKnife.findById(itemView, R.id.text_support_im_chats_item_sent_at);
     mAvatarView = ButterKnife.findById(itemView, R.id.image_support_im_chats_item_avatar);
+    ButterKnife.findById(itemView, R.id.container_support_im_chats_item_content).setOnClickListener(this);
+  }
+
+  @Override public void onClick(View v) {
+    if (v.getId() == R.id.container_support_im_chats_item_content) {
+      EventBus.getDefault().post(new ChatClickEvent(mMessage));
+      return;
+    }
+    super.onClick(v);
   }
 
   @Override public void bindTo(int position, AVIMMessage value) {

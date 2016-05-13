@@ -100,7 +100,17 @@
     <!--地理位置选择-->
     <activity
         android:name="support.im.location.LocationPickerActivity"
-        android:label="@string/support_im_label_location"
+        android:label="@string/si_label_location_picker"
+        android:launchMode="singleTask">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value="support.im.chats.ChatsActivity"/>
+    </activity>
+
+    <!--地理位置-->
+    <activity
+        android:name="support.im.location.LocationActivity"
+        android:label="@string/si_label_location"
         android:launchMode="singleTask">
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"

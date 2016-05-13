@@ -13,7 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import butterknife.ButterKnife;
+import com.avos.avoscloud.AVGeoPoint;
+import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
+import com.avos.avoscloud.im.v2.messages.AVIMLocationMessage;
 import com.fuck_boilerplate.rx_paparazzo.RxPaparazzo;
 import com.fuck_boilerplate.rx_paparazzo.entities.Response;
 import com.sj.emoji.EmojiBean;
@@ -31,9 +34,11 @@ import support.im.emoticons.ChatsUtils;
 import support.im.emoticons.Constants;
 import support.im.emoticons.FuncItem;
 import support.im.emoticons.SupportImFuncView;
+import support.im.events.ChatClickEvent;
 import support.im.events.FuncViewClickEvent;
 import support.im.leanclound.event.ImTypeMessageEvent;
 import support.im.location.Location;
+import support.im.location.LocationActivity;
 import support.im.location.LocationPickerActivity;
 import support.ui.app.SupportFragment;
 import support.ui.content.ContentPresenter;
@@ -192,6 +197,17 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
   public void onEvent(ImTypeMessageEvent event) {
     mAdapter.add(event.message);
     scrollToBottom();
+  }
+
+  public void onEvent(ChatClickEvent event) {
+    AVIMMessage avimMessage = event.mAvimMessage;
+    if (avimMessage != null) {
+      if (avimMessage instanceof AVIMLocationMessage) {
+        AVIMLocationMessage locationMessage = (AVIMLocationMessage) avimMessage;
+        AVGeoPoint avGeoPoint = locationMessage.getLocation();
+        LocationActivity.startLocation(getContext(), avGeoPoint.getLatitude(), avGeoPoint.getLongitude());
+      }
+    }
   }
 
   @SuppressWarnings("unused") public void onEvent(FuncViewClickEvent event) {
