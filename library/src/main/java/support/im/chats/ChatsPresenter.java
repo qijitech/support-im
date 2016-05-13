@@ -3,11 +3,13 @@ package support.im.chats;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVGeoPoint;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.messages.AVIMImageMessage;
+import com.avos.avoscloud.im.v2.messages.AVIMLocationMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import com.google.common.collect.Lists;
 import java.io.IOException;
@@ -20,6 +22,7 @@ import support.im.data.cache.CacheManager;
 import support.im.data.source.ChatsDataSource;
 import support.im.data.source.ConversationsDataSource;
 import support.im.leanclound.ChatManager;
+import support.im.location.Location;
 import support.im.utilities.AVExceptionHandler;
 import support.im.utilities.DatabaseUtils;
 
@@ -183,6 +186,13 @@ public class ChatsPresenter implements ChatsContract.Presenter {
     message.setFrom(mCurrentUser.getObjectId());
     message.setText(content);
     sendMessage(message);
+  }
+
+  @Override public void sendLocationMessage(Location location) {
+    AVIMLocationMessage locationMessage = new AVIMLocationMessage();
+    locationMessage.setLocation(new AVGeoPoint(location.latitude, location.longitude));
+    locationMessage.setText(location.snippet);
+    sendMessage(locationMessage);
   }
 
   @Override public void sendImageMessage(String imagePath) {

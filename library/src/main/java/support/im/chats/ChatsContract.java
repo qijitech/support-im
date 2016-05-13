@@ -6,6 +6,7 @@ import com.avos.avoscloud.im.v2.AVIMMessage;
 import java.util.List;
 import support.im.BasePresenter;
 import support.im.BaseView;
+import support.im.location.Location;
 
 public interface ChatsContract {
 
@@ -31,6 +32,7 @@ public interface ChatsContract {
   interface Presenter extends BasePresenter {
     void getAVIMConversation(String conversationId);
     void getConversation(final String userObjectId);
+    void sendLocationMessage(Location location);
     void sendImageMessage(String imagePath);
     void sendTextMessage(String content);
     void fetchMessages(boolean forceUpdate);

@@ -5,6 +5,6 @@
     android:id="@id/image_support_im_chats_item_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    fresco:placeholderImage="@drawable/si_logo_avatar"
+    fresco:placeholderImage="@drawable/si_placeholder"
     fresco:placeholderImageScaleType="centerCrop"
     />

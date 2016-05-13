@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -15,30 +14,19 @@
   <RelativeLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginLeft="72dp"
-      android:layout_marginStart="72dp"
       >
-
     <FrameLayout
         android:id="@id/container_support_im_chats_item_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_toLeftOf="@id/image_support_im_chats_item_avatar"
         android:layout_toStartOf="@id/image_support_im_chats_item_avatar"
+        android:background="@drawable/si_selector_outgoing_photo"
         android:orientation="horizontal"
-        android:paddingRight="8dp"
         >
-      <TextView
-          xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          android:id="@id/text_support_im_chats_item_location"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:background="@drawable/support_im_chats_location_default"
-          android:gravity="center_horizontal"
-          android:textColor="@android:color/white"
-          tools:text="Text"
-          />
+      <include layout="@layout/chats_item_location"/>
     </FrameLayout>
 
     <include layout="@layout/chats_item_status"/>

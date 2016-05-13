@@ -12,6 +12,7 @@ import support.im.Injection;
 import support.im.data.ConversationType;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.Constants;
+import support.im.location.Location;
 import support.im.utilities.ConversationHelper;
 import support.im.utilities.NotificationUtils;
 
@@ -85,6 +86,10 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
 
   @Override protected void sendImage(String imagePath) {
     mPresenter.sendImageMessage(imagePath);
+  }
+
+  @Override protected void sendLocation(Location location) {
+    mPresenter.sendLocationMessage(location);
   }
 
   @Override protected void onSendBtnClick(String message) {

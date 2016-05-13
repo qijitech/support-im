@@ -1,6 +1,8 @@
 package support.im.utilities;
 
 import android.content.Context;
+import android.net.Uri;
+import com.avos.avoscloud.AVGeoPoint;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.AVIMReservedMessageType;
 import com.avos.avoscloud.im.v2.AVIMTypedMessage;
@@ -15,6 +17,15 @@ public final class Utils {
 
   private Utils() {
 
+  }
+
+  public static Uri buildStaticMapUrl(AVGeoPoint location) {
+    final String locString = location.getLongitude() + "," + location.getLatitude();
+    StringBuffer sb = new StringBuffer("http://restapi.amap.com/v3/staticmap?key=ee95e52bf08006f63fd29bcfbcf21df0");
+    sb.append("&zoom=17&size=200*150&scale=2");
+    sb.append("&location=").append(locString);
+    sb.append("&markers=mid,0xFF0000,A:").append(locString);
+    return Uri.parse(sb.toString());
   }
 
   public static String millisecsToDateString(long timestamp) {
