@@ -1,5 +1,6 @@
 package support.im.feature.photodraweeview;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Animatable;
@@ -82,9 +83,15 @@ public class SingleDraweeActivity extends AppCompatActivity {
     });
   }
 
-  public static void startBroswerSingleImg(Context context, String url) {
-    Intent intent = new Intent(context, SingleDraweeActivity.class);
+  public static void startBroswerSingleImg(Activity activity, String url) {
+    Intent intent = new Intent(activity, SingleDraweeActivity.class);
     intent.putExtra(IMG_URL, url);
-    context.startActivity(intent);
+    activity.startActivity(intent);
+    activity.overridePendingTransition(0, 0);
+  }
+
+  @Override public void finish() {
+    super.finish();
+    overridePendingTransition(0, 0);
   }
 }

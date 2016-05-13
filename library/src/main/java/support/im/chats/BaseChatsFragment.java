@@ -210,9 +210,11 @@ public abstract class BaseChatsFragment extends SupportFragment
         AVGeoPoint avGeoPoint = locationMessage.getLocation();
         LocationActivity.startLocation(getContext(), avGeoPoint.getLatitude(),
             avGeoPoint.getLongitude());
-      } else if (avimMessage instanceof AVIMImageMessage) {
+        return;
+      }
+      if (avimMessage instanceof AVIMImageMessage) {
         AVIMImageMessage imageMessage = (AVIMImageMessage) avimMessage;
-        SingleDraweeActivity.startBroswerSingleImg(getContext(), imageMessage.getFileUrl());
+        SingleDraweeActivity.startBroswerSingleImg(getActivity(), imageMessage.getFileUrl());
       }
     }
   }
