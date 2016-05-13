@@ -223,7 +223,7 @@ public class SideBar extends View {
 
             if (mContainerCharList != null && mBubble != null) {
               mBubble.setText(mContainerCharList.get(c));
-              setBubblePosition(event.getY());
+              setBubblePosition(mFirstCharY + charHeight * c);
               showBubble();
             }
 
