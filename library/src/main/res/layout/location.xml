@@ -55,7 +55,7 @@
           android:lines="1"
           android:textColor="#ff212121"
           android:textSize="@dimen/support_im_text_size_medium"
-          tools:text="新世纪环球购物中心"
+          android:text="@string/si_label_location_picker"
           />
 
       <TextView

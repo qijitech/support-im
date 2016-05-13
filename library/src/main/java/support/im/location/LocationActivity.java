@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.TextView;
 import butterknife.ButterKnife;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -18,21 +20,33 @@ import com.amap.api.maps2d.LocationSource;
 import com.amap.api.maps2d.MapView;
 import com.amap.api.maps2d.UiSettings;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.amap.api.maps2d.model.MyLocationStyle;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeAddress;
+import com.amap.api.services.geocoder.RegeocodeQuery;
+import com.amap.api.services.geocoder.RegeocodeResult;
+import com.amap.api.services.geocoder.StreetNumber;
 import support.im.R;
 import support.ui.app.SupportActivity;
 
 public class LocationActivity extends SupportActivity implements LocationSource,
-    AMapLocationListener, View.OnClickListener {
+    AMapLocationListener, AMap.OnCameraChangeListener, GeocodeSearch.OnGeocodeSearchListener, View.OnClickListener {
 
   public MapView mMapView;
+  private TextView mLocationNameTextView;
+  private TextView mLocationAddressTextView;
   private AMap mAMap;
   private OnLocationChangedListener mListener;
+  private GeocodeSearch mGeocodeSearch;
   private AMapLocationClient mLocationClient;
   private LatLng myLocation;
   private LatLng mLocation;
+  private Handler handler = new Handler();
 
   public static void startLocation(Context context, double latitude, double longitude) {
     Intent intent = new Intent(context, LocationActivity.class);
@@ -48,7 +62,7 @@ public class LocationActivity extends SupportActivity implements LocationSource,
     setupViews();
     setupMap();
     setupMyLocationStyle();
-    setupMarker();
+    addChooseMarker();
     mMapView.onCreate(savedInstanceState);
   }
 
@@ -95,17 +109,33 @@ public class LocationActivity extends SupportActivity implements LocationSource,
     mAMap.moveCamera(cameraUpdate);
   }
 
-  private void setupMarker() {
+  private void addChooseMarker() {
+    if (mLocation == null) {
+      return;
+    }
+    mAMap.addMarker(new MarkerOptions().position(mLocation).icon(BitmapDescriptorFactory.fromResource(R.drawable.si_map_pin)));
+    CameraUpdate update = CameraUpdateFactory.changeLatLng(mLocation);
+    mAMap.animateCamera(update);
+    geocodeSearch();
+  }
+
+  private void geocodeSearch() {
+    if (mGeocodeSearch == null) {
+      mGeocodeSearch = new GeocodeSearch(this);
+      mGeocodeSearch.setOnGeocodeSearchListener(this);
+    }
     if (mLocation != null) {
-      mAMap.addMarker(new MarkerOptions().position(mLocation).icon(BitmapDescriptorFactory.fromResource(R.drawable.si_map_pin)));
-      CameraUpdate update = CameraUpdateFactory.changeLatLng(mLocation);
-      mAMap.animateCamera(update);
+      LatLonPoint point = new LatLonPoint(mLocation.latitude, mLocation.longitude);
+      RegeocodeQuery query = new RegeocodeQuery(point, 50, GeocodeSearch.AMAP);
+      mGeocodeSearch.getFromLocationAsyn(query);
     }
   }
 
   private void setupViews() {
     mMapView = ButterKnife.findById(this, R.id.map_view);
     ButterKnife.findById(this, R.id.fab_my_location).setOnClickListener(this);
+    mLocationNameTextView = ButterKnife.findById(this, R.id.text_location_name);
+    mLocationAddressTextView = ButterKnife.findById(this, R.id.text_location_address);
   }
 
   private void setupMyLocationStyle() {
@@ -155,6 +185,27 @@ public class LocationActivity extends SupportActivity implements LocationSource,
     if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
       myLocation = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
     }
+  }
+
+  @Override public void onCameraChange(CameraPosition cameraPosition) {
+  }
+
+  @Override public void onCameraChangeFinish(CameraPosition cameraPosition) {
+
+  }
+
+  @Override public void onRegeocodeSearched(RegeocodeResult regeocodeResult, int i) {
+    if(regeocodeResult != null&& regeocodeResult.getRegeocodeAddress() != null){
+      RegeocodeAddress regeocodeAddress = regeocodeResult.getRegeocodeAddress();
+      String formatAddress = regeocodeResult.getRegeocodeAddress().getFormatAddress();
+      StreetNumber streetNumber = regeocodeAddress.getStreetNumber();
+      mLocationNameTextView.setText(streetNumber.getStreet() + streetNumber.getNumber());
+      mLocationAddressTextView.setText(formatAddress);
+    }
+  }
+
+  @Override public void onGeocodeSearched(GeocodeResult geocodeResult, int i) {
+
   }
 
   @Override public void onClick(View v) {
