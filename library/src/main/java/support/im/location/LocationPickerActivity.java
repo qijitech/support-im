@@ -170,8 +170,10 @@ public class LocationPickerActivity extends SupportActivity implements LocationS
   }
 
   @Override public void onClick(View v) {
-    CameraUpdate update = CameraUpdateFactory.changeLatLng(myLocation);
-    mAMap.animateCamera(update);
+    if (myLocation != null) {
+      CameraUpdate update = CameraUpdateFactory.changeLatLng(myLocation);
+      mAMap.animateCamera(update);
+    }
   }
 
   private void addChooseMarker() {
