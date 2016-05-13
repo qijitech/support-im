@@ -3,12 +3,14 @@ package support.im.location;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.ButterKnife;
-import com.amap.api.location.AMapLocation;
+import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.geocoder.RegeocodeAddress;
+import com.amap.api.services.geocoder.StreetNumber;
 import com.google.common.collect.Lists;
 import java.util.List;
 import support.im.R;
@@ -23,6 +25,12 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   private SendLocationViewHolder mSendLocationViewHolder;
   private List<PoiItem> mPlaces = Lists.newArrayList();
   private RegeocodeAddress mAMapLocation;
+
+  private LocationDelegate locationDelegate;
+
+  public void setLocationDelegate(LocationDelegate locationDelegate) {
+    this.locationDelegate = locationDelegate;
+  }
 
   public void setCustomLocation(RegeocodeAddress aMapLocation) {
     mAMapLocation = aMapLocation;
@@ -40,13 +48,17 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     switch (viewType) {
       case VIEW_TYPE_SEND:
-        return mSendLocationViewHolder = SendLocationViewHolder.create(parent.getContext(), parent);
+        mSendLocationViewHolder = SendLocationViewHolder.create(parent.getContext(), parent);
+        mSendLocationViewHolder.setDelegate(locationDelegate);
+        return mSendLocationViewHolder;
       case VIEW_TYPE_SECTION:
         return SectionViewHolder.create(parent.getContext(), parent);
       case VIEW_TYPE_LOADING:
         return LoadingViewHolder.create(parent.getContext(), parent);
       case VIEW_TYPE_LOCATION:
-        return LocationViewHolder.create(parent.getContext(), parent);
+        LocationViewHolder locationViewHolder = LocationViewHolder.create(parent.getContext(), parent);
+        locationViewHolder.setDelegate(locationDelegate);
+        return locationViewHolder;
     }
     return null;
   }
@@ -99,9 +111,12 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     return null;
   }
 
-   static class SendLocationViewHolder extends RecyclerView.ViewHolder {
+   static class SendLocationViewHolder extends RecyclerView.ViewHolder implements
+       View.OnClickListener {
      TextView mTitleTextView;
      TextView mAccurateTextView;
+     private LocationDelegate delegate;
+     private RegeocodeAddress regeocodeAddress;
 
     public static SendLocationViewHolder create(Context context, ViewGroup parent) {
       return new SendLocationViewHolder(context, parent);
@@ -110,11 +125,30 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       super(LayoutInflater.from(context).inflate(R.layout.locations_item_send, parent, false));
       mTitleTextView = ButterKnife.findById(itemView, R.id.text_location_send_title);
       mAccurateTextView = ButterKnife.findById(itemView, R.id.text_location_send_accurate);
+      itemView.setOnClickListener(this);
     }
 
-    public void bindTo(RegeocodeAddress aMapLocation) {
-      if (aMapLocation != null) {
-        mAccurateTextView.setText(aMapLocation.getFormatAddress());
+     public void setDelegate(LocationDelegate delegate) {
+       this.delegate = delegate;
+     }
+
+     @Override public void onClick(View v) {
+       if (delegate != null) {
+         Location location = new Location();
+         StreetNumber streetNumber = regeocodeAddress.getStreetNumber();
+         LatLonPoint latLonPoint = streetNumber.getLatLonPoint();
+         location.latitude = latLonPoint.getLatitude();
+         location.longitude = latLonPoint.getLongitude();
+         location.title = regeocodeAddress.getFormatAddress();
+         location.snippet = streetNumber.getStreet();
+         delegate.didSelectLocation(location);
+       }
+     }
+
+     public void bindTo(RegeocodeAddress regeocodeAddress) {
+       this.regeocodeAddress = regeocodeAddress;
+      if (regeocodeAddress != null) {
+        mAccurateTextView.setText(regeocodeAddress.getFormatAddress());
       }
     }
   }
@@ -137,9 +171,12 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
   }
 
-  static class LocationViewHolder extends RecyclerView.ViewHolder {
+  static class LocationViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     TextView mNameTextView;
     TextView mAddressTextView;
+    private LocationDelegate delegate;
+    private PoiItem poiItem;
+
     public static LocationViewHolder create(Context context, ViewGroup parent) {
       return new LocationViewHolder(context, parent);
     }
@@ -147,12 +184,34 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       super(LayoutInflater.from(context).inflate(R.layout.locations_item, parent, false));
       mNameTextView = ButterKnife.findById(itemView, R.id.text_location_name);
       mAddressTextView = ButterKnife.findById(itemView, R.id.text_location_address);
+      itemView.setOnClickListener(this);
+    }
+
+    public void setDelegate(LocationDelegate delegate) {
+      this.delegate = delegate;
+    }
+
+    @Override public void onClick(View v) {
+      if (delegate != null) {
+        Location location = new Location();
+        LatLonPoint point = poiItem.getLatLonPoint();
+        location.latitude = point.getLatitude();
+        location.longitude = point.getLongitude();
+        location.title = poiItem.getTitle();
+        location.snippet = poiItem.getSnippet();
+        delegate.didSelectLocation(location);
+      }
     }
 
     public void bindTo(PoiItem poiItem) {
+      this.poiItem = poiItem;
       mNameTextView.setText(poiItem.getTitle());
       mAddressTextView.setText(poiItem.getSnippet());
     }
+  }
+
+  public interface LocationDelegate {
+    void didSelectLocation(Location location);
   }
 
 }

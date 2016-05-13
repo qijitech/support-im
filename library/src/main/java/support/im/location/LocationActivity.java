@@ -1,6 +1,7 @@
 package support.im.location;
 
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -44,7 +45,9 @@ import support.ui.app.SupportActivity;
 
 public class LocationActivity extends SupportActivity implements LocationSource,
     AMapLocationListener, PoiSearch.OnPoiSearchListener, AMap.OnCameraChangeListener,
-    GeocodeSearch.OnGeocodeSearchListener, View.OnClickListener {
+    GeocodeSearch.OnGeocodeSearchListener, View.OnClickListener, LocationAdapter.LocationDelegate {
+
+  public static final String EXTRA_LOCATION = "location";
 
   public CoordinatorLayout mCoordinatorLayout;
   public RecyclerView mRecyclerView;
@@ -107,6 +110,7 @@ public class LocationActivity extends SupportActivity implements LocationSource,
 
   private void initialize() {
     mLocationAdapter = new LocationAdapter();
+    mLocationAdapter.setLocationDelegate(this);
   }
 
   private void setupMap() {
@@ -323,6 +327,13 @@ public class LocationActivity extends SupportActivity implements LocationSource,
     //poiSearch = new PoiSearch(this, query);
     //poiSearch.setOnPoiSearchListener(this);
     //poiSearch.searchPOIAsyn();
+  }
+
+  @Override public void didSelectLocation(Location location) {
+    Intent intent = new Intent();
+    intent.putExtra(EXTRA_LOCATION, location);
+    setResult(RESULT_OK, intent);
+    finish();
   }
 
 }

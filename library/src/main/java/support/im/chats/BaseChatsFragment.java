@@ -33,6 +33,7 @@ import support.im.emoticons.FuncItem;
 import support.im.emoticons.SupportImFuncView;
 import support.im.events.FuncViewClickEvent;
 import support.im.leanclound.event.ImTypeMessageEvent;
+import support.im.location.Location;
 import support.im.location.LocationActivity;
 import support.ui.app.SupportFragment;
 import support.ui.content.ContentPresenter;
@@ -42,6 +43,8 @@ import support.ui.content.RequiresContent;
 @RequiresContent(loadView = ChatsLoadingView.class, emptyView = ChatsEmptyView.class)
 public abstract class BaseChatsFragment extends SupportFragment implements FuncLayout.OnFuncKeyBoardListener,
     EmoticonClickListener {
+
+  private static final int REQUEST_CODE_LOCATION = 1000;
 
   ReflectionContentPresenterFactory factory =
       ReflectionContentPresenterFactory.fromViewClass(getClass());
@@ -220,11 +223,24 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
             });
         break;
       case FuncItem.TAG_LOCATION:
-        startActivity(new Intent(getContext(), LocationActivity.class));
+        startActivityForResult(new Intent(getContext(), LocationActivity.class), REQUEST_CODE_LOCATION);
         break;
     }
   }
 
+  @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (resultCode == Activity.RESULT_OK) {
+      switch (requestCode) {
+        case REQUEST_CODE_LOCATION:
+          Location location = data.getParcelableExtra(LocationActivity.EXTRA_LOCATION);
+          sendLocation(location);
+          break;
+      }
+    }
+  }
+
+  protected abstract void sendLocation(Location location);
   protected abstract void sendImage(String imagePath);
   protected abstract void onSendImage(String imageUri);
   protected abstract void onSendBtnClick(String message);
