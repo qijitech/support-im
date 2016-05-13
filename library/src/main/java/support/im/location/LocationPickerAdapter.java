@@ -15,7 +15,7 @@ import com.google.common.collect.Lists;
 import java.util.List;
 import support.im.R;
 
-public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class LocationPickerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
   public static final int VIEW_TYPE_SEND = 0;
   public static final int VIEW_TYPE_SECTION = 1;
@@ -122,7 +122,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       return new SendLocationViewHolder(context, parent);
     }
     public SendLocationViewHolder(Context context, ViewGroup parent) {
-      super(LayoutInflater.from(context).inflate(R.layout.locations_item_send, parent, false));
+      super(LayoutInflater.from(context).inflate(R.layout.locations_picker_item_send, parent, false));
       mTitleTextView = ButterKnife.findById(itemView, R.id.text_location_send_title);
       mAccurateTextView = ButterKnife.findById(itemView, R.id.text_location_send_accurate);
       itemView.setOnClickListener(this);
@@ -158,7 +158,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       return new SectionViewHolder(context, parent);
     }
     public SectionViewHolder(Context context, ViewGroup parent) {
-      super(LayoutInflater.from(context).inflate(R.layout.locations_item_section, parent, false));
+      super(LayoutInflater.from(context).inflate(R.layout.locations_picker_item_section, parent, false));
     }
   }
 
@@ -167,7 +167,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       return new LoadingViewHolder(context, parent);
     }
     public LoadingViewHolder(Context context, ViewGroup parent) {
-      super(LayoutInflater.from(context).inflate(R.layout.locations_item_loading, parent, false));
+      super(LayoutInflater.from(context).inflate(R.layout.locations_picker_item_loading, parent, false));
     }
   }
 
@@ -181,7 +181,7 @@ public class LocationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       return new LocationViewHolder(context, parent);
     }
     public LocationViewHolder(Context context, ViewGroup parent) {
-      super(LayoutInflater.from(context).inflate(R.layout.locations_item, parent, false));
+      super(LayoutInflater.from(context).inflate(R.layout.locations_picker_item, parent, false));
       mNameTextView = ButterKnife.findById(itemView, R.id.text_location_name);
       mAddressTextView = ButterKnife.findById(itemView, R.id.text_location_address);
       itemView.setOnClickListener(this);

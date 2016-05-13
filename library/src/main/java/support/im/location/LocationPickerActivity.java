@@ -43,9 +43,9 @@ import java.util.List;
 import support.im.R;
 import support.ui.app.SupportActivity;
 
-public class LocationActivity extends SupportActivity implements LocationSource,
+public class LocationPickerActivity extends SupportActivity implements LocationSource,
     AMapLocationListener, PoiSearch.OnPoiSearchListener, AMap.OnCameraChangeListener,
-    GeocodeSearch.OnGeocodeSearchListener, View.OnClickListener, LocationAdapter.LocationDelegate {
+    GeocodeSearch.OnGeocodeSearchListener, View.OnClickListener, LocationPickerAdapter.LocationDelegate {
 
   public static final String EXTRA_LOCATION = "location";
 
@@ -55,7 +55,7 @@ public class LocationActivity extends SupportActivity implements LocationSource,
   private AMap mAMap;
 
   public BottomSheetBehavior mBehavior;
-  private LocationAdapter mLocationAdapter;
+  private LocationPickerAdapter mLocationPickerAdapter;
 
   private OnLocationChangedListener mListener;
   private AMapLocationClient mLocationClient;
@@ -77,7 +77,7 @@ public class LocationActivity extends SupportActivity implements LocationSource,
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.locations);
+    setContentView(R.layout.locations_picker);
     initialize();
     setupViews();
     setupRecyclerView();
@@ -109,8 +109,8 @@ public class LocationActivity extends SupportActivity implements LocationSource,
   }
 
   private void initialize() {
-    mLocationAdapter = new LocationAdapter();
-    mLocationAdapter.setLocationDelegate(this);
+    mLocationPickerAdapter = new LocationPickerAdapter();
+    mLocationPickerAdapter.setLocationDelegate(this);
   }
 
   private void setupMap() {
@@ -159,7 +159,7 @@ public class LocationActivity extends SupportActivity implements LocationSource,
 
   private void setupRecyclerView() {
     mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-    mRecyclerView.setAdapter(mLocationAdapter);
+    mRecyclerView.setAdapter(mLocationPickerAdapter);
   }
 
   private void setupViews() {
@@ -228,7 +228,7 @@ public class LocationActivity extends SupportActivity implements LocationSource,
         this.poiResult = poiResult;
         if (poiResult.getQuery().equals(query)) {
           poiItems = poiResult.getPois();// 取得第一页的poiitem数据，页数从数字0开始
-          mLocationAdapter.replace(poiItems);
+          mLocationPickerAdapter.replace(poiItems);
           if (poiItems != null && poiItems.size() > 0) {
           }
         }
@@ -263,7 +263,7 @@ public class LocationActivity extends SupportActivity implements LocationSource,
     if(regeocodeResult != null&& regeocodeResult.getRegeocodeAddress() != null){
       endAnim();
       RegeocodeAddress regeocodeAddress = regeocodeResult.getRegeocodeAddress();
-      mLocationAdapter.setCustomLocation(regeocodeAddress);
+      mLocationPickerAdapter.setCustomLocation(regeocodeAddress);
       searchBound(regeocodeAddress);
       //String formatAddress = regeocodeResult.getRegeocodeAddress().getFormatAddress();
       //String shortAdd = formatAddress.replace(regeocodeAddress.getProvince(), "").replace(regeocodeAddress.getCity(), "").replace(regeocodeAddress.getDistrict(), "");

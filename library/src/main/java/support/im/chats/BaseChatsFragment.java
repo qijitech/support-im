@@ -34,7 +34,7 @@ import support.im.emoticons.SupportImFuncView;
 import support.im.events.FuncViewClickEvent;
 import support.im.leanclound.event.ImTypeMessageEvent;
 import support.im.location.Location;
-import support.im.location.LocationActivity;
+import support.im.location.LocationPickerActivity;
 import support.ui.app.SupportFragment;
 import support.ui.content.ContentPresenter;
 import support.ui.content.ReflectionContentPresenterFactory;
@@ -223,7 +223,7 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
             });
         break;
       case FuncItem.TAG_LOCATION:
-        startActivityForResult(new Intent(getContext(), LocationActivity.class), REQUEST_CODE_LOCATION);
+        startActivityForResult(new Intent(getContext(), LocationPickerActivity.class), REQUEST_CODE_LOCATION);
         break;
     }
   }
@@ -233,7 +233,7 @@ public abstract class BaseChatsFragment extends SupportFragment implements FuncL
     if (resultCode == Activity.RESULT_OK) {
       switch (requestCode) {
         case REQUEST_CODE_LOCATION:
-          Location location = data.getParcelableExtra(LocationActivity.EXTRA_LOCATION);
+          Location location = data.getParcelableExtra(LocationPickerActivity.EXTRA_LOCATION);
           sendLocation(location);
           break;
       }
