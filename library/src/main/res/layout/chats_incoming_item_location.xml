@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -26,18 +27,16 @@
         android:id="@id/container_support_im_chats_item_content_display_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_toEndOf="@id/image_support_im_chats_item_avatar"
         android:layout_toRightOf="@id/image_support_im_chats_item_avatar"
         android:orientation="vertical"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
         >
       <TextView
           android:id="@+id/text_support_im_chats_item_display_name"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginLeft="16dp"
-          android:layout_marginStart="16dp"
           android:ellipsize="end"
           android:gravity="start"
           android:lines="1"
@@ -47,22 +46,11 @@
           />
       <FrameLayout
           android:id="@id/container_support_im_chats_item_content"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
+          android:layout_width="170dp"
+          android:layout_height="100dp"
           android:background="@drawable/si_selector_incoming_photo"
-          android:padding="8dp"
           >
-        <TextView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@id/text_support_im_chats_item_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/support_im_chats_location_default"
-            android:gravity="center_horizontal"
-            android:textColor="@android:color/white"
-            tools:text="Text"
-            />
+        <include layout="@layout/chats_item_location"/>
       </FrameLayout>
     </LinearLayout>
 
