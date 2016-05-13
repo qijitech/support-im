@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="support.im.demo"
     xmlns:tools="http://schemas.android.com/tools"
+    package="support.im.demo"
     >
 
   <!-- 基础模块（必须加入以下声明）START -->
@@ -15,17 +15,17 @@
   <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
   <!--地图包、搜索包需要的基础权限-->
-  <uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+  <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
   <!--定位包、导航包需要的额外权限（注：基础权限也需要）-->
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-  <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-  <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+  <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
+  <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
 
   <uses-sdk tools:overrideLibrary="com.fuck_boilerplate.rx_paparazzo.library,io.victoralbertos.rxactivityresult"/>
 
@@ -126,7 +126,7 @@
           android:name="android.support.PARENT_ACTIVITY"
           android:value="support.im.chats.ChatsActivity"/>
     </activity>
-    
+
     <!--用户详情-->
     <activity
         android:name="support.im.detail.UserDetailActivity"
@@ -157,12 +157,31 @@
           android:value=".features.main.MainActivity"/>
     </activity>
 
+
+    <!--单图预览-->
+    <activity
+        android:name="support.im.feature.photodraweeview.SingleDraweeActivity"
+        android:launchMode="singleTask">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value=".features.main.MainActivity"/>
+    </activity>
+
+    <!--单图预览-->
+    <activity
+        android:name="support.im.feature.photodraweeview.MultiDraweeActivity"
+        android:launchMode="singleTask">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value=".features.main.MainActivity"/>
+    </activity>
+
     <receiver android:name="support.im.service.InvitationReceiver">
       <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED" />
-        <action android:name="android.intent.action.USER_PRESENT" />
-        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-        <action android:name="@string/support_im_add_request_invitation_action" />
+        <action android:name="android.intent.action.BOOT_COMPLETED"/>
+        <action android:name="android.intent.action.USER_PRESENT"/>
+        <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+        <action android:name="@string/support_im_add_request_invitation_action"/>
       </intent-filter>
     </receiver>
 
@@ -191,10 +210,10 @@
     <!-- 反馈组件 END -->
 
     <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
-    <service android:name="com.amap.api.location.APSService" />
+    <service android:name="com.amap.api.location.APSService"/>
     <meta-data
         android:name="com.amap.api.v2.apikey"
-        android:value="7f71c655a3ebb0b9bbdeb1204dbc800e" />
+        android:value="7f71c655a3ebb0b9bbdeb1204dbc800e"/>
   </application>
 
 </manifest>
