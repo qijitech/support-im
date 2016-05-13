@@ -16,8 +16,6 @@
   <RelativeLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginEnd="72dp"
-      android:layout_marginRight="72dp"
       >
     <include
         layout="@layout/chats_item_incoming_avatar"
@@ -46,8 +44,8 @@
           />
       <FrameLayout
           android:id="@id/container_support_im_chats_item_content"
-          android:layout_width="170dp"
-          android:layout_height="100dp"
+          android:layout_width="200dp"
+          android:layout_height="150dp"
           android:background="@drawable/si_selector_incoming_photo"
           >
         <include layout="@layout/chats_item_location"/>

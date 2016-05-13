@@ -17,8 +17,8 @@
       >
     <FrameLayout
         android:id="@id/container_support_im_chats_item_content"
-        android:layout_width="170dp"
-        android:layout_height="100dp"
+        android:layout_width="200dp"
+        android:layout_height="150dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_toLeftOf="@id/image_support_im_chats_item_avatar"

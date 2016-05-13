@@ -22,7 +22,7 @@ public final class Utils {
   public static Uri buildStaticMapUrl(AVGeoPoint location) {
     final String locString = location.getLongitude() + "," + location.getLatitude();
     StringBuffer sb = new StringBuffer("http://restapi.amap.com/v3/staticmap?key=ee95e52bf08006f63fd29bcfbcf21df0");
-    sb.append("&zoom=17&size=170*100&scale=2");
+    sb.append("&zoom=17&size=200*150&scale=2");
     sb.append("&location=").append(locString);
     sb.append("&markers=mid,0xFF0000,A:").append(locString);
     return Uri.parse(sb.toString());
