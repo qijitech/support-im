@@ -35,7 +35,9 @@ public class ConversationsFragment extends SupportRecyclerViewFragment implement
   @Override public void onResume() {
     super.onResume();
     getActivity().setTitle(R.string.support_im_conversations_title);
-    mPresenter.start();
+    if (mPresenter != null) {
+      mPresenter.start();
+    }
   }
 
   @SuppressWarnings("unused") public void onEvent(ImTypeMessageEvent event) {

@@ -56,12 +56,12 @@ import support.ui.utilities.ViewUtils;
     mContainer = ButterKnife.findById(view, R.id.support_ui_content_container);
     mContentView = ButterKnife.findById(view, R.id.support_ui_content_view);
     mClientStateView = ButterKnife.findById(view, R.id.container_client_state);
-    setAdapter();
     EventBus.getDefault().register(this);
   }
 
   @Override public void onResume() {
     super.onResume();
+    setAdapter();
     contentPresenter.attachContainer(mContainer);
     contentPresenter.attachContentView(getAttachContentView());
     contentPresenter.setOnEmptyViewClickListener(this);

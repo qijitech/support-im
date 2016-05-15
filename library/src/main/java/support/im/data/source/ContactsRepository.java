@@ -112,7 +112,7 @@ public class ContactsRepository extends SimpleContactsDataSource {
     }
     mCachedContacts.clear();
     for (Contact contact : contacts) {
-      mCachedContacts.put(contact.getUserId(), contact);
+      mCachedContacts.put(contact.getObjectId(), contact);
     }
     mCacheIsDirty = false;
   }

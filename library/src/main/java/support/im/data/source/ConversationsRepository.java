@@ -100,7 +100,7 @@ public class ConversationsRepository extends SimpleConversationsDataSource {
     // Respond immediately with cache if available and not dirty
     if (mCachedConversations != null && !mCacheIsDirty) {
       callback.onConversationsLoaded(Lists.newArrayList(mCachedConversations.values()));
-      return;
+      //return;
     }
 
     mConversationsLocalDataSource.loadConversations(new LoadConversationsCallback() {
