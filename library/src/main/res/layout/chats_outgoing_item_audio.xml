@@ -41,17 +41,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             tools:text="Text"
             />
 
         <support.im.chats.PlayButton
             android:id="@id/btn_support_im_chats_item_audio_play"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/si_selector_incoming_photo"
+            android:background="@drawable/si_selector_outgoing_photo"
             android:orientation="vertical"
+            android:paddingBottom="2dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingTop="2dp"
             custom:left="false"
             />
       </LinearLayout>

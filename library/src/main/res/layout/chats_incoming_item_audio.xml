@@ -28,18 +28,17 @@
         android:id="@id/container_support_im_chats_item_content_display_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_toEndOf="@id/image_support_im_chats_item_avatar"
         android:layout_toRightOf="@id/image_support_im_chats_item_avatar"
         android:orientation="vertical"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
         >
+
       <TextView
           android:id="@+id/text_support_im_chats_item_display_name"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginLeft="16dp"
-          android:layout_marginStart="16dp"
           android:ellipsize="end"
           android:gravity="start"
           android:lines="1"
@@ -47,39 +46,36 @@
           android:textSize="@dimen/support_im_text_size_medium"
           tools:text="Tom"
           />
-      <FrameLayout
+
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:custom="http://schemas.android.com/apk/res-auto"
           android:id="@id/container_support_im_chats_item_content"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:background="@drawable/si_selector_incoming_photo"
-          android:foreground="?attr/selectableItemBackground"
-          android:padding="8dp"
+          android:orientation="horizontal"
           >
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:custom="http://schemas.android.com/apk/res-auto"
+        <support.im.chats.PlayButton
+            android:id="@id/btn_support_im_chats_item_audio_play"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/si_selector_incoming_photo"
+            android:orientation="vertical"
+            android:paddingBottom="2dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:paddingTop="2dp"
+            custom:left="true"
+            />
+        <TextView
+            android:id="@id/text_support_im_chats_item_audio_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-          <support.im.chats.PlayButton
-              android:id="@id/btn_support_im_chats_item_audio_play"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:background="@drawable/si_selector_incoming_photo"
-              android:orientation="vertical"
-              custom:left="true"
-              />
-          <TextView
-              android:id="@id/text_support_im_chats_item_audio_duration"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center_vertical"
-              android:layout_marginLeft="16dp"
-              android:layout_marginRight="16dp"
-              android:text="@android:color/white"
-              />
-        </LinearLayout>
-      </FrameLayout>
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:text="@android:color/white"
+            />
+      </LinearLayout>
     </LinearLayout>
 
   </RelativeLayout>

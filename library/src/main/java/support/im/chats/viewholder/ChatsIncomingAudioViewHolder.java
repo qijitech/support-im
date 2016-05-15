@@ -10,6 +10,7 @@ import com.avos.avoscloud.im.v2.messages.AVIMAudioMessage;
 import java.util.Locale;
 import support.im.R;
 import support.im.chats.PlayButton;
+import support.im.utilities.PathUtils;
 
 public class ChatsIncomingAudioViewHolder extends ChatsIncomingViewHolder {
 
@@ -31,9 +32,9 @@ public class ChatsIncomingAudioViewHolder extends ChatsIncomingViewHolder {
       if (!TextUtils.isEmpty(localFilePath)) {
         mPlayButton.setPath(localFilePath);
       } else {
-        //String path = PathUtils.getChatFilePath(getContext(), audioMessage.getMessageId());
-        //mPlayButton.setPath(path);
-        // TODO
+        String path = PathUtils.getChatFilePath(itemView.getContext(), audioMessage.getMessageId());
+        mPlayButton.setPath(path);
+         //TODO
         //LocalCacheUtils.downloadFileAsync(audioMessage.getFileUrl(), path);
       }
     }
