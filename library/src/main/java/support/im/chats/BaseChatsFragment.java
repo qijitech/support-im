@@ -36,6 +36,7 @@ import support.im.emoticons.Constants;
 import support.im.emoticons.FuncItem;
 import support.im.emoticons.SupportImFuncView;
 import support.im.events.ChatClickEvent;
+import support.im.events.ChatRecordEvent;
 import support.im.events.FuncViewClickEvent;
 import support.im.feature.photodraweeview.SingleDraweeActivity;
 import support.im.leanclound.event.ImTypeMessageEvent;
@@ -202,6 +203,12 @@ public abstract class BaseChatsFragment extends SupportFragment
     scrollToBottom();
   }
 
+  public void onEvent(ChatRecordEvent event) {
+    if (event != null && !TextUtils.isEmpty(event.audioPath)) {
+      sendAudio(event.audioPath);
+    }
+  }
+
   public void onEvent(ChatClickEvent event) {
     AVIMMessage avimMessage = event.mAvimMessage;
     if (avimMessage != null) {
@@ -266,10 +273,8 @@ public abstract class BaseChatsFragment extends SupportFragment
   }
 
   protected abstract void sendLocation(Location location);
-
+  protected abstract void sendAudio(String audioPath);
   protected abstract void sendImage(String imagePath);
-
   protected abstract void onSendImage(String imageUri);
-
   protected abstract void onSendBtnClick(String message);
 }

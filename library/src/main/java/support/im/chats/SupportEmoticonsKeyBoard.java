@@ -2,8 +2,10 @@ package support.im.chats;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import de.greenrobot.event.EventBus;
 import sj.keyboard.XhsEmoticonsKeyBoard;
 import support.im.R;
+import support.im.events.ChatRecordEvent;
 import support.im.utilities.PathUtils;
 
 public class SupportEmoticonsKeyBoard extends XhsEmoticonsKeyBoard {
@@ -26,6 +28,7 @@ public class SupportEmoticonsKeyBoard extends XhsEmoticonsKeyBoard {
     recordButton.setRecordEventListener(new RecordButton.RecordEventListener() {
       @Override
       public void onFinishedRecord(final String audioPath, int secs) {
+        EventBus.getDefault().post(new ChatRecordEvent(audioPath, secs));
       }
 
       @Override

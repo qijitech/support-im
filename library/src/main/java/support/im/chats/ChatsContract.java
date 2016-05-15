@@ -35,6 +35,7 @@ public interface ChatsContract {
     void sendLocationMessage(Location location);
     void sendImageMessage(String imagePath);
     void sendTextMessage(String content);
+    void sendAudioMessage(String audioPath);
     void fetchMessages(boolean forceUpdate);
     void loadMoreMessages();
   }

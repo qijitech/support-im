@@ -84,6 +84,12 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
     }
   }
 
+  @Override protected void sendAudio(String audioPath) {
+    if (!TextUtils.isEmpty(audioPath)) {
+      mPresenter.sendAudioMessage(audioPath);
+    }
+  }
+
   @Override protected void sendImage(String imagePath) {
     mPresenter.sendImageMessage(imagePath);
   }

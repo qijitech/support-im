@@ -8,6 +8,7 @@ import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
+import com.avos.avoscloud.im.v2.messages.AVIMAudioMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMImageMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMLocationMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
@@ -193,6 +194,15 @@ public class ChatsPresenter implements ChatsContract.Presenter {
     locationMessage.setLocation(new AVGeoPoint(location.latitude, location.longitude));
     locationMessage.setText(location.snippet);
     sendMessage(locationMessage);
+  }
+
+  @Override public void sendAudioMessage(String audioPath) {
+    try {
+      AVIMAudioMessage audioMessage = new AVIMAudioMessage(audioPath);
+      sendMessage(audioMessage);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override public void sendImageMessage(String imagePath) {
