@@ -56,5 +56,9 @@
   <string name="si_attach_location">位置</string>
   <string name="si_no_result">No results</string>
 
+  <string name="si_chats_record_button_slide_up_to_cancel">手指上滑，取消发送</string>
+  <string name="si_chats_record_button_release_to_cancel">松开手指，取消录音</string>
+  <string name="si_chats_record_button_please_say_more">说多点吧～</string>
+  <string name="si_chats_cancel_record">取消录音</string>
 
 </resources>

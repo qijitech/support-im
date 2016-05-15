@@ -4,4 +4,5 @@
   <color name="colorPrimaryDark">#303F9F</color>
   <color name="side_bar_text">#4A4A4A</color>
 
+  <color name="si_chat_record_btn_red">#f00</color>
 </resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="150dp"
+    android:layout_height="150dp"
+    android:background="@drawable/si_chats_top_voice_bg"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp"
+    >
+
+  <ImageView
+      android:id="@android:id/icon1"
+      android:layout_width="100dp"
+      android:layout_height="100dp"
+      android:src="@drawable/si_chats_voice_icon_0"
+      />
+
+  <TextView
+      android:id="@android:id/text1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/si_chats_record_button_slide_up_to_cancel"
+      android:textColor="#fff"
+      android:textSize="14sp"
+      />
+
+</LinearLayout>
