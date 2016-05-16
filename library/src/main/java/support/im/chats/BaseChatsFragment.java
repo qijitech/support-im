@@ -43,6 +43,7 @@ import support.im.leanclound.event.ImTypeMessageEvent;
 import support.im.location.Location;
 import support.im.location.LocationActivity;
 import support.im.location.LocationPickerActivity;
+import support.im.utilities.NotificationUtils;
 import support.ui.app.SupportFragment;
 import support.ui.content.ContentPresenter;
 import support.ui.content.ReflectionContentPresenterFactory;
@@ -104,6 +105,7 @@ public abstract class BaseChatsFragment extends SupportFragment
   }
 
   @Override public void onResume() {
+    NotificationUtils.cancelNotification(getContext());
     super.onResume();
     EventBus.getDefault().register(this);
   }
