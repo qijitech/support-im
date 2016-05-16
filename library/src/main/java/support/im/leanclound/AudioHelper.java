@@ -61,8 +61,7 @@ public class AudioHelper {
       mediaPlayer.setDataSource(path);
       mediaPlayer.prepare();
       mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-        @Override
-        public void onCompletion(MediaPlayer mp) {
+        @Override public void onCompletion(MediaPlayer mp) {
           tryRunFinishCallback();
         }
       });
