@@ -49,16 +49,16 @@ dependencies {
   compile 'com.android.support:design:23.3.0'
 
   //avoscloud-sdk 为 LeanCloud基础包
-  compile ('cn.leancloud.android:avoscloud-sdk:v3.13.10')
+  compile ('cn.leancloud.android:avoscloud-sdk:v3.13.11')
 
   //avoscloud-push 为推送与实时聊天需要的包
-  compile ('cn.leancloud.android:avoscloud-push:v3.13.10@aar'){transitive = true}
+  compile ('cn.leancloud.android:avoscloud-push:v3.13.11@aar'){transitive = true}
 
   //avoscloud-statistics 为 LeanCloud 统计包
-  compile ('cn.leancloud.android:avoscloud-statistics:v3.13.10')
+  compile ('cn.leancloud.android:avoscloud-statistics:v3.13.11')
 
   //avoscloud-feedback 为 LeanCloud 用户反馈包
-  compile ('cn.leancloud.android:avoscloud-feedback:v3.13.10@aar')
+  compile ('cn.leancloud.android:avoscloud-feedback:v3.13.11@aar')
 
   compile 'com.smartydroid:support-ui:0.1.5'
   compile 'com.google.guava:guava:18.0'
