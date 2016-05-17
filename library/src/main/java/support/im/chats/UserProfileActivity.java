@@ -43,6 +43,7 @@ public class UserProfileActivity extends SupportCellsActivity
   private String mConversationId;
   private String mMemberId;
 
+  // TODO: 2016-5-17-0017 Just Support intent from contact Activity 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     EventBus.getDefault().register(this);

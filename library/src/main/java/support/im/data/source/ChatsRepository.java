@@ -35,36 +35,40 @@ public class ChatsRepository implements ChatsDataSource {
     return INSTANCE;
   }
 
-  @Override public void loadMessages(@NonNull final AVIMConversation aVIMConversation, @NonNull final String messageId,
-      long timestamp, int limit,
+  @Override public void loadMessages(@NonNull final AVIMConversation aVIMConversation,
+      @NonNull final String messageId, long timestamp, int limit,
       @NonNull final LoadMessagesCallback callback) {
 
     checkNotNull(callback);
     // Respond immediately with cache if available and not dirty
     if (mCachedMessages != null) {
-      LinkedHashMap<String, AVIMMessage> cachedMessage = mCachedMessages.get(aVIMConversation.getConversationId());
+      LinkedHashMap<String, AVIMMessage> cachedMessage =
+          mCachedMessages.get(aVIMConversation.getConversationId());
       if (cachedMessage != null) {
         callback.onMessagesLoaded(Lists.<AVIMMessage>newArrayList(cachedMessage.values()));
       }
     }
 
-    mChatsRemoteDataSource.loadMessages(aVIMConversation, messageId, timestamp, limit, new LoadMessagesCallback() {
-      @Override public void onMessagesLoaded(List<AVIMMessage> messages) {
-        refreshCache(aVIMConversation, messages);
-        callback.onMessagesLoaded(messages);
-      }
+    mChatsRemoteDataSource.loadMessages(aVIMConversation, messageId, timestamp, limit,
+        new LoadMessagesCallback() {
+          @Override public void onMessagesLoaded(List<AVIMMessage> messages) {
+            refreshCache(aVIMConversation, messages);
+            callback.onMessagesLoaded(messages);
+          }
 
-      @Override public void onDataNotAvailable(AVException exception) {
-        callback.onDataNotAvailable(exception);
-      }
-    });
+          @Override public void onDataNotAvailable(AVException exception) {
+            callback.onDataNotAvailable(exception);
+          }
+        });
   }
 
-  private void refreshCache(@NonNull AVIMConversation aVIMConversation, List<AVIMMessage> messages) {
+  private void refreshCache(@NonNull AVIMConversation aVIMConversation,
+      List<AVIMMessage> messages) {
     if (mCachedMessages == null) {
       mCachedMessages = new ArrayMap<>();
     }
-    LinkedHashMap<String, AVIMMessage> cachedMessage = mCachedMessages.get(aVIMConversation.getConversationId());
+    LinkedHashMap<String, AVIMMessage> cachedMessage =
+        mCachedMessages.get(aVIMConversation.getConversationId());
     if (cachedMessage == null) {
       cachedMessage = Maps.newLinkedHashMap();
       mCachedMessages.put(aVIMConversation.getConversationId(), cachedMessage);
@@ -79,7 +83,8 @@ public class ChatsRepository implements ChatsDataSource {
     mCacheIsDirty = true;
   }
 
-  @Override public void sendMessage(@NonNull AVIMConversation aVIMConversation, @NonNull AVIMMessage message,
+  @Override
+  public void sendMessage(@NonNull AVIMConversation aVIMConversation, @NonNull AVIMMessage message,
       @NonNull final GetMessageCallback callback) {
     checkNotNull(aVIMConversation);
     checkNotNull(message);
@@ -101,5 +106,12 @@ public class ChatsRepository implements ChatsDataSource {
     checkNotNull(toUser);
     checkNotNull(callback);
     mChatsRemoteDataSource.createConversation(toUser, callback);
+  }
+
+  @Override public void createGroupConversation(@NonNull List<User> toUserGroup,
+      @NonNull AVIMConversationCreatedCallback callback) {
+    checkNotNull(toUserGroup);
+    checkNotNull(callback);
+    mChatsRemoteDataSource.createGroupConversation(toUserGroup, callback);
   }
 }

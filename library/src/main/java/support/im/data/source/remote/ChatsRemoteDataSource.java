@@ -8,6 +8,7 @@ import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMConversationCreatedCallback;
 import com.avos.avoscloud.im.v2.callback.AVIMMessagesQueryCallback;
 import com.google.common.collect.Lists;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class ChatsRemoteDataSource implements ChatsDataSource {
 
-
   private ChatsRemoteDataSource() {
   }
 
@@ -34,8 +34,9 @@ public class ChatsRemoteDataSource implements ChatsDataSource {
     return INSTANCE;
   }
 
-  @Override public void loadMessages(@NonNull AVIMConversation aVIMConversation, @NonNull String messageId, long timestamp, int limit,
-      @NonNull final LoadMessagesCallback callback) {
+  @Override
+  public void loadMessages(@NonNull AVIMConversation aVIMConversation, @NonNull String messageId,
+      long timestamp, int limit, @NonNull final LoadMessagesCallback callback) {
     checkNotNull(aVIMConversation);
     aVIMConversation.queryMessages(messageId, timestamp, limit, new AVIMMessagesQueryCallback() {
       @Override public void done(List<AVIMMessage> messages, AVIMException e) {
@@ -52,8 +53,8 @@ public class ChatsRemoteDataSource implements ChatsDataSource {
 
   }
 
-  @Override public void sendMessage(@NonNull AVIMConversation aVIMConversation, @NonNull final AVIMMessage message,
-      @NonNull final GetMessageCallback callback) {
+  @Override public void sendMessage(@NonNull AVIMConversation aVIMConversation,
+      @NonNull final AVIMMessage message, @NonNull final GetMessageCallback callback) {
     checkNotNull(aVIMConversation);
     checkNotNull(message);
     checkNotNull(callback);
@@ -77,7 +78,30 @@ public class ChatsRemoteDataSource implements ChatsDataSource {
     Map<String, Object> attrs = new HashMap<>();
     attrs.put(ConversationType.TYPE_KEY, ConversationType.Single.getValue());
     final String memberId = toUser.getObjectId();
-    ChatManager.getInstance().getAVIMClient().createConversation(Lists.newArrayList(memberId),
-        toUser.getDisplayName(), attrs, false/*isTransient*/, true /*isUnique*/, callback);
+    ChatManager.getInstance()
+        .getAVIMClient()
+        .createConversation(Lists.newArrayList(memberId), toUser.getDisplayName(), attrs, false/*isTransient*/,
+            true /*isUnique*/, callback);
+  }
+
+  @Override public void createGroupConversation(@NonNull List<User> toUserGroup,
+      @NonNull AVIMConversationCreatedCallback callback) {
+    checkNotNull(toUserGroup);
+    checkNotNull(callback);
+    List<String> list = new ArrayList<>();
+    StringBuilder builder = new StringBuilder();
+    for (User user : toUserGroup) {
+      list.add(user.getObjectId());
+      builder.append(user.getDisplayName());
+      builder.append("、");
+    }
+    builder.deleteCharAt(builder.length() - 1);
+    String conversationName = builder.toString();
+    Map<String, Object> attrs = new HashMap<>();
+    attrs.put(ConversationType.TYPE_KEY, ConversationType.Group.getValue());
+    ChatManager.getInstance()
+        .getAVIMClient()
+        .createConversation(list, conversationName, attrs, false/*isTransient*/, true/*isUnique*/,
+            callback);
   }
 }

@@ -12,36 +12,38 @@ public interface ChatsDataSource {
 
   interface LoadMessagesCallback {
     void onMessagesLoaded(List<AVIMMessage> messages);
+
     void onDataNotAvailable(AVException exception);
   }
 
   interface GetMessageCallback {
     void onMessageLoaded(AVIMMessage message);
+
     void onDataNotAvailable(AVException exception);
   }
 
   /**
    * 发送消息
    */
-  void sendMessage(@NonNull AVIMConversation aVIMConversation,
-      @NonNull AVIMMessage message,
+  void sendMessage(@NonNull AVIMConversation aVIMConversation, @NonNull AVIMMessage message,
       GetMessageCallback callback);
 
   /**
    * 获取更多数据
    */
-  void loadMessages(
-      @NonNull AVIMConversation aVIMConversation,
-      @NonNull final String messageId,
-      final long timestamp, final int limit,
-      @NonNull LoadMessagesCallback callback);
+  void loadMessages(@NonNull AVIMConversation aVIMConversation, @NonNull final String messageId,
+      final long timestamp, final int limit, @NonNull LoadMessagesCallback callback);
 
   /**
    * 创建一个Conversation
-   * @param toUser
-   * @param callback
    */
   void createConversation(@NonNull User toUser, @NonNull AVIMConversationCreatedCallback callback);
+
+  /**
+   * 创建一个Group Conversation
+   */
+  void createGroupConversation(@NonNull List<User> toUserGroup,
+      @NonNull AVIMConversationCreatedCallback callback);
 
   /**
    * 是否需要刷新数据

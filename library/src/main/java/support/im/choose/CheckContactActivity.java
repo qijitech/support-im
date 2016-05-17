@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import support.im.Injection;
 import support.im.R;
+import support.im.chats.ChatsActivity;
 import support.im.choose.adapter.CheckedContactsAdapter;
 import support.im.choose.adapter.ContactsAdapter;
 import support.im.choose.event.CheckEvent;
@@ -151,7 +152,18 @@ public class CheckContactActivity extends AppCompatActivity
 
   @Override public void onClick(View v) {
     if (v.getId() == R.id.support_ui_contacts_button) {
-
+      createGroupConversation();
     }
+  }
+
+  private void createGroupConversation() {
+    ArrayList<String> groupMemberList = new ArrayList<>();
+    for (String item : mMemberList) {
+      groupMemberList.add(item);
+    }
+    for (User user : mCheckList) {
+      groupMemberList.add(user.getObjectId());
+    }
+    ChatsActivity.startChatsWithMemberIdList(this, groupMemberList);
   }
 }

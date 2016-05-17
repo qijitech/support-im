@@ -43,8 +43,13 @@ public class ChatsPresenter implements ChatsContract.Presenter {
   private String mConversationId;
   private String mUserObjectId;
 
+  private List<String> mMemberIdList;
+
   private ArrayList<AVIMMessage> mMessages = Lists.newArrayList();
 
+  /**
+   * single chat
+   */
   public ChatsPresenter(String conversationId, String userObjectId,
       @NonNull ChatsDataSource chatsRepository,
       @NonNull ConversationsDataSource conversationsRepository,
@@ -57,6 +62,45 @@ public class ChatsPresenter implements ChatsContract.Presenter {
         checkNotNull(conversationsRepository, "chatsRepository cannot be null");
     mChatsView = checkNotNull(chatsView, "chatsView cannot be null!");
     mChatsView.setPresenter(this);
+  }
+
+  /**
+   * group chat
+   */
+  public ChatsPresenter(String conversationId, List<String> memberIdList,
+      @NonNull ChatsDataSource chatsRepository,
+      @NonNull ConversationsDataSource conversationsRepository,
+      @NonNull ChatsContract.View chatsView) {
+    mConversationId = conversationId;
+    mMemberIdList = memberIdList;
+    mCurrentUser = SupportUser.getCurrentUser();
+    mChatsRepository = checkNotNull(chatsRepository, "chatsRepository cannot be null");
+    mConversationsRepository =
+        checkNotNull(conversationsRepository, "chatsRepository cannot be null");
+    mChatsView = checkNotNull(chatsView, "chatsView cannot be null!");
+    mChatsView.setPresenter(this);
+  }
+
+  @Override public void getConversation(List<String> memberList) {
+    final List<User> groupUsers = new ArrayList<>();
+    for (String item : memberList) {
+      groupUsers.add(CacheManager.getCacheUser(item));
+    }
+    mChatsRepository.createGroupConversation(groupUsers, new AVIMConversationCreatedCallback() {
+      @Override public void done(AVIMConversation avimConversation, AVIMException e) {
+        if (AVExceptionHandler.handAVException(e, false)) {
+          mAVIMConversation = avimConversation;
+          mConversation = DatabaseUtils.createGroupConversation(avimConversation, groupUsers,
+              ChatManager.getInstance().getClientId());
+          CacheManager.cacheConversation(mConversation);
+          CacheManager.cacheAVIMConversation(avimConversation);
+          if (mChatsView.isActive()) {
+            mChatsView.updateUI(avimConversation);
+          }
+          fetchMessages(false);
+        }
+      }
+    });
   }
 
   @Override public void getConversation(String userObjectId) {
@@ -93,7 +137,14 @@ public class ChatsPresenter implements ChatsContract.Presenter {
     if (mConversationId != null) {
       getAVIMConversation(mConversationId);
     } else {
-      getConversation(mUserObjectId);
+      if (!TextUtils.isEmpty(mUserObjectId)) {
+        getConversation(mUserObjectId);
+      } else if (mMemberIdList != null) {
+        getConversation(mMemberIdList);
+      } else {
+        throw new NullPointerException(
+            "at last not null for both of mUserObjectId and mMemberIdList");
+      }
     }
   }
 

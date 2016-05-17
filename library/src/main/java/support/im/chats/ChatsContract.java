@@ -41,6 +41,8 @@ public interface ChatsContract {
 
     void getConversation(final String userObjectId);
 
+    void getConversation(final List<String> memberList);
+
     void sendLocationMessage(Location location);
 
     void sendImageMessage(String imagePath);

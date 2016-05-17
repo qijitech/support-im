@@ -28,6 +28,7 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
   protected String mCurrentClientId;
   protected String mUserObjectId;
   protected String mConversationId;
+  protected List<String> mMemberIdList;
 
   public static ChatsFragment create() {
     return new ChatsFragment();
@@ -36,8 +37,15 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     initialize();
-    new ChatsPresenter(mConversationId, mUserObjectId, Injection.provideChatsRepository(),
-        Injection.provideConversationsRepository(mCurrentClientId), this);
+
+    // TODO: may cause some bugs 
+    if (!TextUtils.isEmpty(mUserObjectId) && mMemberIdList == null) {
+      new ChatsPresenter(mConversationId, mUserObjectId, Injection.provideChatsRepository(),
+          Injection.provideConversationsRepository(mCurrentClientId), this);
+    } else if (TextUtils.isEmpty(mUserObjectId) && mMemberIdList != null) {
+      new ChatsPresenter(mConversationId, mMemberIdList, Injection.provideChatsRepository(),
+          Injection.provideConversationsRepository(mCurrentClientId), this);
+    }
     setHasOptionsMenu(true);
   }
 
@@ -51,6 +59,12 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
       mUserObjectId = extras.getString(Constants.EXTRA_MEMBER_ID);
       return;
     }
+
+    if (extras.containsKey(Constants.EXTRA_MEMBER_LIST_ID)) {
+      mMemberIdList = extras.getStringArrayList(Constants.EXTRA_MEMBER_LIST_ID);
+      return;
+    }
+
     // 来源conversations列表,直接读取Conversation
     if (extras.containsKey(Constants.EXTRA_CONVERSATION_ID)) {
       mConversationId = extras.getString(Constants.EXTRA_CONVERSATION_ID);
