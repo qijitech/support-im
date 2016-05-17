@@ -14,6 +14,7 @@ import java.util.List;
 import support.im.Injection;
 import support.im.R;
 import support.im.data.ConversationType;
+import support.im.data.cache.CacheManager;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.Constants;
 import support.im.location.Location;
@@ -93,12 +94,30 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
   }
 
   @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    inflater.inflate(R.menu.single_chats_menu, menu);
+    if (!TextUtils.isEmpty(mConversationId)) {
+      if (CacheManager.getCacheConversation(mConversationId) != null) {
+        if (CacheManager.getCacheConversation(mConversationId).getType() == 0) {
+          inflater.inflate(R.menu.single_chats_menu, menu);
+        } else if (CacheManager.getCacheConversation(mConversationId).getType() == 1) {
+          inflater.inflate(R.menu.group_chats_menu, menu);
+        } else {
+          inflater.inflate(R.menu.group_chats_menu, menu);
+        }
+      }
+    } else {
+      if (mMemberIdList != null && TextUtils.isEmpty(mUserObjectId)) {
+        inflater.inflate(R.menu.group_chats_menu, menu);
+      } else if (!TextUtils.isEmpty(mUserObjectId) && mMemberIdList == null) {
+        inflater.inflate(R.menu.single_chats_menu, menu);
+      } else {
+        inflater.inflate(R.menu.group_chats_menu, menu);
+      }
+    }
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     final int itemId = item.getItemId();
-    if (itemId == R.id.menu_support_im_chats_single) {
+    if (itemId == R.id.menu_support_im_chats_single || itemId == R.id.menu_support_im_chats_group) {
       UserProfileActivity.startUserProfile(getActivity(), mUserObjectId,
           mPresenter.getConversationId(), null);
       return true;
