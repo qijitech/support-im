@@ -72,9 +72,12 @@
 
     <activity
         android:name="support.im.choose.CheckContactActivity"
+        android:label="@string/si_label_picker_contact"
         android:launchMode="singleTask">
+      <meta-data
+          android:name="android.support.PARENT_ACTIVITY"
+          android:value="support.im.chats.ChatsActivity"/>
     </activity>
-
 
     <!-- Support im START -->
     <!--添加好友界面-->

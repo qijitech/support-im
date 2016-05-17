@@ -11,6 +11,7 @@
   <string name="support_im_label_chats_single_chat_log">查找聊天记录</string>
   <string name="si_label_location_picker">位置</string>
   <string name="si_label_location">位置信息</string>
+  <string name="si_label_picker_contact">选择联系人</string>
 
   <string name="support_im_add_request_invitation_action">support.im.chat.INVITATION_ACTION</string>
   <string name="support_im_client_notification_action">support.im.chat.CLIENT_NOTIFICATION</string>

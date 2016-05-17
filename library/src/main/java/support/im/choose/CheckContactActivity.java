@@ -10,7 +10,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import butterknife.ButterKnife;
 import com.avos.avoscloud.AVException;
 import com.google.common.eventbus.Subscribe;
@@ -28,6 +27,7 @@ import support.im.data.User;
 import support.im.data.source.ContactsDataSource;
 import support.im.data.source.ContactsRepository;
 import support.im.leanclound.ChatManager;
+import support.ui.components.SupportButton;
 
 /**
  * Created by wangh on 2016-5-16-0016.
@@ -40,7 +40,7 @@ public class CheckContactActivity extends AppCompatActivity
   private RecyclerView mRVContactsList;
   private RecyclerView mRVChooseList;
   private FrameLayout mChooseContainer;
-  private TextView mButton;
+  private SupportButton mButton;
 
   private String mCurrentClientId;
   private List<User> mContactList;

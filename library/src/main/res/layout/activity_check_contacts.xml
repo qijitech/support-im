@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,7 +9,7 @@
   <FrameLayout
       android:id="@+id/support_ui_contacts_checked_list_container"
       android:layout_width="match_parent"
-      android:layout_height="56sp"
+      android:layout_height="56dp"
       android:layout_alignParentBottom="true"
       android:background="@color/white"
       android:visibility="gone"
@@ -19,32 +18,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
-      <TextView
+      <support.ui.components.SupportButton
+          xmlns:app="http://schemas.android.com/apk/res-auto"
           android:id="@+id/support_ui_contacts_button"
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
+          android:layout_height="38dp"
+          android:layout_alignParentEnd="true"
           android:layout_alignParentRight="true"
           android:layout_centerVertical="true"
-          android:layout_margin="4dp"
-          android:background="@drawable/icon_button_choose"
+          android:layout_marginLeft="16dp"
+          android:layout_marginRight="16dp"
           android:gravity="center"
-          android:paddingBottom="4dp"
-          android:paddingLeft="18dp"
-          android:paddingRight="18dp"
-          android:paddingTop="4dp"
+          android:minHeight="38dp"
+          android:minWidth="80dp"
           android:text="确定"
           android:textColor="@color/white"
+          android:textSize="@dimen/support_im_text_size_medium"
+          app:supportButtonCornerRadius="2dp"
+          app:supportButtonNormalColor="?attr/colorAccent"
           tools:text="发射"
           />
       <android.support.v7.widget.RecyclerView
           android:id="@+id/support_ui_contacts_checklist"
           android:layout_width="match_parent"
-          android:layout_height="56dp"
+          android:layout_height="match_parent"
           android:layout_toLeftOf="@id/support_ui_contacts_button"
+          android:layout_toStartOf="@id/support_ui_contacts_button"
           android:visibility="visible"
           />
-
-
     </RelativeLayout>
   </FrameLayout>
 
