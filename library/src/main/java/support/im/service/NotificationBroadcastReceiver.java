@@ -3,6 +3,7 @@ package support.im.service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import support.im.chats.ChatsActivity;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.Constants;
 import support.im.newcontacts.NewContactsActivity;
@@ -42,15 +43,14 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
    * 跳转至聊天页面
    */
   private void startChatActivity(Context context, Intent intent) {
-    //Intent startActivityIntent = new Intent(context, ChatRoomActivity.class);
-    //startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    //if (intent.hasExtra(Constants.MEMBER_ID)) {
-    //  startActivityIntent.putExtra(Constants.MEMBER_ID, intent.getStringExtra(Constants.MEMBER_ID));
-    //} else {
-    //  startActivityIntent.putExtra(Constants.CONVERSATION_ID,
-    //      intent.getStringExtra(Constants.CONVERSATION_ID));
-    //}
-    //context.startActivity(startActivityIntent);
+    Intent startActivityIntent = new Intent(context, ChatsActivity.class);
+    startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    if (intent.hasExtra(Constants.EXTRA_MEMBER_ID)) {
+      startActivityIntent.putExtra(Constants.EXTRA_MEMBER_ID, intent.getStringExtra(Constants.EXTRA_MEMBER_ID));
+    } else {
+      startActivityIntent.putExtra(Constants.EXTRA_CONVERSATION_ID, intent.getStringExtra(Constants.EXTRA_CONVERSATION_ID));
+    }
+    context.startActivity(startActivityIntent);
   }
 
   private void startNewFriendActivity(Context context, Intent intent) {
