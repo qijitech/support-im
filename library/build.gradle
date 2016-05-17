@@ -60,7 +60,7 @@ dependencies {
   //avoscloud-feedback 为 LeanCloud 用户反馈包
   compile ('cn.leancloud.android:avoscloud-feedback:v3.13.11@aar')
 
-  compile 'com.smartydroid:support-ui:0.1.5'
+  compile 'com.smartydroid:support-ui:0.1.6'
   compile 'com.google.guava:guava:18.0'
   compile 'com.github.tajchert:nammu:1.1.1'
   compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'

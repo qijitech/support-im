@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right|end"
         android:layout_marginRight="24dp"
-        android:background="@drawable/support_ui_view_bubble"
+        android:background="@drawable/support_im_view_bubble"
         android:gravity="center"
         android:textColor="#FFffffff"
         android:textSize="48sp"
