@@ -153,11 +153,11 @@ public class UserProfileActivity extends SupportCellsActivity
   }
 
   public static void startUserProfile(@NotNull Context context, @NotNull String userId,
-      @Nullable String conversationId, @Nullable String memberId) {
+      @Nullable String conversationId, @Nullable ArrayList<String> memberId) {
     Intent intent = new Intent(context, UserProfileActivity.class);
     intent.putExtra(FLAG_USER_ID, userId);
     intent.putExtra(FLAG_CONVERSATION_ID, conversationId);
-    intent.putExtra(FLAG_MEMBER_ID, memberId);
+    intent.putStringArrayListExtra(FLAG_MEMBER_ID, memberId);
     context.startActivity(intent);
   }
 

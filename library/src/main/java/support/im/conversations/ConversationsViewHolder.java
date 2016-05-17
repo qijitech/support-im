@@ -34,7 +34,8 @@ public class ConversationsViewHolder extends EasyViewHolder<Conversation> {
     mAvatarImageView = ButterKnife.findById(itemView, R.id.image_support_im_conversations_avatar);
     //mUnreadTextView = ButterKnife.findById(itemView, R.id.text_conversation_unread_count);
     mNameTextView = ButterKnife.findById(itemView, R.id.text_support_im_conversations_name);
-    mLatestTimeTextView = ButterKnife.findById(itemView, R.id.text_support_im_conversations_latest_time);
+    mLatestTimeTextView =
+        ButterKnife.findById(itemView, R.id.text_support_im_conversations_latest_time);
     mMessageTextView = ButterKnife.findById(itemView, R.id.text_support_im_conversations_message);
   }
 
@@ -56,6 +57,15 @@ public class ConversationsViewHolder extends EasyViewHolder<Conversation> {
         mNameTextView.setText("对话");
       }
     } else { // group
+      String userId = ConversationHelper.otherIdOfConversation(conversation);
+      if (CacheManager.hasCacheUser(userId)) {
+        final User user = CacheManager.getCacheUser(userId);
+        mAvatarImageView.setImageURI(user.toAvatarUri());
+        mNameTextView.setText(ConversationHelper.displayNameOfConversation(conversation));
+      } else {
+        mAvatarImageView.setImageURI(null);
+        mNameTextView.setText("对话");
+      }
     }
 
     if (value.getLatestMsg() != null) {
@@ -64,7 +74,8 @@ public class ConversationsViewHolder extends EasyViewHolder<Conversation> {
       mMessageTextView.setText("");
     }
     if (value.getLastMessage() != null) {
-      mMessageTextView.setText(Utils.getMessageeShorthand(SupportApp.appContext(), value.getLastMessage()));
+      mMessageTextView.setText(
+          Utils.getMessageeShorthand(SupportApp.appContext(), value.getLastMessage()));
     }
     mLatestTimeTextView.setText(Utils.millisecsToDateString(value.getLatestMsgTime()));
   }

@@ -2,7 +2,6 @@ package support.im.utilities;
 
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import java.util.List;
-import support.im.data.Conversation;
 import support.im.data.ConversationType;
 import support.im.data.User;
 import support.im.data.cache.CacheManager;
@@ -72,6 +71,15 @@ public final class ConversationHelper {
             return members.get(0);
           }
         }
+      } else {
+        List<String> members = conversation.getMembers();
+        if (members.size() >= 2) {
+          if (members.get(0).equals(ChatManager.getInstance().getClientId())) {
+            return members.get(1);
+          } else {
+            return members.get(0);
+          }
+        }
       }
     }
     // 尽管异常，返回可以使用的 userId
@@ -112,5 +120,4 @@ public final class ConversationHelper {
   public static int getType(AVIMConversation avimConversation) {
     return (Integer) avimConversation.getAttribute(ConversationType.TYPE_KEY);
   }
-
 }

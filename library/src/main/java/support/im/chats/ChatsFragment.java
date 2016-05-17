@@ -8,12 +8,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
+import java.util.ArrayList;
 import java.util.List;
 import support.im.Injection;
 import support.im.R;
 import support.im.data.ConversationType;
+import support.im.data.SupportUser;
 import support.im.data.cache.CacheManager;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.Constants;
@@ -38,13 +41,15 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     initialize();
-
     // TODO: may cause some bugs 
     if (!TextUtils.isEmpty(mUserObjectId) && mMemberIdList == null) {
       new ChatsPresenter(mConversationId, mUserObjectId, Injection.provideChatsRepository(),
           Injection.provideConversationsRepository(mCurrentClientId), this);
     } else if (TextUtils.isEmpty(mUserObjectId) && mMemberIdList != null) {
       new ChatsPresenter(mConversationId, mMemberIdList, Injection.provideChatsRepository(),
+          Injection.provideConversationsRepository(mCurrentClientId), this);
+    } else { //from conversation
+      new ChatsPresenter(mConversationId, mUserObjectId, Injection.provideChatsRepository(),
           Injection.provideConversationsRepository(mCurrentClientId), this);
     }
     setHasOptionsMenu(true);
@@ -117,12 +122,38 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     final int itemId = item.getItemId();
-    if (itemId == R.id.menu_support_im_chats_single || itemId == R.id.menu_support_im_chats_group) {
-      UserProfileActivity.startUserProfile(getActivity(), mUserObjectId,
-          mPresenter.getConversationId(), null);
+    if (itemId == R.id.menu_support_im_chats_single) {
+      ArrayList<String> memberList = new ArrayList<>();
+      if (TextUtils.isEmpty(mUserObjectId)) {
+        String[] arrayMember = convertString2Array(
+            CacheManager.getCacheConversation(mPresenter.getConversationId()).getMembers());
+        String currentUser = AVUser.getCurrentUser(SupportUser.class).getObjectId();
+        for (int i = 0; i < arrayMember.length; i++) {
+          if (!currentUser.equals(arrayMember[i])) {
+            memberList.add(arrayMember[i]);
+          }
+        }
+      } else {
+        memberList.add(mUserObjectId);
+      }
+      UserProfileActivity.startUserProfile(getActivity(), memberList.get(0),
+          mPresenter.getConversationId(), memberList);
       return true;
+    } else if (itemId == R.id.menu_support_im_chats_group) {
+      // TODO: 2016-5-17-0017  
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  /**
+   * just for memberId
+   */
+  public String[] convertString2Array(String str) {
+    String[] arrayMember = str.split("\",\"");
+    arrayMember[0] = arrayMember[0].substring(2);
+    arrayMember[arrayMember.length - 1] = arrayMember[arrayMember.length - 1].substring(0,
+        arrayMember[arrayMember.length - 1].length() - 2);
+    return arrayMember;
   }
 
   private void shouldShowDisplayName(boolean shouldShow) {
