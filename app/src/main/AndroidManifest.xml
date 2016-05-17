@@ -75,6 +75,11 @@
         android:launchMode="singleTask">
     </activity>
 
+    <activity
+        android:name="support.im.choose.CheckContactActivity"
+        android:launchMode="singleTask">
+    </activity>
+
 
     <!-- Support im START -->
     <!--添加好友界面-->

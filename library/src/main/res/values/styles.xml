@@ -28,4 +28,7 @@
     <item name="android:windowBackground">@drawable/si_chat_record_button</item>
   </style>
 
+  <style name="ChooseCheckBoxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
+    <item name="android:button">@drawable/si_selector_contacts_check_box</item>
+  </style>
 </resources>

@@ -7,7 +7,9 @@ import butterknife.ButterKnife;
 import com.facebook.drawee.view.SimpleDraweeView;
 import support.im.R;
 import support.im.data.User;
+import support.im.utilities.FrescoDisplayUtils;
 import support.ui.adapters.EasyViewHolder;
+import support.ui.app.SupportApp;
 
 /**
  * Created by wangh on 2016-5-5-0005.
@@ -26,5 +28,9 @@ public class UserHeadCell extends EasyViewHolder<User> {
 
   @Override public void bindTo(int position, User value) {
     // TODO: 2016-5-5-0005  
+    FrescoDisplayUtils.showThumb(value.toAvatarUri(), mUserAvatar,
+        (int) SupportApp.dimen(R.dimen.si_chats_item_avatar_size),
+        (int) SupportApp.dimen(R.dimen.si_chats_item_avatar_size));
+    mUserName.setText(value.getDisplayName());
   }
 }

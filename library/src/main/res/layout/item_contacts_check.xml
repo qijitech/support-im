@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:foreground="?attr/selectableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="6dp"
+    >
+
+  <android.support.v7.widget.AppCompatCheckBox
+      android:id="@+id/support_ui_contacts_checkbox"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_marginLeft="8dp"
+      android:layout_marginRight="8dp"
+      style="@style/ChooseCheckBoxTheme"
+      />
+
+  <com.facebook.drawee.view.SimpleDraweeView
+      android:id="@+id/support_ui_contacts_avatar"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
+      android:layout_centerVertical="true"
+      android:layout_marginLeft="16dp"
+      android:layout_marginRight="10dp"
+      android:layout_toRightOf="@id/support_ui_contacts_checkbox"
+      fresco:placeholderImage="@drawable/si_logo_avatar"
+      fresco:placeholderImageScaleType="centerCrop"
+      fresco:roundedCornerRadius="4dp"
+      />
+
+  <TextView
+      android:id="@+id/support_ui_contacts_username"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerVertical="true"
+      android:layout_marginLeft="14dp"
+      android:layout_marginRight="20dp"
+      android:layout_toRightOf="@id/support_ui_contacts_avatar"
+      android:maxLines="1"
+      android:textColor="#352E33"
+      android:textSize="14sp"
+      tools:text="UserNameUserNameUserNameUserNameUserName"
+      />
+</RelativeLayout>

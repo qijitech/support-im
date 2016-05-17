@@ -5,7 +5,8 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
 import android.view.MenuItem;
-import support.im.R;
+import com.raizlabs.android.dbflow.annotation.NotNull;
+import java.util.ArrayList;
 import support.im.leanclound.Constants;
 import support.ui.app.SupportSinglePaneActivity;
 
@@ -19,6 +20,16 @@ public class ChatsActivity extends SupportSinglePaneActivity {
     context.startActivity(intent);
   }
 
+  public static void startChatsWithMemberIdList(Context context, @NotNull ArrayList memberIdList) {
+    if (memberIdList == null || memberIdList.size() <= 0) {
+      throw new IllegalArgumentException("memberIdList must not null or size > 0");
+    } else {
+      Intent intent = new Intent(context, ChatsActivity.class);
+      intent.putStringArrayListExtra(Constants.EXTRA_MEMBER_LIST_ID, memberIdList);
+      context.startActivity(intent);
+    }
+  }
+
   public static void startChatsWithConversationId(Context context, String conversationId) {
     Intent intent = new Intent(context, ChatsActivity.class);
     intent.putExtra(Constants.EXTRA_CONVERSATION_ID, conversationId);
@@ -30,16 +41,10 @@ public class ChatsActivity extends SupportSinglePaneActivity {
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
-    getMenuInflater().inflate(R.menu.single_chats_menu, menu);
-    return true;
+    return super.onCreateOptionsMenu(menu);
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
-    final int itemId = item.getItemId();
-    if (itemId == R.id.menu_support_im_chats_single) {
-      startActivity(new Intent(this, UserProfileActivity.class));
-      return true;
-    }
     return super.onOptionsItemSelected(item);
   }
 }

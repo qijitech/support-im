@@ -45,9 +45,7 @@ public class ChatsPresenter implements ChatsContract.Presenter {
 
   private ArrayList<AVIMMessage> mMessages = Lists.newArrayList();
 
-  public ChatsPresenter(
-      String conversationId,
-      String userObjectId,
+  public ChatsPresenter(String conversationId, String userObjectId,
       @NonNull ChatsDataSource chatsRepository,
       @NonNull ConversationsDataSource conversationsRepository,
       @NonNull ChatsContract.View chatsView) {
@@ -55,7 +53,8 @@ public class ChatsPresenter implements ChatsContract.Presenter {
     mUserObjectId = userObjectId;
     mCurrentUser = SupportUser.getCurrentUser();
     mChatsRepository = checkNotNull(chatsRepository, "chatsRepository cannot be null");
-    mConversationsRepository = checkNotNull(conversationsRepository, "chatsRepository cannot be null");
+    mConversationsRepository =
+        checkNotNull(conversationsRepository, "chatsRepository cannot be null");
     mChatsView = checkNotNull(chatsView, "chatsView cannot be null!");
     mChatsView.setPresenter(this);
   }
@@ -66,7 +65,8 @@ public class ChatsPresenter implements ChatsContract.Presenter {
       @Override public void done(AVIMConversation avimConversation, AVIMException e) {
         if (AVExceptionHandler.handAVException(e, false)) {
           mAVIMConversation = avimConversation;
-          mConversation = DatabaseUtils.createConversation(avimConversation, user, ChatManager.getInstance().getClientId());
+          mConversation = DatabaseUtils.createConversation(avimConversation, user,
+              ChatManager.getInstance().getClientId());
           CacheManager.cacheConversation(mConversation);
           CacheManager.cacheAVIMConversation(avimConversation);
           if (mChatsView.isActive()) {
@@ -121,23 +121,25 @@ public class ChatsPresenter implements ChatsContract.Presenter {
     }
 
     String messageId = mConversation.getLatestMsgId();
-    mChatsRepository.loadMessages(mAVIMConversation, messageId, 0, 20, new ChatsDataSource.LoadMessagesCallback() {
-      @Override public void onMessagesLoaded(List<AVIMMessage> messages) {
-        // The view may not be able to handle UI updates anymore
-        if (!mChatsView.isActive()) {
-          return;
-        }
-        if (showLoadingUI) {
-          mChatsView.setLoadingIndicator(false);
-        }
+    mChatsRepository.loadMessages(mAVIMConversation, messageId, 0, 20,
+        new ChatsDataSource.LoadMessagesCallback() {
+          @Override public void onMessagesLoaded(List<AVIMMessage> messages) {
+            // The view may not be able to handle UI updates anymore
+            if (!mChatsView.isActive()) {
+              return;
+            }
+            if (showLoadingUI) {
+              mChatsView.setLoadingIndicator(false);
+            }
 
-        processMessage(messages);
-      }
+            processMessage(messages);
+          }
 
-      @Override public void onDataNotAvailable(AVException exception) {
-        mChatsView.onDataNotAvailable(AVExceptionHandler.getLocalizedMessage(exception), exception);
-      }
-    });
+          @Override public void onDataNotAvailable(AVException exception) {
+            mChatsView.onDataNotAvailable(AVExceptionHandler.getLocalizedMessage(exception),
+                exception);
+          }
+        });
   }
 
   @Override public void loadMoreMessages() {
@@ -151,18 +153,21 @@ public class ChatsPresenter implements ChatsContract.Presenter {
       messageId = message.getMessageId();
       timestamp = message.getTimestamp();
     }
-    mChatsRepository.loadMessages(mAVIMConversation, messageId, timestamp, 20, new ChatsDataSource.LoadMessagesCallback() {
-      @Override public void onMessagesLoaded(List<AVIMMessage> messages) {
-        if (!mChatsView.isActive()) {
-          return;
-        }
-        // Show the list of messages
-        mChatsView.appendMessages(messages);
-      }
-      @Override public void onDataNotAvailable(AVException exception) {
-        mChatsView.onDataNotAvailable(AVExceptionHandler.getLocalizedMessage(exception), exception);
-      }
-    });
+    mChatsRepository.loadMessages(mAVIMConversation, messageId, timestamp, 20,
+        new ChatsDataSource.LoadMessagesCallback() {
+          @Override public void onMessagesLoaded(List<AVIMMessage> messages) {
+            if (!mChatsView.isActive()) {
+              return;
+            }
+            // Show the list of messages
+            mChatsView.appendMessages(messages);
+          }
+
+          @Override public void onDataNotAvailable(AVException exception) {
+            mChatsView.onDataNotAvailable(AVExceptionHandler.getLocalizedMessage(exception),
+                exception);
+          }
+        });
   }
 
   private AVIMMessage getFirstMessage() {
@@ -221,21 +226,30 @@ public class ChatsPresenter implements ChatsContract.Presenter {
     }
     mChatsView.notifyItemInserted(message);
 
-    mChatsRepository.sendMessage(mAVIMConversation, message, new ChatsDataSource.GetMessageCallback() {
-      @Override public void onMessageLoaded(AVIMMessage message) {
-        if (!mChatsView.isActive()) {
-          return;
-        }
-        mConversationsRepository.saveConversation(mAVIMConversation, message);
-        mChatsView.notifyDataSetChanged();
-      }
+    mChatsRepository.sendMessage(mAVIMConversation, message,
+        new ChatsDataSource.GetMessageCallback() {
+          @Override public void onMessageLoaded(AVIMMessage message) {
+            if (!mChatsView.isActive()) {
+              return;
+            }
+            mConversationsRepository.saveConversation(mAVIMConversation, message);
+            mChatsView.notifyDataSetChanged();
+          }
 
-      @Override public void onDataNotAvailable(AVException exception) {
-        if (!mChatsView.isActive()) {
-          return;
-        }
-        mChatsView.onDataNotAvailable(AVExceptionHandler.getLocalizedMessage(exception), exception);
-      }
-    });
+          @Override public void onDataNotAvailable(AVException exception) {
+            if (!mChatsView.isActive()) {
+              return;
+            }
+            mChatsView.onDataNotAvailable(AVExceptionHandler.getLocalizedMessage(exception),
+                exception);
+          }
+        });
+  }
+
+  @Override public String getConversationId() {
+    if (mConversation != null) {
+      return mConversation.getConversationId();
+    }
+    return null;
   }
 }

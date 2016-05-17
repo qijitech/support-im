@@ -3,12 +3,16 @@ package support.im.chats;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.im.v2.AVIMConversation;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import java.util.List;
 import support.im.Injection;
+import support.im.R;
 import support.im.data.ConversationType;
 import support.im.leanclound.ChatManager;
 import support.im.leanclound.Constants;
@@ -33,8 +37,8 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
     super.onCreate(savedInstanceState);
     initialize();
     new ChatsPresenter(mConversationId, mUserObjectId, Injection.provideChatsRepository(),
-        Injection.provideConversationsRepository(mCurrentClientId),
-        this);
+        Injection.provideConversationsRepository(mCurrentClientId), this);
+    setHasOptionsMenu(true);
   }
 
   private void initialize() {
@@ -74,6 +78,20 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
     }
   }
 
+  @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    inflater.inflate(R.menu.single_chats_menu, menu);
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    final int itemId = item.getItemId();
+    if (itemId == R.id.menu_support_im_chats_single) {
+      UserProfileActivity.startUserProfile(getActivity(), mUserObjectId,
+          mPresenter.getConversationId(), null);
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
+  }
+
   private void shouldShowDisplayName(boolean shouldShow) {
     mAdapter.shouldShowDisplayName(shouldShow);
   }
@@ -110,7 +128,8 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
     if (!TextUtils.isEmpty(title)) {
       getActivity().setTitle(title);
     }
-    shouldShowDisplayName(ConversationHelper.typeOfConversation(avimConversation) == ConversationType.Group);
+    shouldShowDisplayName(
+        ConversationHelper.typeOfConversation(avimConversation) == ConversationType.Group);
   }
 
   @Override public void setLoadingIndicator(boolean active) {

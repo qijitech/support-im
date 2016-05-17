@@ -99,6 +99,11 @@ public class SideBar extends View {
    */
   protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
+    if (mContainerCharList == null) {
+      this.setVisibility(INVISIBLE);
+      return;
+    }
+    this.setVisibility(VISIBLE);
 
     int width = getWidth(); // 获取对应宽度
 
