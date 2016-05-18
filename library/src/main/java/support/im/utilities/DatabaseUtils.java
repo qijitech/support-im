@@ -54,7 +54,8 @@ public final class DatabaseUtils {
           .type(ConversationHelper.getType(avimConversation))
           .name(avimConversation.getName())
           .creator(avimConversation.getCreator())
-          .fromPeerId(groupUsers.get(0).getObjectId()) //TODO: 2016-5-17-0017  may cause display bug?
+          .fromPeerId(
+              groupUsers.get(0).getObjectId()) //TODO: 2016-5-17-0017  may cause display bug?
           .isTransient(avimConversation.isTransient())
           .build();
       conversation.insert();
@@ -158,6 +159,12 @@ public final class DatabaseUtils {
         }).build())
         .build()
         .execute();
+  }
+
+  public static void removeConversation(String conversationId) {
+    SQLite.delete(Conversation.class)
+        .where(Conversation_Table.conversation_id.is(conversationId))
+        .query();
   }
 
   public static void saveUser(final User user) {

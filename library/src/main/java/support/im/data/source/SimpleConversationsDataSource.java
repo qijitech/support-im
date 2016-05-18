@@ -36,4 +36,8 @@ public class SimpleConversationsDataSource implements ConversationsDataSource {
   @Override public void refreshConversations() {
 
   }
+
+  @Override public void removeConversation(String conversationId) {
+    
+  }
 }

@@ -6,19 +6,27 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.MenuItem;
+import com.avos.avoscloud.im.v2.AVIMConversation;
+import com.avos.avoscloud.im.v2.AVIMException;
+import com.avos.avoscloud.im.v2.callback.AVIMConversationCallback;
 import com.google.common.eventbus.Subscribe;
 import com.raizlabs.android.dbflow.annotation.NotNull;
 import de.greenrobot.event.EventBus;
 import java.util.ArrayList;
 import java.util.List;
+import support.im.Injection;
 import support.im.R;
-import support.im.picker.PickerContactActivity;
 import support.im.data.CTextItem;
 import support.im.data.GroupUsers;
 import support.im.data.IconItem;
 import support.im.data.RTextItem;
 import support.im.data.User;
 import support.im.data.cache.CacheManager;
+import support.im.events.CTextItemEvent;
+import support.im.leanclound.ChatManager;
+import support.im.picker.PickerContactActivity;
+import support.im.utilities.DatabaseUtils;
 import support.ui.adapters.EasyViewHolder;
 import support.ui.app.SupportApp;
 import support.ui.app.SupportCellsActivity;
@@ -44,6 +52,7 @@ public class GroupProfileActivity extends SupportCellsActivity
   private List<String> mMemberList;
   private String mConversationId;
   private List<User> mUsers;
+  public static final int EXIT_CODE = 666;
 
   @Override protected void onItemClick(Object object) {
     if (object instanceof CellModel) {
@@ -146,7 +155,7 @@ public class GroupProfileActivity extends SupportCellsActivity
     addItem(new GroupUsers(mUsers));
     addItem(new IconItem());
     appendAll(buildData());
-    addItem(new CTextItem());
+    addItem(new CTextItem(CTextItem.FLAG_EXIT_GROUP));
   }
 
   private void init() {
@@ -159,10 +168,36 @@ public class GroupProfileActivity extends SupportCellsActivity
     PickerContactActivity.startCheckList(this, null, new ArrayList<String>(mUserList));
   }
 
+  @Subscribe public void onEvent(CTextItemEvent event) {
+    if (event.flag == CTextItem.FLAG_EXIT_GROUP) {
+      AVIMConversation conversation = CacheManager.getCacheAVIMConversation(mConversationId);
+      conversation.quit(new AVIMConversationCallback() {
+        @Override public void done(AVIMException e) {
+          if (e == null) {
+            CacheManager.clearConversation(mConversationId);
+            DatabaseUtils.removeConversation(mConversationId);
+            Injection.provideConversationsRepository(ChatManager.getInstance().getClientId())
+                .removeConversation(mConversationId);
+            setResult(EXIT_CODE);
+            finish();
+          }
+        }
+      });
+    }
+  }
+
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     EventBus.getDefault().register(this);
     init();
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId() == android.R.id.home) {
+      finish();
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 
   @Override protected void onDestroy() {

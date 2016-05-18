@@ -11,8 +11,7 @@ public class CacheManager {
 
   private final static ArrayMap<String, AVIMConversation> sAVIMConversationsCache =
       new ArrayMap<>();
-  private final static ArrayMap<String, Conversation> sConversationsCache =
-      new ArrayMap<>();
+  private final static ArrayMap<String, Conversation> sConversationsCache = new ArrayMap<>();
   private final static ArrayMap<String, User> sUsersCache = new ArrayMap<>();
 
   public static void cacheAVIMConversation(AVIMConversation conversation) {
@@ -123,5 +122,14 @@ public class CacheManager {
 
   public static void clearConversations() {
     sAVIMConversationsCache.clear();
+  }
+
+  public static void clearConversation(String conversationId) {
+    if (sAVIMConversationsCache.containsKey(conversationId)) {
+      sAVIMConversationsCache.remove(conversationId);
+    }
+    if (sConversationsCache.containsKey(conversationId)) {
+      sConversationsCache.remove(conversationId);
+    }
   }
 }

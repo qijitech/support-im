@@ -95,7 +95,7 @@
     <activity
         android:name="support.im.chats.ChatsActivity"
         android:label="@string/support_im_label_chats"
-        android:launchMode="singleTop">
+        android:launchMode="standard">
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
           android:value=".features.main.MainActivity"/>
@@ -135,7 +135,7 @@
     <activity
         android:name="support.im.chats.GroupProfileActivity"
         android:label="@string/support_im_label_chats_single_settings"
-        android:launchMode="singleTask">
+        android:launchMode="standard">
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
           android:value="support.im.chats.ChatsActivity"/>

@@ -40,6 +40,8 @@ public interface ConversationsDataSource {
   void loadConversation(@NonNull String userObjectId, LoadConversationCallback callback);
 
   void refreshConversations();
+  
+  void removeConversation(String conversationId);
 
 
 }

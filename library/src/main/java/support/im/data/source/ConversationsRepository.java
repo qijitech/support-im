@@ -44,14 +44,15 @@ public class ConversationsRepository extends SimpleConversationsDataSource {
       ConversationsDataSource conversationsLocalDataSource,
       ConversationsDataSource conversationsRemoteDataSource) {
     if (INSTANCE == null) {
-      INSTANCE = new ConversationsRepository(conversationsLocalDataSource,
-          conversationsRemoteDataSource);
+      INSTANCE =
+          new ConversationsRepository(conversationsLocalDataSource, conversationsRemoteDataSource);
     }
     return INSTANCE;
   }
 
   /**
-   * Used to force {@link #getInstance(ConversationsDataSource, ConversationsDataSource)} to create a new instance
+   * Used to force {@link #getInstance(ConversationsDataSource, ConversationsDataSource)} to create
+   * a new instance
    * next time it's called.
    */
   public static void destroyInstance() {
@@ -71,20 +72,21 @@ public class ConversationsRepository extends SimpleConversationsDataSource {
     mConversationsLocalDataSource.loadConversation(userObjectId, new LoadConversationCallback() {
       @Override public void onConversationLoaded(final Conversation conversation) {
         if (!CacheManager.hasCacheAVIMConversation(conversation.getConversationId())) {
-          findConversations(Lists.newArrayList(conversation.getConversationId()), new AVIMConversationQueryCallback() {
-            @Override public void done(List<AVIMConversation> list, AVIMException e) {
-              if (AVExceptionHandler.handAVException(e, false)) {
-                if (list == null || list.isEmpty()) {
-                  callback.onConversationNotFound();
-                  return;
+          findConversations(Lists.newArrayList(conversation.getConversationId()),
+              new AVIMConversationQueryCallback() {
+                @Override public void done(List<AVIMConversation> list, AVIMException e) {
+                  if (AVExceptionHandler.handAVException(e, false)) {
+                    if (list == null || list.isEmpty()) {
+                      callback.onConversationNotFound();
+                      return;
+                    }
+                    CacheManager.cacheAVIMConversations(list);
+                    callback.onConversationLoaded(conversation);
+                  } else {
+                    callback.onConversationNotFound();
+                  }
                 }
-                CacheManager.cacheAVIMConversations(list);
-                callback.onConversationLoaded(conversation);
-              } else {
-                callback.onConversationNotFound();
-              }
-            }
-          });
+              });
         }
       }
 
@@ -132,9 +134,11 @@ public class ConversationsRepository extends SimpleConversationsDataSource {
           }
         });
       }
+
       @Override public void onConversationsNotFound() {
         callback.onConversationsNotFound();
       }
+
       @Override public void onDataNotAvailable(AVIMException e) {
         callback.onDataNotAvailable(e);
       }
@@ -164,5 +168,11 @@ public class ConversationsRepository extends SimpleConversationsDataSource {
       mCachedConversations.put(conversation.getConversationId(), conversation);
     }
     mCacheIsDirty = false;
+  }
+
+  @Override public void removeConversation(String conversationId) {
+    if (mCachedConversations.containsKey(conversationId)) {
+      mCachedConversations.remove(conversationId);
+    }
   }
 }
