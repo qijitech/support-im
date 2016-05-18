@@ -47,4 +47,13 @@ public class ChatsActivity extends SupportSinglePaneActivity {
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     return super.onOptionsItemSelected(item);
   }
+
+  @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == GroupProfileActivity.REQUEST_CODE) {
+      if (resultCode == GroupProfileActivity.EXIT_CODE) {
+        finish();
+      }
+    }
+    super.onActivityResult(requestCode, resultCode, data);
+  }
 }

@@ -1,6 +1,6 @@
 package support.im.chats;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -53,6 +53,7 @@ public class GroupProfileActivity extends SupportCellsActivity
   private String mConversationId;
   private List<User> mUsers;
   public static final int EXIT_CODE = 666;
+  public static final int REQUEST_CODE = 666;
 
   @Override protected void onItemClick(Object object) {
     if (object instanceof CellModel) {
@@ -109,7 +110,7 @@ public class GroupProfileActivity extends SupportCellsActivity
     return items;
   }
 
-  public static void startGroupProfile(@NotNull Context context,
+  public static void startGroupProfile(@NotNull Activity context,
       @NotNull ArrayList<String> userIdList, @Nullable String conversationId,
       @Nullable ArrayList<String> memberIdList) {
     Intent intent = new Intent(context, GroupProfileActivity.class);
@@ -117,7 +118,7 @@ public class GroupProfileActivity extends SupportCellsActivity
     intent.putExtra(FLAG_CONVERSATION_ID, conversationId);
     intent.putStringArrayListExtra(FLAG_MEMBER_ID, memberIdList);
     CacheManager.getCacheUsers();
-    context.startActivity(intent);
+    context.startActivityForResult(intent, REQUEST_CODE);
   }
 
   private void getDataFormIntent() {

@@ -1,6 +1,5 @@
 package support.im.chats;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -255,13 +254,5 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
 
   @Override public void setPresenter(ChatsContract.Presenter presenter) {
     mPresenter = checkNotNull(presenter);
-  }
-
-  @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
-   
-    if (requestCode == GroupProfileActivity.EXIT_CODE) {
-      getActivity().finish();
-    }
-    super.onActivityResult(requestCode, resultCode, data);
   }
 }
