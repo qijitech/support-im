@@ -199,11 +199,12 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
   }
 
   @SuppressWarnings("unused") public void onEvent(InvitationEvent event) {
-    mNewContacts.setUnReadCount(AddRequestManager.getInstance().unreadRequestsIncrement());
+    AddRequestManager.getInstance().unreadRequestsIncrement();
     updateNewRequestBadge();
   }
 
   @Override public void updateNewRequestBadge() {
+    mNewContacts.setUnReadCount(AddRequestManager.getInstance().getUnreadAddRequestsCount());
     mAdapter.notifyItemChanged(0);
   }
 }

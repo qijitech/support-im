@@ -23,16 +23,16 @@
 
     <TextView
         android:id="@+id/text_si_contacts_new_friends_badge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
         android:layout_gravity="end"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
         android:background="@drawable/si_badge"
-        android:padding="4dp"
         android:src="@drawable/support_im_contacts_new_contact"
         android:textColor="@android:color/white"
         android:textSize="@dimen/support_im_text_size_small"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:text="10"
         />
   </FrameLayout>
