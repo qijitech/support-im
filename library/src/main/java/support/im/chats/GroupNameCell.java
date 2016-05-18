@@ -21,6 +21,6 @@ public class GroupNameCell extends EasyViewHolder<RTextItem> {
   }
 
   @Override public void bindTo(int position, RTextItem value) {
-
+    mGroupName.setText(value.mName);
   }
 }

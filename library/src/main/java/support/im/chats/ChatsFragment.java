@@ -140,7 +140,21 @@ public class ChatsFragment extends BaseChatsFragment implements ChatsContract.Vi
           mPresenter.getConversationId(), memberList);
       return true;
     } else if (itemId == R.id.menu_support_im_chats_group) {
-      // TODO: 2016-5-17-0017  
+
+      ArrayList<String> memberList = new ArrayList<>();
+      if (TextUtils.isEmpty(mUserObjectId)) {
+        String[] arrayMember = convertString2Array(
+            CacheManager.getCacheConversation(mPresenter.getConversationId()).getMembers());
+        String currentUser = AVUser.getCurrentUser(SupportUser.class).getObjectId();
+        for (int i = 0; i < arrayMember.length; i++) {
+          if (!currentUser.equals(arrayMember[i])) {
+            memberList.add(arrayMember[i]);
+          }
+        }
+      } else {
+        memberList.add(mUserObjectId);
+      }
+      GroupProfileActivity.startGroupProfile(getActivity(), memberList, mConversationId, null);
     }
     return super.onOptionsItemSelected(item);
   }

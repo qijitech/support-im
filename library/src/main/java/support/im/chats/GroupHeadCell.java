@@ -1,7 +1,7 @@
 package support.im.chats;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.net.Uri;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import com.facebook.drawee.view.SimpleDraweeView;
 import java.util.List;
 import support.im.R;
+import support.im.data.GroupUsers;
 import support.im.data.User;
 import support.ui.adapters.EasyViewHolder;
 import support.ui.utilities.AndroidUtilities;
@@ -20,7 +21,7 @@ import support.ui.utilities.AndroidUtilities;
  * Created by wangh on 2016-5-6-0006.
  * todo://entry is NOT User
  */
-public class GroupHeadCell extends EasyViewHolder<User> {
+public class GroupHeadCell extends EasyViewHolder<GroupUsers> {
 
   LinearLayout mGroupAvatarContainer;
   TextView mMemberNumber;
@@ -34,14 +35,15 @@ public class GroupHeadCell extends EasyViewHolder<User> {
     mMemberNumber = ButterKnife.findById(itemView, R.id.support_ui_group_member_number);
   }
 
-  @Override public void bindTo(int position, User value) {
-
+  @SuppressLint("SetTextI18n") @Override public void bindTo(int position, GroupUsers value) {
+    initContainer(value.getUsers());
+    mMemberNumber.setText(value.getUsers().size()+"人");
   }
 
-  private void initContainer(List<String> urls) {
+  private void initContainer(List<User> users) {
     View view = null;
     SimpleDraweeView simpleDraweeView = null;
-    if (urls.size() >= 6) {
+    if (users.size() >= 6) {
       for (int i = 0; i <= 6; i++) {
         view = View.inflate(mContext, R.layout.view_avatar, null);
         simpleDraweeView = (SimpleDraweeView) view;
@@ -55,16 +57,16 @@ public class GroupHeadCell extends EasyViewHolder<User> {
           params.gravity = Gravity.BOTTOM;
           mGroupAvatarContainer.addView(imageView, params);
         } else {
-          simpleDraweeView.setImageURI(Uri.parse(urls.get(i)));
+          simpleDraweeView.setImageURI(users.get(i).toAvatarUri());
           mGroupAvatarContainer.addView(view,
               new LinearLayout.LayoutParams(AndroidUtilities.dp(48), AndroidUtilities.dp(48)));
         }
       }
     } else {
-      for (String url : urls) {
+      for (User user : users) {
         view = View.inflate(mContext, R.layout.view_avatar, null);
         simpleDraweeView = (SimpleDraweeView) view;
-        simpleDraweeView.setImageURI(Uri.parse(url));
+        simpleDraweeView.setImageURI(user.toAvatarUri());
         mGroupAvatarContainer.addView(view,
             new LinearLayout.LayoutParams(AndroidUtilities.dp(48), AndroidUtilities.dp(48)));
       }
