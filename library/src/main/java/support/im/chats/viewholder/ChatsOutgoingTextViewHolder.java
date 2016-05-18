@@ -7,7 +7,7 @@ import butterknife.ButterKnife;
 import com.avos.avoscloud.im.v2.AVIMMessage;
 import com.avos.avoscloud.im.v2.messages.AVIMTextMessage;
 import support.im.R;
-import support.im.leanclound.EmotionHelper;
+import support.im.emoticons.ChatsUtils;
 
 public class ChatsOutgoingTextViewHolder extends ChatsOutgoingViewHolder {
 
@@ -22,8 +22,7 @@ public class ChatsOutgoingTextViewHolder extends ChatsOutgoingViewHolder {
     super.bindTo(position, value);
     if (value instanceof AVIMTextMessage) {
       AVIMTextMessage textMessage = (AVIMTextMessage) value;
-      mMessageTextView.setText(EmotionHelper.replace(mContext, textMessage.getText()));
+      ChatsUtils.spannableEmoticonFilter(mMessageTextView, textMessage.getText());
     }
   }
-
 }

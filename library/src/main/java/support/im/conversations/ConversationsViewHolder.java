@@ -13,6 +13,7 @@ import support.im.data.ConversationType;
 import support.im.data.User;
 import support.im.data.cache.CacheManager;
 import support.im.data.source.UsersRepository;
+import support.im.emoticons.ChatsUtils;
 import support.im.utilities.ConversationHelper;
 import support.im.utilities.Utils;
 import support.ui.adapters.EasyViewHolder;
@@ -74,8 +75,8 @@ public class ConversationsViewHolder extends EasyViewHolder<Conversation> {
       mMessageTextView.setText("");
     }
     if (value.getLastMessage() != null) {
-      mMessageTextView.setText(
-          Utils.getMessageeShorthand(SupportApp.appContext(), value.getLastMessage()));
+      ChatsUtils.spannableEmoticonFilter(mMessageTextView,
+          (String) Utils.getMessageeShorthand(SupportApp.appContext(), value.getLastMessage()));
     }
     mLatestTimeTextView.setText(Utils.millisecsToDateString(value.getLatestMsgTime()));
   }
