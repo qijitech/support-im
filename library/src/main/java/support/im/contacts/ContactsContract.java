@@ -17,6 +17,8 @@ public interface ContactsContract {
 
     void showNoContacts();
 
+    void updateNewRequestBadge();
+
     boolean isActive();
 
     void onDataNotAvailable(AVException exception);

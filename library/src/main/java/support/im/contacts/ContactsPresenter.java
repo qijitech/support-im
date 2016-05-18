@@ -2,6 +2,7 @@ package support.im.contacts;
 
 import android.support.annotation.NonNull;
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.CountCallback;
 import com.google.common.collect.Lists;
 import java.util.Collections;
 import java.util.List;
@@ -10,6 +11,7 @@ import support.im.data.User;
 import support.im.data.cache.CacheManager;
 import support.im.data.source.ContactsDataSource;
 import support.im.data.source.ContactsRepository;
+import support.im.leanclound.contacts.AddRequestManager;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -35,7 +37,23 @@ public class ContactsPresenter implements ContactsContract.Presenter {
 
   @Override public void loadContacts(boolean forceUpdate) {
     loadContacts(forceUpdate || mFirstLoad, true);
+
+    if (mFirstLoad) {
+      countUnreadRequests();
+    }
+
     mFirstLoad = false;
+  }
+
+  private void countUnreadRequests() {
+    AddRequestManager.getInstance().countUnreadRequests(new CountCallback() {
+      @Override
+      public void done(int i, AVException e) {
+        if (mContactsView.isActive()) {
+          mContactsView.updateNewRequestBadge();
+        }
+      }
+    });
   }
 
   private void loadContacts(boolean forceUpdate, final boolean showLoadingUI) {

@@ -33,7 +33,7 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
   ContactsContract.Presenter mPresenter;
 
   protected ContactsAdapter mAdapter;
-  private ContactsDummy mNewContacts;
+  private NewFriends mNewContacts;
   private ContactsDummy mGroup;
   private SideBar mSideBar;
   private TextView mBubble;
@@ -48,11 +48,12 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
 
   @Override public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    mNewContacts = ContactsDummy.newContacts();
+    mNewContacts = NewFriends.newContacts(AddRequestManager.getInstance().getUnreadAddRequestsCount());
     mGroup = ContactsDummy.group();
 
     mAdapter = new ContactsAdapter(getContext());
     mAdapter.setOnClickListener(this);
+    mAdapter.bind(NewFriends.class, NewFriendsViewHolder.class);
     mAdapter.bind(ContactsDummy.class, ContactsDummyViewHolder.class);
     mAdapter.bind(ContactsTotal.class, ContactsTotalViewHolder.class);
     mAdapter.bind(Contact.class, ContactsViewHolder.class);
@@ -147,14 +148,10 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
       return;
     }
     if (object instanceof ContactsDummy) {
-      ContactsDummy contactsDummy = (ContactsDummy) object;
-      switch (contactsDummy.mTag) {
-        case ContactsDummy.NEW_CONTACTS:
-          startActivity(new Intent(getContext(), NewContactsActivity.class));
-          break;
-        case ContactsDummy.GROUP:
-          break;
-      }
+      return;
+    }
+    if (object instanceof NewFriends) {
+      startActivity(new Intent(getContext(), NewContactsActivity.class));
     }
   }
 
@@ -201,9 +198,12 @@ public class ContactsFragment extends SupportRecyclerViewFragment implements Con
     mPresenter = checkNotNull(presenter);
   }
 
-  public void onEvent(InvitationEvent event) {
-    AddRequestManager.getInstance().unreadRequestsIncrement();
-    // TODO
-    //updateNewRequestBadge();
+  @SuppressWarnings("unused") public void onEvent(InvitationEvent event) {
+    mNewContacts.setUnReadCount(AddRequestManager.getInstance().unreadRequestsIncrement());
+    updateNewRequestBadge();
+  }
+
+  @Override public void updateNewRequestBadge() {
+    mAdapter.notifyItemChanged(0);
   }
 }

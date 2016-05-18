@@ -45,11 +45,15 @@ public class AddRequestManager {
     return unreadAddRequestsCount > 0;
   }
 
+  public int getUnreadAddRequestsCount() {
+    return unreadAddRequestsCount;
+  }
+
   /**
    * 推送过来时自增
    */
-  public void unreadRequestsIncrement() {
-    ++unreadAddRequestsCount;
+  public int unreadRequestsIncrement() {
+    return ++unreadAddRequestsCount;
   }
 
   /**
@@ -62,8 +66,8 @@ public class AddRequestManager {
     addRequestAVQuery.whereEqualTo(AddRequest.IS_READ, false);
     addRequestAVQuery.countInBackground(new CountCallback() {
       @Override public void done(int i, AVException e) {
+        unreadAddRequestsCount = i;
         if (null != countCallback) {
-          unreadAddRequestsCount = i;
           countCallback.done(i, e);
         }
       }
