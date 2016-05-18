@@ -1,4 +1,4 @@
-package support.im.choose;
+package support.im.picker;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,9 +19,9 @@ import java.util.List;
 import support.im.Injection;
 import support.im.R;
 import support.im.chats.ChatsActivity;
-import support.im.choose.adapter.CheckedContactsAdapter;
-import support.im.choose.adapter.ContactsAdapter;
-import support.im.choose.event.CheckEvent;
+import support.im.picker.adapter.CheckedContactsAdapter;
+import support.im.picker.adapter.ContactsAdapter;
+import support.im.picker.event.CheckEvent;
 import support.im.data.Contact;
 import support.im.data.User;
 import support.im.data.source.ContactsDataSource;
@@ -32,7 +32,7 @@ import support.ui.components.SupportButton;
 /**
  * Created by wangh on 2016-5-16-0016.
  */
-public class CheckContactActivity extends AppCompatActivity
+public class PickerContactActivity extends AppCompatActivity
     implements ContactsDataSource.LoadContactsCallback, View.OnClickListener {
 
   public static final String FLAG_CLIENT_ID = "flag_client_id";
@@ -48,6 +48,7 @@ public class CheckContactActivity extends AppCompatActivity
   private List<String> mMemberList;
   private List<User> mCheckList;
   private CheckedContactsAdapter mCheckedContactsAdapter;
+  private List<User> existUserList;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -86,11 +87,12 @@ public class CheckContactActivity extends AppCompatActivity
 
   private void getData() {
     mMemberList = getIntent().getStringArrayListExtra(FLAG_MEMBER_LIST);
+    existUserList = new ArrayList<>();
   }
 
   public static void startCheckList(Context context, String currentClientId,
       ArrayList<String> memberList) {
-    Intent intent = new Intent(context, CheckContactActivity.class);
+    Intent intent = new Intent(context, PickerContactActivity.class);
     intent.putExtra(FLAG_CLIENT_ID, currentClientId);
     intent.putStringArrayListExtra(FLAG_MEMBER_LIST, memberList);
     context.startActivity(intent);
@@ -104,12 +106,14 @@ public class CheckContactActivity extends AppCompatActivity
 
   @Override public void onContactsLoaded(List<Contact> contacts) {
     for (Contact contact : contacts) {
+      mContactList.add(contact.getFriend());
       for (String item : mMemberList) {
-        if (!contact.getFriend().getObjectId().equals(item)) {
-          mContactList.add(contact.getFriend());
+        if (contact.getFriend().getObjectId().equals(item)) {
+          existUserList.add(contact.getFriend());
         }
       }
     }
+    mContactList.removeAll(existUserList);
     mAdapter = new ContactsAdapter(this, mContactList);
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
     linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);

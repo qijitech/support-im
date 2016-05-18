@@ -6,10 +6,13 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import com.google.common.eventbus.Subscribe;
 import com.raizlabs.android.dbflow.annotation.NotNull;
+import de.greenrobot.event.EventBus;
 import java.util.ArrayList;
 import java.util.List;
 import support.im.R;
+import support.im.picker.PickerContactActivity;
 import support.im.data.CTextItem;
 import support.im.data.GroupUsers;
 import support.im.data.IconItem;
@@ -152,8 +155,18 @@ public class GroupProfileActivity extends SupportCellsActivity
     initData();
   }
 
+  @Subscribe public void onEvent(IconItem item) {
+    PickerContactActivity.startCheckList(this, null, new ArrayList<String>(mUserList));
+  }
+
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    EventBus.getDefault().register(this);
     init();
+  }
+
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    EventBus.getDefault().unregister(this);
   }
 }

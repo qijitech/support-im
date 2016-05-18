@@ -1,4 +1,4 @@
-package support.im.choose.viewholder;
+package support.im.picker.viewholder;
 
 import android.content.Context;
 import android.view.ViewGroup;

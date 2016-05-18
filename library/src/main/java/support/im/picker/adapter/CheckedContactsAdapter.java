@@ -1,10 +1,10 @@
-package support.im.choose.adapter;
+package support.im.picker.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import java.util.List;
-import support.im.choose.viewholder.CheckedContactViewHolder;
+import support.im.picker.viewholder.CheckedContactViewHolder;
 import support.im.data.User;
 
 /**

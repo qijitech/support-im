@@ -14,7 +14,7 @@ import de.greenrobot.event.EventBus;
 import java.util.ArrayList;
 import java.util.Arrays;
 import support.im.R;
-import support.im.choose.CheckContactActivity;
+import support.im.picker.PickerContactActivity;
 import support.im.data.IconItem;
 import support.im.data.SupportUser;
 import support.im.data.User;
@@ -132,9 +132,9 @@ public class UserProfileActivity extends SupportCellsActivity
           memberList.add(arrayMember[i]);
         }
       }
-      CheckContactActivity.startCheckList(this, null, memberList);
+      PickerContactActivity.startCheckList(this, null, memberList);
     } else if (!TextUtils.isEmpty(mMemberId)) {
-      CheckContactActivity.startCheckList(this, null,
+      PickerContactActivity.startCheckList(this, null,
           new ArrayList<String>(Arrays.asList(mMemberId)));
     } else {
       throw new IllegalArgumentException("memberId and Conversation Id are null");

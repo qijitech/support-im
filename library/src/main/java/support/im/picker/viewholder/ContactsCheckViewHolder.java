@@ -1,4 +1,4 @@
-package support.im.choose.viewholder;
+package support.im.picker.viewholder;
 
 import android.content.Context;
 import android.view.View;
@@ -9,7 +9,7 @@ import butterknife.ButterKnife;
 import com.facebook.drawee.view.SimpleDraweeView;
 import de.greenrobot.event.EventBus;
 import support.im.R;
-import support.im.choose.event.CheckEvent;
+import support.im.picker.event.CheckEvent;
 import support.im.data.User;
 import support.ui.adapters.EasyViewHolder;
 

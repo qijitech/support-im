@@ -1,4 +1,4 @@
-package support.im.choose.event;
+package support.im.picker.event;
 
 /**
  * Created by wangh on 2016-5-17-0017.

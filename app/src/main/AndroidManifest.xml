@@ -71,7 +71,7 @@
     </activity>
 
     <activity
-        android:name="support.im.choose.CheckContactActivity"
+        android:name="support.im.picker.PickerContactActivity"
         android:label="@string/si_label_picker_contact"
         android:launchMode="singleTask">
       <meta-data
