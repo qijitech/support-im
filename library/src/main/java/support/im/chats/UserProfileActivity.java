@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import com.avos.avoscloud.AVUser;
 import com.google.common.eventbus.Subscribe;
 import com.raizlabs.android.dbflow.annotation.NotNull;
@@ -164,5 +165,13 @@ public class UserProfileActivity extends SupportCellsActivity
   @Override protected void onDestroy() {
     super.onDestroy();
     EventBus.getDefault().unregister(this);
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId() == android.R.id.home) {
+      finish();
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 }
