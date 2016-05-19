@@ -196,7 +196,7 @@
           android:value=".features.main.MainActivity"/>
     </activity>
 
-    <receiver android:name="support.im.service.InvitationReceiver">
+    <receiver android:name="support.im.service.InvitationReceiver" android:exported="false">
       <intent-filter>
         <action android:name="android.intent.action.BOOT_COMPLETED"/>
         <action android:name="android.intent.action.USER_PRESENT"/>
