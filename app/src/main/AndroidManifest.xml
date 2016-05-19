@@ -95,7 +95,7 @@
     <activity
         android:name="support.im.chats.ChatsActivity"
         android:label="@string/support_im_label_chats"
-        android:launchMode="standard">
+        android:launchMode="singleTask">
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
           android:value=".features.main.MainActivity"/>
