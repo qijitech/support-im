@@ -36,7 +36,7 @@ public class PushManager {
     subscribeCurrentUserChannel();
   }
 
-  private void subscribeCurrentUserChannel() {
+  public void subscribeCurrentUserChannel() {
     String currentUserId = SupportUser.getCurrentUserId();
     if (!TextUtils.isEmpty(currentUserId)) {
       PushService.subscribe(mContext, currentUserId, mDefaultActivity);

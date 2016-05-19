@@ -9,18 +9,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SignUpCallback;
 import com.avos.avoscloud.im.v2.AVIMClient;
 import com.avos.avoscloud.im.v2.AVIMException;
 import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import java.util.Random;
+import java.util.UUID;
 import support.im.data.SupportUser;
 import support.im.demo.BaseActivity;
 import support.im.demo.R;
 import support.im.demo.features.main.MainActivity;
 import support.im.leanclound.ChatManager;
-import support.im.utilities.AVExceptionHandler;
 import support.im.utilities.HudUtils;
 
 public class RegisterActivity extends BaseActivity {
@@ -69,25 +68,24 @@ public class RegisterActivity extends BaseActivity {
     final String nickname = mNicknameEditText.getText().toString();
     HudUtils.showHud(this, "正在注册");
     String avatar = avatarList[new Random().nextInt(avatarList.length)];
-    SupportUser.register(username, password, nickname, avatar, new SignUpCallback() {
+    final SupportUser supportUser = new SupportUser.Builder()
+        .username(username)
+        .password(password)
+        .nickname(nickname)
+        .avatar(avatar)
+        .userId(UUID.randomUUID().toString())
+        .build();
+
+    supportUser.register2LeanCloud(new SignUpCallback() {
       @Override public void done(AVException e) {
-        if (AVExceptionHandler.handAVException(e)) {
-          SupportUser supportUser = SupportUser.getCurrentUser();
-          ChatManager.getInstance().openClient(supportUser.getObjectId(), new AVIMClientCallback() {
-            @Override public void done(AVIMClient avimClient, AVIMException e) {
-              SupportUser.getCurrentUser().updateUserInstallation(new SaveCallback() {
-                @Override public void done(AVException e) {
-                  Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                  startActivity(intent);
-                  HudUtils.dismissHud();
-                  finish();
-                }
-              });
-            }
-          });
-          return;
-        }
-        HudUtils.dismissHud();
+        ChatManager.getInstance().openClient(supportUser.getObjectId(), new AVIMClientCallback() {
+          @Override public void done(AVIMClient avimClient, AVIMException e) {
+            HudUtils.dismissHud();
+            Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+          }
+        });
       }
     });
   }

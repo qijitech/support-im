@@ -100,6 +100,21 @@ public class ChatManager {
 
   /**
    * 用户注销的时候调用，close 之后消息不会推送过来，也不可以进行发消息等操作
+   */
+  public void closeWithCallback() {
+    mIMClient.close(new AVIMClientCallback() {
+      @Override public void done(AVIMClient avimClient, AVIMException e) {
+        if (e != null) {
+          SupportLog.logException(e);
+        }
+      }
+    });
+    mIMClient = null;
+    mClientId = null;
+  }
+
+  /**
+   * 用户注销的时候调用，close 之后消息不会推送过来，也不可以进行发消息等操作
    *
    * @param callback AVException 常见于网络错误
    */

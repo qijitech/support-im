@@ -47,14 +47,12 @@ public class LoginMobileActivity extends BaseActivity {
     }
 
     HudUtils.showHud(this, "正在登录");
-    SupportUser.logInInBackground(username, password, new LogInCallback<SupportUser>() {
+    SupportUser.login2LeanCloud(username, password, new LogInCallback<SupportUser>() {
       @Override public void done(SupportUser avUser, AVException e) {
         HudUtils.dismissHud();
         if (AVExceptionHandler.handAVException(e)) {
           ChatManager.getInstance().openClient(avUser.getObjectId(), new AVIMClientCallback() {
-            @Override
-            public void done(AVIMClient avimClient, AVIMException e) {
-              HudUtils.dismissHud();
+            @Override public void done(AVIMClient avimClient, AVIMException e) {
               if (AVExceptionHandler.handAVException(e)) {
                 Intent intent = new Intent(LoginMobileActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -64,7 +62,7 @@ public class LoginMobileActivity extends BaseActivity {
           });
         }
       }
-    }, SupportUser.class);
+    });
 
   }
 }

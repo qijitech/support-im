@@ -2,14 +2,17 @@ package support.im.data;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SignUpCallback;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import java.util.List;
-import java.util.UUID;
+import support.im.service.PushManager;
+import support.im.utilities.AVExceptionHandler;
 
 @SuppressLint("ParcelCreator") public class SupportUser extends AVUser {
 
@@ -19,26 +22,30 @@ import java.util.UUID;
   public static final String AVATAR = "avatar";
   public static final String INSTALLATION = "installation";
 
-  public static void register(String username,
-      String password,
-      String nickname, String avatar,
-      SignUpCallback callback) {
-    SupportUser user = new SupportUser();
-    user.setAvatar(avatar);
-    user.setUserId(UUID.randomUUID().toString());
-    user.setUsername(username);
-    user.setPassword(password);
-    user.setDisplayName(nickname);
-    user.signUpInBackground(callback);
+  public static void login2LeanCloud(String username, String password, final LogInCallback<SupportUser> callback) {
+    logInInBackground(username, password, new LogInCallback<SupportUser>() {
+      @Override public void done(SupportUser avUser, AVException e) {
+        if (AVExceptionHandler.handAVException(e) && avUser != null) {
+          avUser.updateUserInstallation();
+          PushManager.getInstance().subscribeCurrentUserChannel();
+        }
+        if (callback != null) {
+          callback.done(avUser, e);
+        }
+      }
+    }, SupportUser.class);
   }
 
-  /**
-   * 用户第三方注册, 密码可以不用填写
-   */
-  public static void register2LeanCloud(SupportUser supportUser, SignUpCallback callback) {
-    if (supportUser != null && callback != null) {
-      supportUser.signUpInBackground(callback);
-    }
+  public void register2LeanCloud(final SignUpCallback callback) {
+    signUpInBackground(new SignUpCallback() {
+      @Override public void done(AVException e) {
+        updateUserInstallation();
+        PushManager.getInstance().subscribeCurrentUserChannel();
+        if (callback != null) {
+          callback.done(e);
+        }
+      }
+    });
   }
 
   public void setDisplayName(String displayName) {
