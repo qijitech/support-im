@@ -4,7 +4,10 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import com.facebook.stetho.Stetho;
 import support.im.SupportIm;
+import support.im.aop.AdviceBinder;
+import support.im.aop.PointCutEnum;
 import support.im.demo.features.main.MainActivity;
+import support.im.demo.operation.ContactsOperation;
 
 public class SupportImApp extends support.im.SupportImApp {
 
@@ -13,6 +16,8 @@ public class SupportImApp extends support.im.SupportImApp {
         MainActivity.class, BuildConfig.DEBUG);
     super.onCreate();
     MultiDex.install(this);
+
+    //AdviceBinder.bindAdvice(PointCutEnum.CONTACTS_OP_POINTCUT, ContactsOperation.class);
 
     Stetho.initialize(Stetho.newInitializerBuilder(this)
         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
