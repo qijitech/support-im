@@ -8,9 +8,11 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SignUpCallback;
+import com.avos.avoscloud.im.v2.callback.AVIMClientCallback;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import java.util.List;
+import support.im.leanclound.ChatManager;
 import support.im.service.PushManager;
 import support.im.utilities.AVExceptionHandler;
 
@@ -21,6 +23,12 @@ import support.im.utilities.AVExceptionHandler;
   public static final String DISPLAY_NAME = "displayName";
   public static final String AVATAR = "avatar";
   public static final String INSTALLATION = "installation";
+
+  public static void logoutFromLeanCloud(final AVIMClientCallback callback) {
+    PushManager.getInstance().unSubscribeCurrentUserChannel();
+    SupportUser.logOut();
+    ChatManager.getInstance().closeWithCallback(callback);
+  }
 
   public static void login2LeanCloud(String username, String password, final LogInCallback<SupportUser> callback) {
     logInInBackground(username, password, new LogInCallback<SupportUser>() {
