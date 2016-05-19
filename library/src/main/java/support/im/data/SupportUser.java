@@ -91,6 +91,14 @@ import java.util.UUID;
     return getCurrentUser(SupportUser.class);
   }
 
+  public void updateUserInstallation() {
+    AVInstallation installation = AVInstallation.getCurrentInstallation();
+    if (installation != null) {
+      put(INSTALLATION, installation);
+      saveInBackground();
+    }
+  }
+
   public void updateUserInstallation(SaveCallback callback) {
     AVInstallation installation = AVInstallation.getCurrentInstallation();
     if (installation != null) {
